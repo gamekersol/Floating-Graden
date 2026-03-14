@@ -24,7 +24,7 @@ void showItemDetail(BuildContext context, InventoryItem item) {
             height: 4,
             margin: const EdgeInsets.only(bottom: 20),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.4),
+              color: Colors.grey.withValues(alpha: 0.4),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -42,7 +42,7 @@ void showItemDetail(BuildContext context, InventoryItem item) {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
+              color: color.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: color),
             ),
@@ -67,7 +67,7 @@ void showItemDetail(BuildContext context, InventoryItem item) {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 3),
                     decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.15),
+                      color: Colors.grey.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
@@ -95,26 +95,20 @@ void showItemDetail(BuildContext context, InventoryItem item) {
           Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                //width: double.infinity,
-                child: FilledButton(
-                  style: ButtonStyle(backgroundColor: Colors.red),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    item.onUse(item);
-                  },
-                  child: const Text('Destroy'),
-                ),
+              FilledButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  item.onUse(item);
+                },
+                child: const Text('Destroy'),
               ),
-              SizedBox(
-                //width: double.infinity,
-                child: FilledButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    item.onUse(item);
-                  },
-                  child: const Text('Use'),
-                ),
+              const SizedBox(width: 8),
+              FilledButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  item.onUse(item);
+                },
+                child: const Text('Use'),
               ),
             ]
           )
@@ -167,7 +161,7 @@ class QuantityBar extends StatelessWidget {
           child: LinearProgressIndicator(
             value: ratio,
             minHeight: 8,
-            backgroundColor: rarityColor.withOpacity(0.15),
+            backgroundColor: rarityColor.withValues(alpha: 0.15),
             valueColor: AlwaysStoppedAnimation(
                 isFull ? Colors.amber.shade600 : rarityColor),
           ),
