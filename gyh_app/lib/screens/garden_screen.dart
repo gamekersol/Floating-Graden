@@ -2,15 +2,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:gyh_app/models/block_definition.dart';
 import 'package:gyh_app/models/plant_item.dart';
-import '../../models/currency_item.dart';
 import '../data/mock_garden.dart';
 import '../models/pos_hex.dart';
-
-const List<CurrencyItem> _currencies = [
-  CurrencyItem(iconPath: 'assets/trinckets/coin.svg', value: 10),
-  CurrencyItem(iconPath: 'assets/trinckets/seed.svg', value: 5),
-  CurrencyItem(iconPath: 'assets/trinckets/diamond.svg', value: 2),
-];
 
 // ── Action definition ────────────────────────────────────────────────────────
 
