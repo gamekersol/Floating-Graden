@@ -9,7 +9,7 @@ class ItemDefs {
   static const magicSeed = ItemDefinition(
     id: 'magic_seed',
     name: 'Magic Seed',
-    iconPath: 'lib/assets/trinckets/seed.svg',
+    iconPath: 'assets/trinckets/seed.svg',
     maxQuantity: 99,
     rarity: ItemRarity.common,
     tags: ['consumable', 'garden', 'growth'],
@@ -19,7 +19,7 @@ class ItemDefs {
   static const goldCoin = ItemDefinition(
     id: 'gold_coin',
     name: 'Gold Coin',
-    iconPath: 'lib/assets/trinckets/coin.svg',
+    iconPath: 'assets/trinckets/coin.svg',
     maxQuantity: 9999,
     rarity: ItemRarity.common,
     tags: ['currency', 'trade'],
@@ -29,7 +29,7 @@ class ItemDefs {
   static const diamond = ItemDefinition(
     id: 'diamond',
     name: 'Diamond',
-    iconPath: 'lib/assets/trinckets/diamond.svg',
+    iconPath: 'assets/trinckets/diamond.svg',
     maxQuantity: 10,
     rarity: ItemRarity.epic,
     tags: ['currency', 'rare', 'trade'],

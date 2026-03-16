@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../models/nav_item.dart';
+import '../models/currency_item.dart';
 import '../widgets/app_bottom_nav_bar.dart';
 import '../widgets/app_drawer.dart';
+import '../widgets/main_header.dart';
 import '../widgets/placeholder_screen.dart';
 import 'inventory_screen.dart';
 import 'garden_screen.dart';
+
+const List<CurrencyItem> _currencies = [
+  CurrencyItem(iconPath: 'assets/trinckets/coin.svg', value: 10),
+  CurrencyItem(iconPath: 'assets/trinckets/seed.svg', value: 5),
+  CurrencyItem(iconPath: 'assets/trinckets/diamond.svg', value: 2),
+];
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -23,19 +31,19 @@ class _MainScreenState extends State<MainScreen> {
 
   static final List<NavItem> _navItems = [
     NavItem(
-      icon: SvgPicture.asset('lib/assets/navigation/bag.svg', width: 100, height: 100),
+      icon: SvgPicture.asset('assets/navigation/bag.svg', width: 100, height: 100),
       label: 'Calendar',
     ),
     NavItem(
-      icon: SvgPicture.asset('lib/assets/navigation/home.svg', width: 100, height: 100),
+      icon: SvgPicture.asset('assets/navigation/home.svg', width: 100, height: 100),
       label: 'Home',
     ),
     NavItem(
-      icon: SvgPicture.asset('lib/assets/navigation/tasks.svg', width: 100, height: 100),
+      icon: SvgPicture.asset('assets/navigation/tasks.svg', width: 100, height: 100),
       label: 'List',
     ),
     NavItem(
-      icon: SvgPicture.asset('lib/assets/navigation/store.svg', width: 100, height: 100),
+      icon: SvgPicture.asset('assets/navigation/store.svg', width: 100, height: 100),
       label: 'Lock',
     ),
   ];
@@ -72,12 +80,12 @@ class _MainScreenState extends State<MainScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // MainHeader(
-            //   onMenuTap: () => Scaffold.of(context).openDrawer(),
-            //   currency: _currencies
-            //       .map((c) => c.buildWidget(textColor: Colors.white))
-            //       .toList(),
-            // ),
+            MainHeader(
+              onMenuTap: () => Scaffold.of(context).openDrawer(),
+              currency: _currencies
+                  .map((c) => c.buildWidget(textColor: Colors.white))
+                  .toList(),
+            ),
             Expanded(
               child: PageView(
                 controller: _pageController,
@@ -87,11 +95,11 @@ class _MainScreenState extends State<MainScreen> {
                   const GardenScreen(),
                   PlaceholderScreen(
                     title: 'List',
-                    icon: SvgPicture.asset('lib/assets/navigation/tasks.svg'),
+                    icon: SvgPicture.asset('assets/navigation/tasks.svg'),
                   ),
                   PlaceholderScreen(
                     title: 'Lock',
-                    icon: SvgPicture.asset('lib/assets/navigation/store.svg'),
+                    icon: SvgPicture.asset('assets/navigation/store.svg'),
                   ),
                 ],
               ),

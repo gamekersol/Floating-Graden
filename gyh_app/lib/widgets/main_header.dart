@@ -34,7 +34,7 @@ class MainHeader extends StatelessWidget {
                     height: 32,
                     child: FittedBox(
                       fit: BoxFit.contain,
-                      child: SvgPicture.asset("lib/assets/navigation/menu.svg"),
+                      child: SvgPicture.asset("assets/navigation/menu.svg"),
                     ),
                   ),
                 ),

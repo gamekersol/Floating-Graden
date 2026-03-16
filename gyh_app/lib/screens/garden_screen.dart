@@ -1,38 +1,29 @@
-
-
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
-import '../../widgets/main_header.dart';
+import 'package:gyh_app/models/block_definition.dart';
+import 'package:gyh_app/models/plant_item.dart';
 import '../../models/currency_item.dart';
-import 'dart:math';
-
-class PosHex {
-  final int row, col;
-  bool variant;
-  PosHex({required this.row, required this.col, this.variant = false});
-
-  (int q, int r) toCube() {
-    final q = col;
-    final r = row - (col - (col & 1)) ~/ 2;
-    return (q, r);
-  }
-
-  double get depth {
-    final (q, r) = toCube();
-    return r * 2 + q.toDouble();
-  }
-}
+import '../data/mock_garden.dart';
+import '../models/pos_hex.dart';
 
 const List<CurrencyItem> _currencies = [
-  CurrencyItem(iconPath: 'lib/assets/trinckets/coin.svg', value: 10),
-  CurrencyItem(iconPath: 'lib/assets/trinckets/seed.svg', value: 5),
-  CurrencyItem(iconPath: 'lib/assets/trinckets/diamond.svg', value: 2),
+  CurrencyItem(iconPath: 'assets/trinckets/coin.svg', value: 10),
+  CurrencyItem(iconPath: 'assets/trinckets/seed.svg', value: 5),
+  CurrencyItem(iconPath: 'assets/trinckets/diamond.svg', value: 2),
 ];
 
+// ── Action definition ────────────────────────────────────────────────────────
 
+class BuyBlockAction {
+  const BuyBlockAction({required this.position});
+  final PosHex position;
+}
+
+// ── Screen ───────────────────────────────────────────────────────────────────
 
 class GardenScreen extends StatefulWidget {
   const GardenScreen({super.key});
+
   @override
   State<GardenScreen> createState() => _GardenScreenState();
 }
@@ -40,154 +31,147 @@ class GardenScreen extends StatefulWidget {
 class _GardenScreenState extends State<GardenScreen> {
   bool showBlockVariants = false;
 
-  final List<PosHex> _blocksPositions = [
-    PosHex(row: 0, col: 0),
-    PosHex(row: -1, col: 0, variant: true),
-    PosHex(row: 1, col: 0),
-    PosHex(row: 0, col: -1),
-    PosHex(row: 0, col: 1, variant: true),
-    PosHex(row: -1, col: -1),
-    PosHex(row: 1, col: -1),
-    PosHex(row: -2, col: 0),
-    PosHex(row: 2, col: 0),
-    PosHex(row: 0, col: -2),
-    PosHex(row: 0, col: 2, variant: true),
-    PosHex(row: -1, col: 1),
-    PosHex(row: 1, col: 1),
-    PosHex(row: -2, col: -1, variant: true),
-    PosHex(row: 2, col: -1),
-  ];
-// Get header height (AppBar standard is 56, or measure yours)
-  
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final sorted = List<PosHex>.from(_blocksPositions)
-      ..sort((a, b) => a.depth.compareTo(b.depth));
-      
-    final headerHeight = MediaQuery.of(context).padding.top + 56;
-    return Stack(
-      children: [
-        // Blocks fill the entire screen, ignoring header position
-        for (final pos in sorted)
-          if (!pos.variant || showBlockVariants)
-            Block(
-              alignment: snapHexPosition(pos, radius, size, headerHeight),
-              isVariant: pos.variant,
-              onBuy: () => buyBlock(pos),
-            ),
-        Positioned(
-          top: 0, left: 0, right: 0,
-          child: MainHeader(
-            onMenuTap: () => Scaffold.of(context).openDrawer(),
-            currency: _currencies
-                .map((c) => c.buildWidget(textColor: Colors.white))
-                .toList(),
-          ),
-        ),
+  // ── Action handler ──────────────────────────────────────────────────────
 
-        // FAB floats on top
-        Positioned(
-          bottom: 16, right: 16,
-          child: FloatingActionButton(onPressed: addBlock),
-        ),
-      ],
-    );
+  void _handleAction(Object action) {
+    if (action is BuyBlockAction) {
+      _executeBuyBlock(action.position);
+    }
+    // Add more action types here as needed:
+    // else if (action is SomeOtherAction) { ... }
   }
 
-  // Returns the 6 hex neighbors of a given position
+  void _executeBuyBlock(PosHex pos) {
+    setState(() {
+      pos.variant = false;
+
+      for (final neighbor in _neighborsOf(pos)) {
+        final alreadyExists = mockGardenItems.any(
+          (b) =>
+              b.blockPosition.row == neighbor.row &&
+              b.blockPosition.col == neighbor.col,
+        );
+        if (!alreadyExists) {
+          neighbor.variant = true;
+          mockGardenItems.add(BlockDef(blockPosition: neighbor));
+        }
+      }
+      //sort blocks;
+      mockGardenItems = List<BlockDef>.from(mockGardenItems)
+        ..sort((a, b) => a.blockPosition.depth.compareTo(b.blockPosition.depth));
+
+      showBlockVariants = true;
+    });
+  }
+
+  // ── Hex helpers ─────────────────────────────────────────────────────────
+
   List<PosHex> _neighborsOf(PosHex pos) {
     final offsets = pos.col.isOdd
         ? [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (1, -1)]
         : [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, 1), (1, 1)];
 
-    return offsets.map((o) => PosHex(row: pos.row + o.$1, col: pos.col + o.$2)).toList();
+    return offsets
+        .map((o) => PosHex(row: pos.row + o.$1, col: pos.col + o.$2))
+        .toList();
   }
 
+  // ── Build ────────────────────────────────────────────────────────────────
 
-  void buyBlock(PosHex pos) {
-    print("buy");
-    setState(() {
-      // Remove variant flag from purchased block
-      pos.variant = false;
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final headerHeight = MediaQuery.of(context).padding.top + 56;
 
-      // Add neighbors as new variant (purchasable) blocks if not already present
-      for (final neighbor in _neighborsOf(pos)) {
-        final alreadyExists = _blocksPositions.any((b) => b.row == neighbor.row && b.col == neighbor.col);
-        if (!alreadyExists) {
-          print("aded new variant");
-          neighbor.variant = true;
-          _blocksPositions.add(neighbor);
-        }
-      }
-
-      showBlockVariants = true; // keep variants visible after purchase
-    });
-  }
-
-  void addBlock() {
-    print("Trying add block");
-    setState(() {
-      showBlockVariants = !showBlockVariants;
-    });
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        for (final block in mockGardenItems)
+          if (!block.blockPosition.variant || showBlockVariants)
+            Block(
+              alignment: snapHexPosition(
+                block.blockPosition,
+                radius,
+                size,
+                headerHeight,
+              ),
+              def: block,
+              // Block dispatches a typed action; screen owns all logic
+              onAction: _handleAction,
+            ),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: FloatingActionButton(
+            onPressed: () => setState(
+              () => showBlockVariants = !showBlockVariants,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
+// ── Constants & helpers ──────────────────────────────────────────────────────
+
 const double radius = 86;
+
 const _variantColorFilter = ColorFilter.matrix([
-    0,    0, 0.5, 0,   0,
-    0,    0, 0.5, 0,   0,
-    0,    0, 1,   0,   0,
-    0,    0, 0,   0.25, 0,
-  ]);
+  0, 0, 0.5, 0, 0,
+  0, 0, 0.5, 0, 0,
+  0, 0, 1,   0, 0,
+  0, 0, 0,   0.25, 0,
+]);
+
+// ── Block widget ─────────────────────────────────────────────────────────────
+
 class Block extends StatelessWidget {
   const Block({
     super.key,
     required this.alignment,
-    required this.isVariant,
-    required this.onBuy,
+    required this.def,
+    required this.onAction,
   });
 
   final Alignment alignment;
-  final bool isVariant; // ✅ Fix 2: explicit bool type
-  final VoidCallback onBuy;
-
-  
+  final BlockDef def;
+  /// Dispatch any [BuyBlockAction] (or future action types) up to the screen.
+  final void Function(Object action) onAction;
 
   @override
   Widget build(BuildContext context) {
+    final pos = def.blockPosition;
+
     return Align(
       alignment: alignment,
       child: Stack(
+        clipBehavior: Clip.none,
         children: [
           SizedBox(
             width: 150,
             height: 150,
             child: SvgPicture.asset(
-              "lib/assets/plants/block.svg",
-              colorFilter: isVariant? _variantColorFilter : ColorFilter.saturation(1)
+              "assets/plants/block.svg",
+              colorFilter: pos.variant
+                  ? _variantColorFilter
+                  : const ColorFilter.mode(
+                      Colors.transparent,
+                      BlendMode.saturation,
+                    ),
             ),
           ),
-          // ✅ Fix 3: onTap correctly calls onBuy callback
-          if (isVariant)
+          if (pos.variant)
             GestureDetector(
-              onTap: onBuy,
+              // Create the action here; execute it in the screen
+              onTap: () => onAction(BuyBlockAction(position: pos)),
               behavior: HitTestBehavior.opaque,
               child: const SizedBox(width: 150, height: 150),
             ),
+          if (!pos.variant && def.plantExemplar != null)
+            PlantWidget(exemplar: def.plantExemplar!),
         ],
       ),
     );
   }
-}
-
-Alignment snapHexPosition(PosHex pos, double radius, Size screenSize, double headerHeight) {
-  double hexWidth = radius * 2;
-  double hexHeight = radius * sqrt(3) * 0.67;
-  double px = pos.col * hexWidth * 0.75;
-  double py = pos.row * hexHeight + (pos.col.isOdd ? hexHeight / 2 : 0);
-  double ax = px / (screenSize.width / 2);
-  // Shift center down by half header height, in alignment units
-  double ay = py / (screenSize.height / 2) + (headerHeight / screenSize.height);
-  return Alignment(ax, ay);
 }
