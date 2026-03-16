@@ -62,11 +62,15 @@ class _PlantWidgetState extends State<PlantWidget> {
   Timer? _timer;
 
   void growOn() {
+    if (widget.exemplar.currentStage >= widget.exemplar.definition.stages.length - 1) {
+      return;
+    }
+    widget.exemplar.currentStage++;
     setState(() {
-      widget.exemplar.currentStage++;
+      
     });
-    if (widget.exemplar.currentStage < widget.exemplar.definition.stages.length - 1)
-      _timer = Timer(widget.exemplar.getGrowStage().duration, growOn);
+
+    _timer = Timer(widget.exemplar.getGrowStage().duration, growOn);
   }
 
   @override

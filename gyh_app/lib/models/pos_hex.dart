@@ -18,6 +18,14 @@ class PosHex {
   }
 }
 
+Offset getHexOffset(PosHex pos, double radius) {
+  double hexWidth = radius * 2;
+  double hexHeight = radius * sqrt(3) * 0.5;
+  double px = pos.col * hexWidth * 0.75;
+  double py = pos.row * hexHeight + (pos.col.isOdd ? hexHeight / 2 : 0);
+  return Offset(px, py);
+}
+
 Alignment snapHexPosition(PosHex pos, double radius, Size screenSize, double headerHeight) {
   double hexWidth = radius * 2;
   double hexHeight = radius * sqrt(3) * 0.67;

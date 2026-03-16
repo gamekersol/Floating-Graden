@@ -77,20 +77,17 @@ class _GardenScreenState extends State<GardenScreen> {
     final headerHeight = MediaQuery.of(context).padding.top + 56;
 
     return Stack(
-      clipBehavior: Clip.none,
       children: [
         for (final block in mockGardenItems)
           if (!block.blockPosition.variant || showBlockVariants)
-            Block(
-              alignment: snapHexPosition(
-                block.blockPosition,
-                radius,
-                size,
-                headerHeight,
+            Positioned(
+              left: size.width / 2 + getHexOffset(block.blockPosition, radius).dx - 75,
+              top: size.height / 2 + getHexOffset(block.blockPosition, radius).dy - 75 + headerHeight / 2,
+              child: Block(
+                def: block,
+                // Block dispatches a typed action; screen owns all logic
+                onAction: _handleAction,
               ),
-              def: block,
-              // Block dispatches a typed action; screen owns all logic
-              onAction: _handleAction,
             ),
         Positioned(
           bottom: 16,
@@ -108,7 +105,7 @@ class _GardenScreenState extends State<GardenScreen> {
 
 // ── Constants & helpers ──────────────────────────────────────────────────────
 
-const double radius = 86;
+const double radius = 77;
 
 const _variantColorFilter = ColorFilter.matrix([
   0, 0, 0.5, 0, 0,
@@ -122,12 +119,10 @@ const _variantColorFilter = ColorFilter.matrix([
 class Block extends StatelessWidget {
   const Block({
     super.key,
-    required this.alignment,
     required this.def,
     required this.onAction,
   });
 
-  final Alignment alignment;
   final BlockDef def;
   /// Dispatch any [BuyBlockAction] (or future action types) up to the screen.
   final void Function(Object action) onAction;
@@ -136,35 +131,32 @@ class Block extends StatelessWidget {
   Widget build(BuildContext context) {
     final pos = def.blockPosition;
 
-    return Align(
-      alignment: alignment,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          SizedBox(
-            width: 150,
-            height: 150,
-            child: SvgPicture.asset(
-              "assets/plants/block.svg",
-              colorFilter: pos.variant
-                  ? _variantColorFilter
-                  : const ColorFilter.mode(
-                      Colors.transparent,
-                      BlendMode.saturation,
-                    ),
-            ),
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        SizedBox(
+          width: 150,
+          height: 150,
+          child: SvgPicture.asset(
+            "assets/plants/block.svg",
+            colorFilter: pos.variant
+                ? _variantColorFilter
+                : const ColorFilter.mode(
+                    Colors.transparent,
+                    BlendMode.saturation,
+                  ),
           ),
-          if (pos.variant)
-            GestureDetector(
-              // Create the action here; execute it in the screen
-              onTap: () => onAction(BuyBlockAction(position: pos)),
-              behavior: HitTestBehavior.opaque,
-              child: const SizedBox(width: 150, height: 150),
-            ),
-          if (!pos.variant && def.plantExemplar != null)
-            PlantWidget(exemplar: def.plantExemplar!),
-        ],
-      ),
+        ),
+        if (pos.variant)
+          GestureDetector(
+            // Create the action here; execute it in the screen
+            onTap: () => onAction(BuyBlockAction(position: pos)),
+            behavior: HitTestBehavior.opaque,
+            child: const SizedBox(width: 150, height: 150),
+          ),
+        if (!pos.variant && def.plantExemplar != null)
+          PlantWidget(exemplar: def.plantExemplar!),
+      ],
     );
   }
 }
