@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../app/theme.dart';
 import '../models/nav_item.dart';
@@ -58,13 +61,21 @@ class _NavItem extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
+        width: 90,
+        height: 90,
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(15),
+        //margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: isSelected ? AppTheme.navSelectedIcon : AppTheme.navUnselectedIcon,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(35),
         ),
-        child: item.icon,
+        child: SvgPicture.asset(
+          item.icon,
+          width: item.size,
+          height: item.size,
+          fit : BoxFit.contain
+          ),
       ),
     );
   }

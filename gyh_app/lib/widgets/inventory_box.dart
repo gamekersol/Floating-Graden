@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../models/inventory_item.dart';
-import '../utils/rarity_utils.dart';
+import '../app/theme.dart';
 import 'item_detail_sheet.dart';
 
 class InventoryBox extends StatelessWidget {
@@ -13,24 +13,27 @@ class InventoryBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: Theme.of(context).colorScheme.outlineVariant,
-            width: 1.2,
-          ),
+          color: const Color(0xFFC29B65),
+          borderRadius: BorderRadius.circular(40),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              spreadRadius: 8,
+              blurRadius: 0,
+            ),
+          ],
         ),
         clipBehavior: Clip.hardEdge,
         child: GridView.builder(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(20),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 0.78,
+            crossAxisSpacing: 15,
+            mainAxisSpacing: 20,
+            childAspectRatio: 1.0,
           ),
           itemCount: items.length,
           itemBuilder: (context, index) => ItemCard(item: items[index]),
@@ -47,56 +50,74 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = rarityColor(item.rarity);
-    final isFull = item.quantity >= item.maxQuantity;
-
     return GestureDetector(
       onTap: () => showItemDetail(context, item),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: color, width: 1.5),
-          color: color.withOpacity(0.08),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 44,
-              height: 44,
-              child: SvgPicture.asset(item.iconPath, fit: BoxFit.contain),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // The 3D Base/Shadow
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(25),
             ),
-            const SizedBox(height: 6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                item.name,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                    fontSize: 11, fontWeight: FontWeight.w600),
-              ),
+            margin: const EdgeInsets.only(top: 8),
+          ),
+          // The Main Card
+          Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xFFEFD2AF),
+              borderRadius: BorderRadius.circular(25),
             ),
-            const SizedBox(height: 4),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-              decoration: BoxDecoration(
-                color: (isFull ? Colors.amber : color).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                '${item.quantity}/${item.maxQuantity}',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  color: isFull ? Colors.amber.shade700 : color,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: SvgPicture.asset(
+                  item.iconPath,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          // Quantity Badge (Bottom Right)
+          Positioned(
+            right: -4,
+            bottom: 4,
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: AppTheme.primaryLighter,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.25),
+                    offset: const Offset(2, 2),
+                    blurRadius: 0,
+                  ),
+                ],
+                border: Border.all(color: Colors.white, width: 1.5),
+              ),
+              child: Center(
+                child: Text(
+                  item.quantity.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black26,
+                        offset: Offset(1, 1),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

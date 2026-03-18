@@ -26,8 +26,8 @@ class MainHeader extends StatelessWidget {
               onTap: onMenuTap,
               customBorder: const CircleBorder(),
                 child: SizedBox(
-                width: 65,
-                height: 65,
+                width: 70,
+                height: 70,
                 child: Center(
                   child: SizedBox(
                     width: 32,
@@ -44,7 +44,7 @@ class MainHeader extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Container(
-              height: 65,
+              height: 70,
               decoration: BoxDecoration(
                 color: AppTheme.primary,
                 borderRadius: BorderRadius.circular(40),

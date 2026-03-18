@@ -31,19 +31,20 @@ class _MainScreenState extends State<MainScreen> {
 
   static final List<NavItem> _navItems = [
     NavItem(
-      icon: SvgPicture.asset('assets/navigation/bag.svg', width: 100, height: 100),
+      icon: 'assets/navigation/bag.svg',
       label: 'Calendar',
     ),
     NavItem(
-      icon: SvgPicture.asset('assets/navigation/home.svg', width: 100, height: 100),
+      icon: 'assets/navigation/home.svg',
       label: 'Home',
     ),
     NavItem(
-      icon: SvgPicture.asset('assets/navigation/tasks.svg', width: 100, height: 100),
+      icon: 'assets/navigation/tasks.svg',
       label: 'List',
+      size: 37.0
     ),
     NavItem(
-      icon: SvgPicture.asset('assets/navigation/store.svg', width: 100, height: 100),
+      icon: 'assets/navigation/store.svg',
       label: 'Lock',
     ),
   ];
