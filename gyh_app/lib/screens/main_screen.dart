@@ -90,7 +90,7 @@ class _MainScreenState extends State<MainScreen> {
             Expanded(
               child: PageView(
                 controller: _pageController,
-                onPageChanged: _onPageChanged,
+                //onPageChanged: _onPageChanged,
                 children: [
                   InventoryScreen(),
                   const GardenScreen(),
