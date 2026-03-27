@@ -29,6 +29,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
+          Container(color: scaffoldBgColor,),
           PageView(
             scrollDirection: Axis.horizontal,
             controller: PageController(
@@ -63,22 +64,22 @@ class NavItemWidget extends StatelessWidget{
     return ValueListenableBuilder<int>(
       valueListenable: currentScreenIndex,
       builder: (context, value, child) {
-      return AnimatedContainer( 
-        duration: Duration(milliseconds: 300),
-        height: 252/2.75,
-        width: 252/2.75,
-        decoration: BoxDecoration(
-          color: index == value ? navSeclectedColor : deepGreen,
-          borderRadius: BorderRadius.all(Radius.circular(34))
-        ),
-        child: Padding(
-          padding: EdgeInsetsGeometry.all(insect.toDouble()),
-          child: SvgPicture.asset(
-            _pathPrep + iconName,
-            fit: BoxFit.contain,
+        return AnimatedContainer( 
+          duration: Duration(milliseconds: 300),
+          height: 252/2.75,
+          width: 252/2.75,
+          decoration: BoxDecoration(
+            color: index == value ? navSeclectedColor : deepGreen,
+            borderRadius: BorderRadius.all(Radius.circular(34))
           ),
-        ),
-      );
+          child: Padding(
+            padding: EdgeInsetsGeometry.all(insect.toDouble()),
+            child: SvgPicture.asset(
+              _pathPrep + iconName,
+              fit: BoxFit.contain,
+            ),
+          ),
+        );
       },
     ); 
   }

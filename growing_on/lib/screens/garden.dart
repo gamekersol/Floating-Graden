@@ -20,6 +20,6 @@ class GardenScreen extends StatelessWidget {
   }
 
   Widget garden (){
-    return Container(color: Colors.amber,);
+    return Container(color: Colors.amber, width : 50, height : 50);
   }
 }
