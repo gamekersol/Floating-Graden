@@ -3,13 +3,20 @@ import 'theme.dart';
 import 'screens.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+
+Map <String, WidgetBuilder> _routes = {
+  "/Tetris" : (context)=> Tetris(),
+  '/' : (context) => MyHomePage(),
+};
+
 void main() {
   //runApp(const MyApp());
   runApp(
     MaterialApp(
     title: 'Flutter Demo',
     theme: themeData,
-    home: const MyHomePage(),
+    //home: const MyHomePage(),
+    routes: _routes,
     )
   );
 }
