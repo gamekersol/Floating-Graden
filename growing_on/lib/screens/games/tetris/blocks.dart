@@ -6,6 +6,7 @@ List<Block> buffer = [
 ];
 
 class Block{
+  int rotatedTimes = 0;
   List<int> form;
   Color color = const Color.fromARGB(255, 173, 20, 20);
   int x = 4, y = 5;
