@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'theme.dart';
 import 'screens.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'data/currency.dart';
 
 Map <String, WidgetBuilder> _routes = {
   "/Tetris" : (context)=> Tetris(),
@@ -93,17 +93,16 @@ class NavItemWidget extends StatelessWidget{
 }
 
 List <Widget> currencyWidgets = [
-  CurrencyWidget(value: 10, iconName: 'seed.svg',),
-  CurrencyWidget(value: 10, iconName: 'coin.svg',),
-  CurrencyWidget(value: 10, iconName: 'diamond.svg',),
+  CurrencyWidget(currency: currencys.values[TypeOfCurrency.seeds]!),
+  CurrencyWidget(currency: currencys.values[TypeOfCurrency.coins]!),
+  CurrencyWidget(currency: currencys.values[TypeOfCurrency.diamonds]!),
 ];
 class CurrencyWidget extends StatelessWidget{
-  final int value;
-  final String iconName;
+  final Currency currency;
 
   static const String _pathPrep = 'assets/images/trinckets/';
 
-  const CurrencyWidget({required this.value,required this.iconName});
+  const CurrencyWidget({required this.currency});
 
   @override
   Widget build(BuildContext context) {
@@ -133,13 +132,13 @@ class CurrencyWidget extends StatelessWidget{
                 width: 30,
                 height: 30,
                 child: SvgPicture.asset(
-                  _pathPrep + iconName,
+                  _pathPrep + currency.iconName,
                   fit: BoxFit.contain,
                 ),
               ),
               // CUR VALUE
               Text(
-                value.toString(),
+                currency.value.toString(),
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w900,

@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'tetris/blocks.dart';
@@ -12,7 +10,7 @@ Block curControlledBlock = buffer[0];
 
 
 class MyNotifier extends ChangeNotifier {
-  void call(){
+  void invoke(){
     notifyListeners();
   }
 }
@@ -49,7 +47,7 @@ class Tetris extends StatelessWidget {
             // DETECTORS
             Expanded(
               child: GestureDetector(
-                onTap: () {curControlledBlock.rotate(); notifier.call();}
+                onTap: () {curControlledBlock.rotate(); notifier.invoke();}
               )
             )
           ]
@@ -127,7 +125,7 @@ class _ScreenState extends State<Screen> {
     if(cx!=0)curControlledBlock.x += cx;
     if(cy!=0)curControlledBlock.y += cy;
 
-    notifier.call();
+    notifier.invoke();
   }
 
   @override
