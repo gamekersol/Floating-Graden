@@ -8,7 +8,16 @@ import 'tetris/blocks.dart';
 const int _WIDTH = 10, _HEIGHT = 20;
 const Color _FIELD_COLOR = Colors.blueGrey;
 double timeScale = 1.0;
-ValueNotifier<Block> curControlledBlock = ValueNotifier(buffer[0]);
+Block curControlledBlock = buffer[0];
+
+
+class MyNotifier extends ChangeNotifier {
+  void call(){
+    notifyListeners();
+  }
+}
+MyNotifier notifier = MyNotifier();
+
 
 
 class Tetris extends StatelessWidget {
@@ -40,7 +49,7 @@ class Tetris extends StatelessWidget {
             // DETECTORS
             Expanded(
               child: GestureDetector(
-                onTap: () {curControlledBlock.value.rotate(); curControlledBlock.value.rotatedTimes++;}
+                onTap: () {curControlledBlock.rotate(); notifier.call();}
               )
             )
           ]
@@ -100,15 +109,13 @@ class _ScreenState extends State<Screen> {
   }
 
   void moveBlock(int cx, int cy){
-    var block = curControlledBlock.value;
-
     cy*=-1;
 
-    for (int i = 0; i < block.form.length; i++) {
-      if (block.form[i] == 0) continue;
+    for (int i = 0; i < curControlledBlock.form.length; i++) {
+      if (curControlledBlock.form[i] == 0) continue;
 
-      int futureX = block.x + cx;
-      int futureY = block.y + cy;
+      int futureX = curControlledBlock.x + cx;
+      int futureY = curControlledBlock.y + cy;
 
       int pos = i + futureY + futureX * _HEIGHT;
 
@@ -117,15 +124,17 @@ class _ScreenState extends State<Screen> {
 
     // ACTUAL MOVE
 
-    if(cx!=0)curControlledBlock.value.x += cx;
-    if(cy!=0)curControlledBlock.value.y += cy;
+    if(cx!=0)curControlledBlock.x += cx;
+    if(cy!=0)curControlledBlock.y += cy;
+
+    notifier.call();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: curControlledBlock,
-      builder: (context, value, child) {
+    return ListenableBuilder(
+      listenable: notifier,
+        builder: (context, child) {
         return GridView(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: _HEIGHT,
