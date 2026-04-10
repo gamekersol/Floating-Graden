@@ -137,18 +137,21 @@ class CurrencyWidget extends StatelessWidget{
                 ),
               ),
               // CUR VALUE
-              Text(
-                currency.value.toString(),
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                    color: Colors.black.withAlpha(70),
-                    offset: Offset.fromDirection(1)*2,
-                    )
-                  ]
+              ListenableBuilder(
+                listenable: currencys,
+                builder: (_,_) => Text(
+                  currency.value.toString(),
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                      color: Colors.black.withAlpha(70),
+                      offset: Offset.fromDirection(1)*2,
+                      )
+                    ]
+                  ),
                 ),
               ),
             ],
@@ -215,7 +218,7 @@ class InterfaceWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

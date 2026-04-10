@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Currency {
-  int value = 0;
+  int value = 999;
   String iconName;
 
   Currency(this.iconName);
@@ -26,6 +26,7 @@ class Currencys extends ChangeNotifier{
 
     values[name]!.value += diff;
     notifyListeners();
+    print('notify listeners');
   }
 }
 

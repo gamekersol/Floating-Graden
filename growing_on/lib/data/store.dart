@@ -6,7 +6,7 @@ Item bagOfSpring = Item(
   imagePath: 'assets/images/trinckets/seed.svg'
 );
 List<ShopItem> shopItems = [
-  ShopItem(
+  PackItem(
     item: bagOfSpring,
     cost: 1,
   ),
