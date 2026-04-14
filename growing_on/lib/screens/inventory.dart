@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:growing_on/theme.dart';
-import '../data/inventory.dart';
+import '../data/inventory.dart' as inv;
 
 int maxCells = 7;
 
@@ -24,7 +24,7 @@ class InventoryScreen extends StatelessWidget {
           child: GridView(
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-            children: List.generate(maxCells, (int i) => SlotWidget(slot: slots[i])),
+            children: List.generate(maxCells, (int i) => SlotWidget(slot: inv.instance.slots[i])),
           ),
         ),
       ),
@@ -32,7 +32,7 @@ class InventoryScreen extends StatelessWidget {
   }
 }
 class SlotWidget extends StatelessWidget {
-  final InventorySlot slot;
+  final inv.InventorySlot slot;
 
   const SlotWidget({super.key, required this.slot});
 

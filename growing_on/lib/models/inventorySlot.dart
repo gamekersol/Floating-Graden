@@ -8,7 +8,7 @@ export 'item.dart';
 class InventorySlot extends StatelessWidget{
   //final Item item;
   final ValueNotifier <Item?> item = ValueNotifier(null);
-  final int count;
+  int count;
 
   InventorySlot ({super.key ,Item? value, required this.count}){
     item.value = value;
