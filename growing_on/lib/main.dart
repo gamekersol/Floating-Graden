@@ -31,7 +31,7 @@ List<Widget> screens = [
 ];
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
-  final audioPlayer = AudioPlayer();
+  AudioPlayer audioPlayer = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +56,8 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
-
-  void musicTime(){
-    audioPlayer.play(AssetSource('assets/audio/Stand-Tall.mp3'));
+  void musicTime (){
+    audioPlayer.play(AssetSource('audio/Stand-Tall.mp3'));
   }
 }
 
