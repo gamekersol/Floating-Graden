@@ -3,6 +3,7 @@ import 'theme.dart';
 import 'screens.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'data/currency.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 Map <String, WidgetBuilder> _routes = {
   "/Tetris" : (context)=> Tetris(),
@@ -29,10 +30,14 @@ List<Widget> screens = [
   StoreScreen(),
 ];
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+  MyHomePage({super.key});
+  final audioPlayer = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
+    // MUSIC?
+    musicTime();
+
     return Scaffold(
       body: Stack(
         children: [
@@ -50,6 +55,10 @@ class MyHomePage extends StatelessWidget {
         ]
       ),
     );
+  }
+
+  void musicTime(){
+    audioPlayer.play(AssetSource('assets/audio/Stand-Tall.mp3'));
   }
 }
 

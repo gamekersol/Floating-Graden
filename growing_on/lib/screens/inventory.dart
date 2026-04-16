@@ -21,10 +21,14 @@ class InventoryScreen extends StatelessWidget {
               width: 8,
             )
           ),
-          child: GridView(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-            children: List.generate(maxCells, (int i) => SlotWidget(slot: inv.instance.slots[i])),
+
+          child: ListenableBuilder(
+            listenable: inv.instance,
+            builder: (_,_) => GridView(
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+              children: List.generate(maxCells, (int i) => SlotWidget(slot: inv.instance.slots[i])),
+            ),
           ),
         ),
       ),
