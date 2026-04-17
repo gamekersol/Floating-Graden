@@ -11,17 +11,18 @@ Map <String, WidgetBuilder> _routes = {
 };
 
 void main() {
-  //runApp(const MyApp());
   runApp(
     MaterialApp(
     title: 'Flutter Demo',
     theme: themeData,
-    //home: const MyHomePage(),
     routes: _routes,
     )
   );
 }
 
+PageController pageController = PageController(
+  initialPage:  1,
+);
 ValueNotifier<int> currentScreenIndex = ValueNotifier(1);
 List<Widget> screens = [
   InventoryScreen(),
@@ -44,10 +45,7 @@ class MyHomePage extends StatelessWidget {
           Container(color: scaffoldBgColor,),
           PageView(
             scrollDirection: Axis.horizontal,
-            controller: PageController(
-              initialPage:  1,
-
-            ),
+            controller: pageController,
             onPageChanged: (index) => currentScreenIndex.value = index,
             children: screens,
           ),
@@ -87,11 +85,14 @@ class NavItemWidget extends StatelessWidget{
             color: index == value ? navSeclectedColor : deepGreen,
             borderRadius: BorderRadius.all(Radius.circular(34))
           ),
-          child: Padding(
-            padding: EdgeInsetsGeometry.all(insect.toDouble()),
-            child: SvgPicture.asset(
-              _pathPrep + iconName,
-              fit: BoxFit.contain,
+          child: GestureDetector(
+            onTap: () => pageController.animateToPage(index, duration: const Duration(milliseconds: 450), curve: Curves.ease),
+            child: Padding(
+              padding: EdgeInsetsGeometry.all(insect.toDouble()),
+              child: SvgPicture.asset(
+                _pathPrep + iconName,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
         );
