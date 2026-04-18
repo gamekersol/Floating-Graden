@@ -37,13 +37,34 @@ class GardenScreen extends StatelessWidget {
   Alignment gardenAlignment = .center;
 
   Widget _garden (){
-    return 
-    Align(
+    sortBlocksForStack();
+    return Align(
       alignment: .center,
       child: Stack(
         children: List.generate(data.blocks.length, (index) => _BlockWidget(block: data.blocks[index]),),
       ),
     );
+  }
+
+  void sortBlocksForStack() {
+    data.blocks.sort((a, b) {
+      // sort by Y
+      if (a.pos.y != b.pos.y) {
+        return a.pos.y.compareTo(b.pos.y);
+      }
+
+      // for same X make even comparsion
+      int aIsEven = a.pos.x.toInt().abs() % 2;
+      int bIsEven = b.pos.x.toInt().abs() % 2;
+
+      if (aIsEven != bIsEven) {
+        // isnt even prioritize
+        return aIsEven.compareTo(bIsEven); 
+      }
+
+      // if evennes is equal sort simply
+      return a.pos.x.compareTo(b.pos.x);
+    });
   }
 }
 
