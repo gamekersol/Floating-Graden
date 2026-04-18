@@ -5,9 +5,10 @@ import '../data/garden.dart' as data;
 import '../screens/garden.dart';
 import 'package:flutter/material.dart';
 
-HashSet <Vector2> buildPositions = HashSet();
+HashMap <Vector2,int> buildPositions = HashMap();
 
 void _updateBuildPositions(){
+  buildPositions.clear();
   for (var block in data.blocks){
     var pos = block.pos;
 
@@ -18,7 +19,13 @@ void _updateBuildPositions(){
       Vector2(0, -1),
       Vector2(0, 1),
     ];
-    for (var neibor in neibors) buildPositions.add(pos + neibor);
+    for (var neibor in neibors) {
+      var key = pos + neibor;
+      var count = buildPositions[key];
+      if (count != null) buildPositions[key] = count + 1;
+      else buildPositions[key] = 1;
+    }
+    buildPositions[pos] = -10;
   }
 }
 
@@ -32,7 +39,7 @@ void addBlock(BuildContext context){
         child: Stack(
           children: [
             GestureDetector(onTap: () => Navigator.pop(context),),
-            ...buildPositions.map((pos) => _PhantomBlockWidget(blockPos: pos)),
+            ...buildPositions.keys.map((pos) => _PhantomBlockWidget(blockPos: pos, neibors: buildPositions[pos]!,)),
           ],
         ),
       );
@@ -42,8 +49,10 @@ void addBlock(BuildContext context){
 
 class _PhantomBlockWidget extends StatelessWidget {
   final Vector2 blockPos;
+  // defines how many nearby blocks
+  final int neibors;
   late Alignment _align;
-  _PhantomBlockWidget({required this.blockPos}){
+  _PhantomBlockWidget({required this.blockPos, required this.neibors}){
     double oddYoffset = blockPos.x % 2 == 0 ? - blockAlignSize.y / 2 : 0;
 
     // HOT FIX
@@ -53,8 +62,8 @@ class _PhantomBlockWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      child: const Icon(Icons.add, size: 60,),
       alignment: _align,
+      child: neibors > 0 ? const Icon(Icons.add, size: 60, color: Colors.white,) : const Icon(Icons.block_sharp, size: 60, color: Colors.redAccent,),
     );
   }
 }

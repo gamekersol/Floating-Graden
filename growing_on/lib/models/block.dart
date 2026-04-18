@@ -1,4 +1,6 @@
 //import 'plants';
+import 'dart:math';
+export 'dart:math';
 class Plant{}
 
 class Vector2 {
