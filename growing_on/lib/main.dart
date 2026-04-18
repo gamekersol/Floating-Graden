@@ -55,6 +55,7 @@ class MyHomePage extends StatelessWidget {
     );
   }
   void musicTime (){
+    audioPlayer.setReleaseMode(ReleaseMode.loop);
     audioPlayer.play(AssetSource('audio/Stand-Tall.mp3'));
   }
 }
