@@ -3,15 +3,15 @@ import 'dart:math';
 export 'dart:math';
 class Plant{}
 
-class Vector2 {
+class Point {
   late int x, y;
-  Vector2(int x, int y)
+  Point(int x, int y)
   {
     this.x = x;
     this.y = y;
   }
 
-  Vector2 operator + (Vector2 other) => Vector2(x + other.x, y + other.y);
+  Point operator + (Point other) => Point(x + other.x, y + other.y);
 }
 class Vector2Double {
   late double x, y;
@@ -23,7 +23,7 @@ class Vector2Double {
 }
 
 class Block {
-  final Vector2 pos;
+  final Point pos;
   Plant? plant;
 
   Block({required this.pos, this.plant});

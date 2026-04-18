@@ -5,7 +5,7 @@ import '../data/garden.dart' as data;
 import '../screens/garden.dart';
 import 'package:flutter/material.dart';
 
-HashMap <Vector2,int> buildPositions = HashMap();
+HashMap <Point,int> buildPositions = HashMap();
 
 void _updateBuildPositions(){
   buildPositions.clear();
@@ -13,11 +13,11 @@ void _updateBuildPositions(){
     var pos = block.pos;
 
     // FIX BAD NEIBORS
-    List <Vector2> neibors = [
-      Vector2(-1, 0),
-      Vector2(1, 0),
-      Vector2(0, -1),
-      Vector2(0, 1),
+    List <Point> neibors = [
+      Point(-1, 0),
+      Point(1, 0),
+      Point(0, -1),
+      Point(0, 1),
     ];
     for (var neibor in neibors) {
       var key = pos + neibor;
@@ -48,7 +48,7 @@ void addBlock(BuildContext context){
 }
 
 class _PhantomBlockWidget extends StatelessWidget {
-  final Vector2 blockPos;
+  final Point blockPos;
   // defines how many nearby blocks
   final int neibors;
   late Alignment _align;
