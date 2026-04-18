@@ -8,19 +8,22 @@ import 'package:flutter/material.dart';
 HashMap <Point,int> buildPositions = HashMap();
 
 void _updateBuildPositions(){
-  buildPositions.clear();
   for (var block in data.blocks){
     var pos = block.pos;
 
-    // FIX BAD NEIBORS
+    var oddFactor = pos.x % 2 == 0 ? -1 : 1;
     List <Point> neibors = [
       Point(-1, 0),
       Point(1, 0),
+      // par that depends on evennes
+      Point(-1, 1 * oddFactor),
+      Point(1, 1 * oddFactor),
       Point(0, -1),
       Point(0, 1),
     ];
     for (var neibor in neibors) {
       var key = pos + neibor;
+      if (buildPositions[key] == -10) continue; // ← не чіпаємо зайняті клітинки
       var count = buildPositions[key];
       if (count != null) buildPositions[key] = count + 1;
       else buildPositions[key] = 1;
