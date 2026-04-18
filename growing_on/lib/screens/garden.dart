@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:growing_on/models/block.dart';
+import '../panels/gardenOverlays.dart' as overlays;
 import '../data/garden.dart' as data;
 
 enum GardenState{
@@ -22,16 +23,10 @@ class GardenScreen extends StatelessWidget {
     return Stack(
       children: [
       _garden(),
-      _ui(),
+      _UI(),
       //if (state == .buying) 
       ]
     );
-  }
-
-  Widget _ui (){
-    return Align(
-      alignment: Alignment(0.8, 0.6),
-      child: ElevatedButton(onPressed: ()=>state = .buying, child: Icon(Icons.add),));
   }
 
   Alignment gardenAlignment = .center;
@@ -67,6 +62,23 @@ class GardenScreen extends StatelessWidget {
     });
   }
 }
+
+class _UI extends StatelessWidget {
+  const _UI({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment(0.8, 0.6),
+      child: ElevatedButton(onPressed: (){state = .buying; overlays.addBlock(context);}, child: Icon(Icons.add),));
+  }
+}
+
+
+
+// ---- BLOCK THINGS ----
 
 const double BLOCK_SIZE = 120;
 Vector2Double blockAlignSize = Vector2Double(0.2, 0.2);
