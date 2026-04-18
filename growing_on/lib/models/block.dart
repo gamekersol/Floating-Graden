@@ -8,6 +8,8 @@ class Vector2 {
     this.x = x;
     this.y = y;
   }
+
+  Vector2 operator + (Vector2 other) => Vector2(x + other.x, y + other.y);
 }
 class Vector2Double {
   late double x, y;
