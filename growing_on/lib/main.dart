@@ -30,9 +30,12 @@ List<Widget> screens = [
   GamesScreen(),
   StoreScreen(),
 ];
+
+AudioPlayer audioPlayer = AudioPlayer();
+
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
-  AudioPlayer audioPlayer = AudioPlayer();
+  
 
   @override
   Widget build(BuildContext context) {
