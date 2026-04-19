@@ -1,5 +1,9 @@
+import 'package:flutter/material.dart';
+
 import '../models/block.dart';
 export '../models/block.dart';
+
+ValueNotifier <int> blockNotifier = ValueNotifier(0);
 
 List<Block> blocks = [
   // Вусики

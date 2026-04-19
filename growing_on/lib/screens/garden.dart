@@ -22,7 +22,7 @@ class GardenScreen extends StatelessWidget {
 
     return Stack(
       children: [
-      _garden(),
+      _GardenGrid(),
       _UI(),
       //if (state == .buying) 
       ]
@@ -31,15 +31,9 @@ class GardenScreen extends StatelessWidget {
 
   Alignment gardenAlignment = .center;
 
-  Widget _garden (){
-    sortBlocksForStack();
-    return Align(
-      alignment: .center,
-      child: Stack(
-        children: List.generate(data.blocks.length, (index) => _BlockWidget(block: data.blocks[index]),),
-      ),
-    );
-  }
+}
+
+class _GardenGrid extends StatelessWidget {
 
   void sortBlocksForStack() {
     data.blocks.sort((a, b) {
@@ -60,6 +54,26 @@ class GardenScreen extends StatelessWidget {
       // if evennes is equal sort simply
       return a.pos.x.compareTo(b.pos.x);
     });
+  }
+
+  const _GardenGrid({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: data.blockNotifier,
+      builder: (context, child) {
+        sortBlocksForStack();
+        return Align(
+          alignment: .center,
+          child: Stack(
+            children: List.generate(data.blocks.length, (index) => _BlockWidget(block: data.blocks[index]),),
+          ),
+        );
+      }
+    );
   }
 }
 
