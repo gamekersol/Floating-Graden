@@ -84,8 +84,8 @@ class _PhantomBlockWidget extends StatelessWidget {
     double oddYoffset = blockPos.x % 2 == 0 ? - blockAlignSize.y / 2 : 0;
 
     // HOT FIX
-    _align = Alignment(blockPos.x * blockAlignSize.x * 0.95,
-    (blockPos.y * blockAlignSize.y + oddYoffset) * 0.9 + blockAlignSize.y * 0.0);
+    _align = Alignment(blockPos.x * blockAlignSize.x * 0.965,
+    (blockPos.y * blockAlignSize.y + oddYoffset) * 1 + blockAlignSize.y * 0.2);
   }
   @override
   Widget build(BuildContext context) {
