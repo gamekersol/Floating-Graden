@@ -9,7 +9,7 @@ enum GardenState{
   buying,
 }
 GardenState state = .watch;
-
+ValueNotifier <Alignment> gridAlignment = ValueNotifier(Alignment.center);
 class GardenScreen extends StatelessWidget {
   GardenScreen({super.key});
 
@@ -23,14 +23,23 @@ class GardenScreen extends StatelessWidget {
     return Stack(
       children: [
       _GardenGrid(),
+      _gardenPullArea(),
       _UI(),
       //if (state == .buying) 
       ]
     );
   }
+}
 
-  Alignment gardenAlignment = .center;
-
+Widget _gardenPullArea(){
+  return GestureDetector(
+    onPanUpdate: (details) {
+      gridAlignment.value -= Alignment(
+        details.delta.dx,
+        details.delta.dy,
+      );
+    }
+  );
 }
 
 class _GardenGrid extends StatelessWidget {
