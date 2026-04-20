@@ -9,7 +9,31 @@ enum GardenState{
   buying,
 }
 GardenState state = .watch;
-ValueNotifier <Alignment> gridAlignment = ValueNotifier(Alignment.center);
+
+//ValueNotifier <Alignment> gridTransform = ValueNotifier(Alignment.center);
+
+class GridTransform extends ChangeNotifier{
+  Alignment alignment = .center;
+  double _scale = 1;
+  static const double MIN_SCALE = 0.1, MAX_SCALE = 10;
+
+  GridTransform ();
+
+  void Move(double x, double y){
+    alignment = Alignment(alignment.x + x, alignment.y + y);
+    notifyListeners();
+  }
+  void ScaleAdditive(double add){
+    _scale += add;
+
+    _scale = _scale < MIN_SCALE ? MIN_SCALE : _scale;
+    _scale = _scale > MAX_SCALE ? MAX_SCALE : _scale;
+    notifyListeners();
+  }
+}
+GridTransform gridTransform = GridTransform();
+
+
 class GardenScreen extends StatelessWidget {
   GardenScreen({super.key});
 
@@ -31,7 +55,7 @@ class GardenScreen extends StatelessWidget {
   }
 }
 
-// TODO mediaQueryPull, scaling, selection garden to separate actions, borders?
+// TODO scaling, selection garden to separate actions, borders?
 
 const double _PULL_SENSIVITY = 3;
 
@@ -40,10 +64,12 @@ Widget _gardenPullArea(double x, double y) {
     child: GestureDetector(
       behavior: HitTestBehavior.opaque,
       onPanUpdate: (details) {
-        gridAlignment.value = Alignment(
-          gridAlignment.value.x + details.delta.dx / x * _PULL_SENSIVITY,
-          gridAlignment.value.y + details.delta.dy / y * _PULL_SENSIVITY,
-        );
+        gridTransform.Move(details.delta.dx / x * _PULL_SENSIVITY,
+        details.delta.dy / y * _PULL_SENSIVITY);
+      },
+      onScaleUpdate: (details) {
+        if (details.pointerCount < 2) return;
+        gridTransform.ScaleAdditive(details.scale / x * 0.016);
       },
     ),
   );
@@ -83,7 +109,7 @@ class _GardenGrid extends StatelessWidget {
       builder: (context, child) {
         sortBlocksForStack();
         return ListenableBuilder(
-          listenable: gridAlignment,
+          listenable: gridTransform,
           builder: (context, child) => 
             Stack(
               children: List.generate(data.blocks.length, (index) => _BlockWidget(block: data.blocks[index]),),
@@ -130,7 +156,7 @@ class __BlockWidgetState extends State<_BlockWidget> {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment(widget._align.x + gridAlignment.value.x, widget._align.y + gridAlignment.value.y),
+      alignment: Alignment(widget._align.x + gridTransform.alignment.x, widget._align.y + gridTransform.alignment.y),
       child: SizedBox(
         width: BLOCK_SIZE,
         height: BLOCK_SIZE,
