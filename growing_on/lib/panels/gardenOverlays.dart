@@ -86,6 +86,7 @@ class _PhantomBlockWidget extends StatelessWidget {
     // HOT FIX
     _align = Alignment(blockPos.x * blockAlignSize.x * 0.965,
     (blockPos.y * blockAlignSize.y + oddYoffset) * 1 + blockAlignSize.y * 0.2);
+    _align *= gridTransform.scale;
   }
   @override
   Widget build(BuildContext context) {

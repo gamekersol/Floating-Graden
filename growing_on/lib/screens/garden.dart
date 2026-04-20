@@ -14,7 +14,7 @@ GardenState state = .watch;
 
 class GridTransform extends ChangeNotifier{
   Alignment alignment = .center;
-  double _scale = 1;
+  double scale = 1;
   static const double MIN_SCALE = 0.1, MAX_SCALE = 10;
 
   GridTransform ();
@@ -24,10 +24,10 @@ class GridTransform extends ChangeNotifier{
     notifyListeners();
   }
   void ScaleAdditive(double add){
-    _scale += add;
+    scale += add;
 
-    _scale = _scale < MIN_SCALE ? MIN_SCALE : _scale;
-    _scale = _scale > MAX_SCALE ? MAX_SCALE : _scale;
+    scale = scale < MIN_SCALE ? MIN_SCALE : scale;
+    scale = scale > MAX_SCALE ? MAX_SCALE : scale;
     notifyListeners();
   }
 }
@@ -57,21 +57,21 @@ class GardenScreen extends StatelessWidget {
 
 // TODO scaling, selection garden to separate actions, borders?
 
-const double _PULL_SENSIVITY = 3;
+const double _PULL_SENSIVITY = 3, _SCALE_SENSIVITY = 80;
 
 Widget _gardenPullArea(double x, double y) {
   return Positioned.fill(
-    child: GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onPanUpdate: (details) {
-        gridTransform.Move(details.delta.dx / x * _PULL_SENSIVITY,
-        details.delta.dy / y * _PULL_SENSIVITY);
-      },
-      onScaleUpdate: (details) {
-        if (details.pointerCount < 2) return;
-        gridTransform.ScaleAdditive(details.scale / x * 0.016);
-      },
-    ),
+  child: GestureDetector(
+    behavior: HitTestBehavior.opaque,
+    onScaleUpdate: (details) {
+      if (details.pointerCount < 2) {
+        gridTransform.Move(details.focalPointDelta.dx / x * _PULL_SENSIVITY,
+            details.focalPointDelta.dy / y * _PULL_SENSIVITY);
+      } else {
+        gridTransform.ScaleAdditive(details.scale / x * 0.016 * _SCALE_SENSIVITY);
+      }
+    },
+  ),
   );
 }
 
@@ -145,7 +145,9 @@ class _BlockWidget extends StatefulWidget {
   late Alignment _align;
   _BlockWidget({required this.block}){
     double oddYoffset = block.pos.x % 2 == 0 ? - blockAlignSize.y / 2 : 0;
-    _align = Alignment(block.pos.x * blockAlignSize.x, block.pos.y * blockAlignSize.y + oddYoffset);
+    _align = Alignment(block.pos.x * blockAlignSize.x * gridTransform.scale, 
+    block.pos.y * blockAlignSize.y + oddYoffset);
+    _align *= gridTransform.scale;
   }
 
   @override
