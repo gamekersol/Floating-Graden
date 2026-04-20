@@ -31,14 +31,17 @@ class GardenScreen extends StatelessWidget {
   }
 }
 
-Widget _gardenPullArea(){
-  return GestureDetector(
-    onPanUpdate: (details) {
-      gridAlignment.value -= Alignment(
-        details.delta.dx,
-        details.delta.dy,
-      );
-    }
+Widget _gardenPullArea() {
+  return Positioned.fill(
+    child: GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onPanUpdate: (details) {
+        gridAlignment.value = Alignment(
+          gridAlignment.value.x + details.delta.dx / 100,
+          gridAlignment.value.y + details.delta.dy / 100,
+        );
+      },
+    ),
   );
 }
 
@@ -75,11 +78,12 @@ class _GardenGrid extends StatelessWidget {
       listenable: data.blockNotifier,
       builder: (context, child) {
         sortBlocksForStack();
-        return Align(
-          alignment: .center,
-          child: Stack(
-            children: List.generate(data.blocks.length, (index) => _BlockWidget(block: data.blocks[index]),),
-          ),
+        return ListenableBuilder(
+          listenable: gridAlignment,
+          builder: (context, child) => 
+            Stack(
+              children: List.generate(data.blocks.length, (index) => _BlockWidget(block: data.blocks[index]),),
+            ),
         );
       }
     );
@@ -122,7 +126,7 @@ class __BlockWidgetState extends State<_BlockWidget> {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: widget._align,
+      alignment: Alignment(widget._align.x + gridAlignment.value.x, widget._align.y + gridAlignment.value.y),
       child: SizedBox(
         width: BLOCK_SIZE,
         height: BLOCK_SIZE,
