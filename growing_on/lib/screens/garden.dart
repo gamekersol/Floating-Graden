@@ -23,7 +23,7 @@ class GardenScreen extends StatelessWidget {
     return Stack(
       children: [
       _GardenGrid(),
-      _gardenPullArea(),
+      _gardenPullArea(x,y),
       _UI(),
       //if (state == .buying) 
       ]
@@ -31,14 +31,18 @@ class GardenScreen extends StatelessWidget {
   }
 }
 
-Widget _gardenPullArea() {
+// TODO mediaQueryPull, scaling, selection garden to separate actions, borders?
+
+const double _PULL_SENSIVITY = 3;
+
+Widget _gardenPullArea(double x, double y) {
   return Positioned.fill(
     child: GestureDetector(
       behavior: HitTestBehavior.opaque,
       onPanUpdate: (details) {
         gridAlignment.value = Alignment(
-          gridAlignment.value.x + details.delta.dx / 100,
-          gridAlignment.value.y + details.delta.dy / 100,
+          gridAlignment.value.x + details.delta.dx / x * _PULL_SENSIVITY,
+          gridAlignment.value.y + details.delta.dy / y * _PULL_SENSIVITY,
         );
       },
     ),
