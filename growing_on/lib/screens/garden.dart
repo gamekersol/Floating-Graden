@@ -10,8 +10,6 @@ enum GardenState{
 }
 GardenState state = .watch;
 
-//ValueNotifier <Alignment> gridTransform = ValueNotifier(Alignment.center);
-
 class GridTransform extends ChangeNotifier{
   Alignment alignment = .center;
   double scale = 1;
@@ -57,7 +55,8 @@ class GardenScreen extends StatelessWidget {
 
 // TODO scaling, selection garden to separate actions, borders?
 
-const double _PULL_SENSIVITY = 3, _SCALE_SENSIVITY = 300;
+const double _PULL_SENSIVITY = 3, _SCALE_SENSIVITY = 3;
+Offset? firstTouchDelta;
 
 Widget _gardenPullArea(double x, double y) {
   return Positioned.fill(
@@ -68,9 +67,13 @@ Widget _gardenPullArea(double x, double y) {
         gridTransform.Move(details.focalPointDelta.dx / x * _PULL_SENSIVITY,
             details.focalPointDelta.dy / y * _PULL_SENSIVITY);
       } else {
-        gridTransform.ScaleAdditive(details.scale / x * 0.016 * _SCALE_SENSIVITY);
+        firstTouchDelta ??= details.focalPointDelta;
+        int sign = firstTouchDelta! < details.focalPointDelta ? 1 : -1;
+
+        gridTransform.ScaleAdditive(details.scale / x * 16 * _SCALE_SENSIVITY * sign);
       }
     },
+    onScaleEnd: (_) => firstTouchDelta = null,
   ),
   );
 }
@@ -144,7 +147,7 @@ class _BlockWidget extends StatefulWidget {
   final data.Block block;
   late Alignment _align;
   _BlockWidget({required this.block});
-  
+
   void CalculateGridAlignment(){
     double oddYoffset = block.pos.x % 2 == 0 ? - blockAlignSize.y / 2 : 0;
     _align = Alignment(block.pos.x * blockAlignSize.x, 
