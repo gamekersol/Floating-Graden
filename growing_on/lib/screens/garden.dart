@@ -143,7 +143,9 @@ Vector2Double blockAlignSize = Vector2Double(0.2, 0.2);
 class _BlockWidget extends StatefulWidget {
   final data.Block block;
   late Alignment _align;
-  _BlockWidget({required this.block}){
+  _BlockWidget({required this.block});
+  
+  void CalculateGridAlignment(){
     double oddYoffset = block.pos.x % 2 == 0 ? - blockAlignSize.y / 2 : 0;
     _align = Alignment(block.pos.x * blockAlignSize.x, 
     block.pos.y * blockAlignSize.y + oddYoffset);
@@ -157,6 +159,7 @@ class _BlockWidget extends StatefulWidget {
 class __BlockWidgetState extends State<_BlockWidget> {
   @override
   Widget build(BuildContext context) {
+    widget.CalculateGridAlignment();
     return Align(
       alignment: Alignment(widget._align.x + gridTransform.alignment.x, widget._align.y + gridTransform.alignment.y),
       child: SizedBox(
