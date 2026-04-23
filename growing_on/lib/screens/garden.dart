@@ -68,8 +68,9 @@ Widget _gardenPullArea(double x, double y) {
             details.focalPointDelta.dy / y * _PULL_SENSIVITY);
       } else {
         firstTouchDelta ??= details.focalPointDelta;
-        int sign = firstTouchDelta! < details.focalPointDelta ? 1 : -1;
+        int sign = firstTouchDelta! < details.focalPointDelta ? 1 : -2; //instead of -1 to comfortable scale down
 
+        // add there previouse frame check also to change sign in that way
         gridTransform.ScaleAdditive(details.scale / x * 16 * _SCALE_SENSIVITY * sign);
       }
     },
@@ -149,10 +150,12 @@ class _BlockWidget extends StatefulWidget {
   _BlockWidget({required this.block});
 
   void CalculateGridAlignment(){
-    double oddYoffset = block.pos.x % 2 == 0 ? - blockAlignSize.y / 2 : 0;
-    _align = Alignment(block.pos.x * blockAlignSize.x, 
-    block.pos.y * blockAlignSize.y + oddYoffset);
-    _align *= gridTransform.scale;
+      double oddYoffset = block.pos.x % 2 == 0 ? -blockAlignSize.y / 2 : 0;
+      _align = Alignment(
+          block.pos.x * blockAlignSize.x,
+          block.pos.y * blockAlignSize.y + oddYoffset,
+      );
+      // без *= scale тут
   }
 
   @override
@@ -163,8 +166,9 @@ class __BlockWidgetState extends State<_BlockWidget> {
   @override
   Widget build(BuildContext context) {
     widget.CalculateGridAlignment();
+    var s = gridTransform.scale;
     return Align(
-      alignment: Alignment(widget._align.x + gridTransform.alignment.x, widget._align.y + gridTransform.alignment.y),
+      alignment: (widget._align + gridTransform.alignment) * s,
       child: SizedBox(
         width: BLOCK_SIZE * gridTransform.scale,
         height: BLOCK_SIZE * gridTransform.scale,
