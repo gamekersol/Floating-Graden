@@ -57,7 +57,7 @@ class GardenScreen extends StatelessWidget {
 
 // TODO scaling, selection garden to separate actions, borders?
 
-const double _PULL_SENSIVITY = 3, _SCALE_SENSIVITY = 80;
+const double _PULL_SENSIVITY = 3, _SCALE_SENSIVITY = 300;
 
 Widget _gardenPullArea(double x, double y) {
   return Positioned.fill(
@@ -145,7 +145,7 @@ class _BlockWidget extends StatefulWidget {
   late Alignment _align;
   _BlockWidget({required this.block}){
     double oddYoffset = block.pos.x % 2 == 0 ? - blockAlignSize.y / 2 : 0;
-    _align = Alignment(block.pos.x * blockAlignSize.x * gridTransform.scale, 
+    _align = Alignment(block.pos.x * blockAlignSize.x, 
     block.pos.y * blockAlignSize.y + oddYoffset);
     _align *= gridTransform.scale;
   }
@@ -160,8 +160,8 @@ class __BlockWidgetState extends State<_BlockWidget> {
     return Align(
       alignment: Alignment(widget._align.x + gridTransform.alignment.x, widget._align.y + gridTransform.alignment.y),
       child: SizedBox(
-        width: BLOCK_SIZE,
-        height: BLOCK_SIZE,
+        width: BLOCK_SIZE * gridTransform.scale,
+        height: BLOCK_SIZE * gridTransform.scale,
         child: SvgPicture.asset("assets/images/plants/block.svg", fit: .contain,),
       ),
     );
