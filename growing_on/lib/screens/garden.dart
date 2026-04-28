@@ -57,7 +57,7 @@ class GardenScreen extends StatelessWidget {
   }
 }
 
-// TODO scaling, selection garden to separate actions, borders?
+// TODO borders?
 
 const double _PULL_SENSIVITY = 3, _SCALE_SENSIVITY = 3;
 Offset? firstTouchDelta;

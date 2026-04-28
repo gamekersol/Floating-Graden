@@ -76,29 +76,38 @@ class _AddBlockPanelState extends State<AddBlockPanel> {
 
 class _PhantomBlockWidget extends StatelessWidget {
   final Point blockPos;
-  // defines how many nearby blocks
   final int neibors;
   final Function(Point) onBuy;
-  late Alignment _align;
-  _PhantomBlockWidget({required this.blockPos, required this.neibors, required this.onBuy}){
-    double oddYoffset = blockPos.x % 2 == 0 ? - blockAlignSize.y / 2 : 0;
 
-    // HOT FIX
-    _align = Alignment(blockPos.x * blockAlignSize.x * 0.965,
-    (blockPos.y * blockAlignSize.y + oddYoffset) * 1 + blockAlignSize.y * 0.2);
-    _align *= gridTransform.scale;
+  const _PhantomBlockWidget({
+    required this.blockPos,
+    required this.neibors,
+    required this.onBuy,
+  });
+
+  Alignment _calculateAlignment() {
+    double oddYoffset = blockPos.x % 2 == 0 ? -blockAlignSize.y / 2 : 0;
+    final gridAlign = Alignment(
+      blockPos.x * blockAlignSize.x,
+      (blockPos.y * blockAlignSize.y + oddYoffset + blockAlignSize.y/2) + blockAlignSize.y * 0.2,
+    );
+    return (gridAlign * gridTransform.scale) + gridTransform.alignment;
   }
+
   @override
   Widget build(BuildContext context) {
+    var s = gridTransform.scale;
+    double size = 60 * s;
     return Align(
-      alignment: _align,
+      alignment: _calculateAlignment(),
       child: Padding(
-        padding: .fromLTRB(10, 0, 10, 60),
+        padding: const EdgeInsets.only(bottom: 60), // shift icon up above block center
         child: GestureDetector(
           onTap: () => onBuy(blockPos),
-          child: neibors > 0 ? const Icon(Icons.add, size: 60, color: Colors.white,) : 
-            const Icon(Icons.block_sharp, size: 60, color: Colors.redAccent,)
-          ),
+          child: neibors > 0
+              ? Icon(Icons.add, size: size, color: Colors.white)
+              : Icon(Icons.block_sharp, size: size, color: Colors.redAccent),
+        ),
       ),
     );
   }
