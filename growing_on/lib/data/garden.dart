@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:growing_on/models/plant.dart';
 
 import '../models/block.dart';
+import 'species.dart' as species;
 export '../models/block.dart';
 
 ValueNotifier <int> blockNotifier = ValueNotifier(0);
 
 List<Block> blocks = [
   // Вусики
-  Block(pos: Point(-3, -4)), Block(pos: Point(3, -4)),
+  Block(pos: Point(-3, -4), plant: Plant(species: species.sunflower)), Block(pos: Point(3, -4)),
   // Голова верх
   Block(pos: Point(-2, -3)), Block(pos: Point(2, -3)),
   // Основна лінія голови
