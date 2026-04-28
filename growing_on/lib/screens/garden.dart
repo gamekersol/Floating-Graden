@@ -7,13 +7,14 @@ import '../data/garden.dart' as data;
 enum GardenState{
   watch,
   buying,
+  moving,
 }
-GardenState state = .watch;
+ValueNotifier<GardenState> state = ValueNotifier(GardenState.watch);
 
 class GridTransform extends ChangeNotifier{
   Alignment alignment = .center;
   double scale = 1;
-  static const double MIN_SCALE = 0.1, MAX_SCALE = 10;
+  static const double MIN_SCALE = 0.2, MAX_SCALE = 1.7;
 
   GridTransform ();
 
@@ -42,13 +43,16 @@ class GardenScreen extends StatelessWidget {
     var y = MediaQuery.of(context).size.height;
     blockAlignSize = Vector2Double(BLOCK_SIZE / x * 1.75, BLOCK_SIZE / y * 1.1);
 
-    return Stack(
-      children: [
-      _GardenGrid(),
-      _gardenPullArea(x,y),
-      _UI(),
-      //if (state == .buying) 
-      ]
+    return ListenableBuilder(
+      listenable: state,
+      builder: (context, child) => Stack(
+        children: [
+        _GardenGrid(),
+        _BGinteractions(x,y),
+        _UI(),
+        //if (state == .buying) 
+        ]
+      ),
     );
   }
 }
@@ -57,28 +61,32 @@ class GardenScreen extends StatelessWidget {
 
 const double _PULL_SENSIVITY = 3, _SCALE_SENSIVITY = 3;
 Offset? firstTouchDelta;
+double _previousScale = 1.0;
 
-Widget _gardenPullArea(double x, double y) {
+Widget _BGinteractions(double x, double y) {
+  if (state.value != GardenState.moving) return SizedBox.shrink();
   return Positioned.fill(
-  child: GestureDetector(
-    behavior: HitTestBehavior.opaque,
-    onScaleUpdate: (details) {
-      if (details.pointerCount < 2) {
-        gridTransform.Move(details.focalPointDelta.dx / x * _PULL_SENSIVITY,
-            details.focalPointDelta.dy / y * _PULL_SENSIVITY);
-      } else {
-        firstTouchDelta ??= details.focalPointDelta;
-        int sign = firstTouchDelta! < details.focalPointDelta ? 1 : -2; //instead of -1 to comfortable scale down
-
-        // add there previouse frame check also to change sign in that way
-        gridTransform.ScaleAdditive(details.scale / x * 16 * _SCALE_SENSIVITY * sign);
-      }
-    },
-    onScaleEnd: (_) => firstTouchDelta = null,
-  ),
+    child: GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onScaleUpdate: (details) {
+        if (details.pointerCount < 2) {
+          gridTransform.Move(
+            details.focalPointDelta.dx / x * _PULL_SENSIVITY,
+            details.focalPointDelta.dy / y * _PULL_SENSIVITY,
+          );
+        } else {
+          gridTransform.ScaleAdditive((details.scale - _previousScale) * _SCALE_SENSIVITY);
+          _previousScale = details.scale;
+        }
+      },
+      onScaleEnd: (_) {
+        firstTouchDelta = null;
+        _previousScale = 1.0;
+      },
+      onScaleStart: (_) => _previousScale = 1.0,
+    ),
   );
 }
-
 class _GardenGrid extends StatelessWidget {
 
   void sortBlocksForStack() {
@@ -124,16 +132,54 @@ class _GardenGrid extends StatelessWidget {
   }
 }
 
-class _UI extends StatelessWidget {
+class _UI extends StatefulWidget {
   const _UI({
     super.key,
   });
 
   @override
+  State<_UI> createState() => _UIState();
+}
+
+class _UIState extends State<_UI> {
+  @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment(0.8, 0.6),
-      child: ElevatedButton(onPressed: (){state = .buying; overlays.addBlock(context);}, child: Icon(Icons.add),));
+    return Padding(
+      padding: .symmetric(horizontal: 10, vertical: 100),
+      child: Align(
+        alignment: .bottomEnd,
+        child: Column(
+          mainAxisAlignment: .end,
+          spacing: 10,
+          children: [
+            ElevatedButton(
+              onPressed: () { state.value = .buying; overlays.addBlock(context); },
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(88, 88), // default is Size(64, 36) — doubled
+                padding: const EdgeInsets.all(20),
+                backgroundColor: Colors.brown[300]
+              ),
+              child: const Icon(Icons.add, size: 50, color: Colors.white,),
+            ),
+            ElevatedButton(
+              onPressed: () => setState(() {
+                state.value = state.value != .moving ? .moving : .watch;
+              }),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(88, 88),
+                padding: const EdgeInsets.all(20),
+                backgroundColor: Colors.brown[300]
+              ),
+              child: Icon(
+                Icons.mode_of_travel_outlined,
+                color: state.value == .moving ? Colors.amber : Colors.white,
+                size: 50,
+              ),
+            ),
+          ]
+        ),
+      )
+    );
   }
 }
 
@@ -168,10 +214,10 @@ class __BlockWidgetState extends State<_BlockWidget> {
     widget.CalculateGridAlignment();
     var s = gridTransform.scale;
     return Align(
-      alignment: (widget._align + gridTransform.alignment) * s,
+      alignment: (widget._align* s) + gridTransform.alignment ,
       child: SizedBox(
-        width: BLOCK_SIZE * gridTransform.scale,
-        height: BLOCK_SIZE * gridTransform.scale,
+        width: BLOCK_SIZE * s,
+        height: BLOCK_SIZE * s,
         child: SvgPicture.asset("assets/images/plants/block.svg", fit: .contain,),
       ),
     );
