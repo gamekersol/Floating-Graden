@@ -62,14 +62,12 @@ class _AddBlockPanelState extends State<AddBlockPanel> {
   }
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: .center,
-      child: Stack(
-        children: [
-          GestureDetector(onTap: () => Navigator.pop(context),),
-          ...buildPositions.keys.map((pos) => _PhantomBlockWidget(blockPos: pos, neibors: buildPositions[pos]!, onBuy: buyBlock)),
-        ],
-      ),
+    return Stack(
+      //alignment: .center,
+      children: [
+        GestureDetector(onTap: () => Navigator.pop(context),),
+        ...buildPositions.keys.map((pos) => _PhantomBlockWidget(blockPos: pos, neibors: buildPositions[pos]!, onBuy: buyBlock)),
+      ],
     );
   }
 }
@@ -89,7 +87,7 @@ class _PhantomBlockWidget extends StatelessWidget {
     double oddYoffset = blockPos.x % 2 == 0 ? -blockAlignSize.y / 2 : 0;
     final gridAlign = Alignment(
       blockPos.x * blockAlignSize.x,
-      (blockPos.y * blockAlignSize.y + oddYoffset + blockAlignSize.y/2) + blockAlignSize.y * 0.2,
+      (blockPos.y * blockAlignSize.y + oddYoffset) + blockAlignSize.y * 0.2,
     );
     return (gridAlign * gridTransform.scale) + gridTransform.alignment;
   }
@@ -97,7 +95,7 @@ class _PhantomBlockWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var s = gridTransform.scale;
-    double size = 60 * s;
+    double size = 55 * s;
     return Align(
       alignment: _calculateAlignment(),
       child: Padding(

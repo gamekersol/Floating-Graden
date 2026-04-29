@@ -124,7 +124,11 @@ class _GardenGrid extends StatelessWidget {
           listenable: gridTransform,
           builder: (context, child) => 
             Stack(
-              children: List.generate(data.blocks.length, (index) => _BlockWidget(block: data.blocks[index]),),
+              alignment: .center,
+            children: [
+              ...List.generate(data.blocks.length, (i) => _BlockWidget(block: data.blocks[i])),
+              ...List.generate(data.blocks.length, (i) => _PlantWidget(block: data.blocks[i])),
+            ]
             ),
         );
       }
@@ -215,11 +219,38 @@ class __BlockWidgetState extends State<_BlockWidget> {
     var s = gridTransform.scale;
     return Align(
       alignment: (widget._align* s) + gridTransform.alignment ,
-      child: SizedBox(
-        width: BLOCK_SIZE * s,
-        height: BLOCK_SIZE * s,
-        child: SvgPicture.asset("assets/images/plants/block.svg", fit: .contain,),
-      ),
+      child: 
+        // BLOCK PICTURE
+        SizedBox(
+          width: BLOCK_SIZE * s,
+          height: BLOCK_SIZE * s,
+          child: SvgPicture.asset("assets/images/plants/block.svg", fit: .contain,),
+        ),
     );
+  }
+}
+
+class _PlantWidget extends StatelessWidget {
+  final data.Block block;
+  late Alignment _align;
+  _PlantWidget({required this.block});
+
+  void CalculateGridAlignment(){
+      double oddYoffset = block.pos.x % 2 == 0 ? -blockAlignSize.y / 2 : 0;
+      _align = Alignment(
+          block.pos.x * blockAlignSize.x,
+          block.pos.y * blockAlignSize.y + oddYoffset,
+      );
+      // без *= scale тут
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    CalculateGridAlignment();
+    var s = gridTransform.scale;
+    // PLANT ITSELF
+    return block.plant != null
+    ? block.plant!.getImage(s)
+    : SizedBox.shrink();
   }
 }

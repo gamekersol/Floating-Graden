@@ -7,12 +7,15 @@ class Plant{
 
   Plant({required this.species});
 
-  Widget getImage(){
+  Widget getImage(double globalScale){
     var path = _ASSEST_PATH + species.name + stage.toString() + '.svg';
-    return SizedBox(
-      width: 300,
-      height: 300,
-      child: SvgPicture.asset(path),
+    return Padding(
+      padding: .directional(bottom: 120 * globalScale),
+      child: SizedBox(
+        width: 100 * globalScale,
+        height: 100 * globalScale,
+        child: SvgPicture.asset(path, fit: .contain,),
+      ),
     );
   }
 }
