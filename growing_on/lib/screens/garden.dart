@@ -230,27 +230,39 @@ class __BlockWidgetState extends State<_BlockWidget> {
   }
 }
 
-class _PlantWidget extends StatelessWidget {
+class _PlantWidget extends StatefulWidget {
   final data.Block block;
   late Alignment _align;
+
   _PlantWidget({required this.block});
 
   void CalculateGridAlignment(){
-      double oddYoffset = block.pos.x % 2 == 0 ? -blockAlignSize.y / 2 : 0;
-      _align = Alignment(
-          block.pos.x * blockAlignSize.x,
-          block.pos.y * blockAlignSize.y + oddYoffset,
-      );
-      // без *= scale тут
+    double oddYoffset = block.pos.x % 2 == 0 ? -blockAlignSize.y / 2 : 0;
+    _align = Alignment(
+        block.pos.x * blockAlignSize.x,
+        block.pos.y * blockAlignSize.y + oddYoffset,
+    );
+    // без *= scale тут
   }
 
   @override
+  State<_PlantWidget> createState() => _PlantWidgetState();
+}
+
+class _PlantWidgetState extends State<_PlantWidget> {
+
+
+
+  @override
   Widget build(BuildContext context) {
-    CalculateGridAlignment();
+    widget.CalculateGridAlignment();
     var s = gridTransform.scale;
     // PLANT ITSELF
-    return block.plant != null
-    ? block.plant!.getImage(s)
-    : SizedBox.shrink();
+    return Align(
+      alignment: (widget._align* s) + gridTransform.alignment ,
+      child: widget.block.plant != null
+      ? widget.block.plant!.getImage(s)
+      : SizedBox.shrink(),
+    );
   }
 }
