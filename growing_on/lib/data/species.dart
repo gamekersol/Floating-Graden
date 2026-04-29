@@ -8,3 +8,10 @@ var sunflower = Species(
     Duration(seconds: 3),
     ]
   );
+
+var verinika = Species(
+  name: "Veronika-Prostarta",
+  stages: [
+    Duration(seconds: 3),
+  ]
+);
