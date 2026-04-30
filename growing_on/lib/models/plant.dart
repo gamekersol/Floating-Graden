@@ -9,13 +9,10 @@ class Plant{
 
   Widget getImage(double globalScale){
     var path = _ASSEST_PATH + species.name + stage.toString() + '.svg';
-    return Padding(
-      padding: .directional(bottom: 120 * globalScale),
-      child: SizedBox(
-        width: 100 * globalScale,
-        height: 100 * globalScale,
-        child: SvgPicture.asset(path, fit: .contain,),
-      ),
+    return SizedBox(
+      width: 100 * globalScale,
+      height: 100 * globalScale,
+      child: SvgPicture.asset(path, fit: .contain,),
     );
   }
 }

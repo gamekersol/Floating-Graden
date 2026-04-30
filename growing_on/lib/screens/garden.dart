@@ -47,7 +47,7 @@ class GardenScreen extends StatelessWidget {
       listenable: state,
       builder: (context, child) => Stack(
         children: [
-        _GardenGrid(),
+        GardenGrid(),
         _BGinteractions(x,y),
         _UI(),
         //if (state == .buying) 
@@ -87,9 +87,9 @@ Widget _BGinteractions(double x, double y) {
     ),
   );
 }
-class _GardenGrid extends StatelessWidget {
+class GardenGrid extends StatelessWidget {
 
-  void sortBlocksForStack() {
+  void _sortBlocksForStack() {
     data.blocks.sort((a, b) {
       // sort by Y
       if (a.pos.y != b.pos.y) {
@@ -110,7 +110,17 @@ class _GardenGrid extends StatelessWidget {
     });
   }
 
-  const _GardenGrid({
+  static Alignment getPosAlignment(Point pos, [Point? offset]){
+    double oddYoffset = pos.x % 2 == 0 ? -blockAlignSize.y / 2 : 0;
+    var offset1 = offset ?? Point(0, 0);
+    var align = Alignment(
+        (pos.x + offset1.x) * blockAlignSize.x,
+        (pos.y + offset1.y) * blockAlignSize.y + oddYoffset,
+    );
+    return align * gridTransform.scale + gridTransform.alignment;
+  }
+
+  const GardenGrid({
     super.key,
   });
 
@@ -119,17 +129,18 @@ class _GardenGrid extends StatelessWidget {
     return ListenableBuilder(
       listenable: data.blockNotifier,
       builder: (context, child) {
-        sortBlocksForStack();
         return ListenableBuilder(
           listenable: gridTransform,
-          builder: (context, child) => 
-            Stack(
+          builder: (context, child) {
+            _sortBlocksForStack();
+            return Stack(
               alignment: .center,
-            children: [
-              ...List.generate(data.blocks.length, (i) => _BlockWidget(block: data.blocks[i])),
-              ...List.generate(data.blocks.length, (i) => _PlantWidget(block: data.blocks[i])),
-            ]
-            ),
+              children: [
+                ...List.generate(data.blocks.length, (i) => _BlockWidget(block: data.blocks[i])),
+                ...List.generate(data.blocks.length, (i) => _PlantWidget(block: data.blocks[i])),
+              ]
+            );
+          }
         );
       }
     );
@@ -199,15 +210,6 @@ class _BlockWidget extends StatefulWidget {
   late Alignment _align;
   _BlockWidget({required this.block});
 
-  void CalculateGridAlignment(){
-      double oddYoffset = block.pos.x % 2 == 0 ? -blockAlignSize.y / 2 : 0;
-      _align = Alignment(
-          block.pos.x * blockAlignSize.x,
-          block.pos.y * blockAlignSize.y + oddYoffset,
-      );
-      // без *= scale тут
-  }
-
   @override
   State<_BlockWidget> createState() => __BlockWidgetState();
 }
@@ -215,12 +217,12 @@ class _BlockWidget extends StatefulWidget {
 class __BlockWidgetState extends State<_BlockWidget> {
   @override
   Widget build(BuildContext context) {
-    widget.CalculateGridAlignment();
+    widget._align = GardenGrid.getPosAlignment(widget.block.pos);
     var s = gridTransform.scale;
+    // BLOCK PICTURE
     return Align(
-      alignment: (widget._align* s) + gridTransform.alignment ,
+      alignment: widget._align ,
       child: 
-        // BLOCK PICTURE
         SizedBox(
           width: BLOCK_SIZE * s,
           height: BLOCK_SIZE * s,
@@ -230,36 +232,26 @@ class __BlockWidgetState extends State<_BlockWidget> {
   }
 }
 
+// FIXME REWRITE ALL THE FUCKING THING
+
 class _PlantWidget extends StatefulWidget {
   final data.Block block;
   late Alignment _align;
 
   _PlantWidget({required this.block});
 
-  void CalculateGridAlignment(){
-    double oddYoffset = block.pos.x % 2 == 0 ? -blockAlignSize.y / 2 : 0;
-    _align = Alignment(
-        block.pos.x * blockAlignSize.x,
-        block.pos.y * blockAlignSize.y + oddYoffset,
-    );
-    // без *= scale тут
-  }
-
   @override
   State<_PlantWidget> createState() => _PlantWidgetState();
 }
 
 class _PlantWidgetState extends State<_PlantWidget> {
-
-
-
   @override
   Widget build(BuildContext context) {
-    widget.CalculateGridAlignment();
+    widget._align = GardenGrid.getPosAlignment(widget.block.pos, Point(0.05, -0.7));
     var s = gridTransform.scale;
     // PLANT ITSELF
     return Align(
-      alignment: (widget._align* s) + gridTransform.alignment ,
+      alignment: widget._align,
       child: widget.block.plant != null
       ? widget.block.plant!.getImage(s)
       : SizedBox.shrink(),
