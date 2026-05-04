@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/currency.dart';
-import '../panels/fortuneWheel.dart';
+import '../panels/fortuneWheelOverlay.dart';
 
 import 'item.dart';
 export 'item.dart';

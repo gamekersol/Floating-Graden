@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:growing_on/models/block.dart';
-import '../panels/gardenOverlays.dart' as overlays;
+import '../panels/blockEditOverlay.dart' as overlays;
 import '../data/garden.dart' as data;
 
 enum GardenState{
