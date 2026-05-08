@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:growing_on/models/block.dart';
 import '../panels/blockEditOverlay.dart' as overlays;
+import '../panels/plantsPlacingOverlay.dart';
 import '../data/garden.dart' as data;
-
+import '../data/species.dart' as species;
 enum GardenState{
   watch,
   buying,
@@ -32,7 +33,7 @@ class GridTransform extends ChangeNotifier{
 }
 GridTransform gridTransform = GridTransform();
 
-
+MovingBlocksOverlay overlayInstance = MovingBlocksOverlay(plant: Plant(species: species.verinika));
 class GardenScreen extends StatelessWidget {
   GardenScreen({super.key});
 
@@ -49,6 +50,7 @@ class GardenScreen extends StatelessWidget {
         children: [
         GardenGrid(),
         _BGinteractions(x,y),
+        overlayInstance,
         _UI(),
         //if (state == .buying) 
         ]
@@ -191,6 +193,15 @@ class _UIState extends State<_UI> {
                 size: 50,
               ),
             ),
+            // ENABLE PLANT SETTING BUTTON
+            ElevatedButton(
+              onPressed: () => overlayInstance.isEnabled.value = !overlayInstance.isEnabled.value,
+              child: Icon(
+                Icons.abc,
+                color: state.value == .moving ? Colors.amber : Colors.white,
+                size: 50,
+              ),
+            )
           ]
         ),
       )

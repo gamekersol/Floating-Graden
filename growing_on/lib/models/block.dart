@@ -1,6 +1,7 @@
 import 'plant.dart';
 import 'dart:math';
 export 'dart:math';
+export 'plant.dart';
 
 class Vector2Double {
   late double x, y;
