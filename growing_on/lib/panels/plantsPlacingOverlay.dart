@@ -8,9 +8,9 @@ import '../screens/garden.dart';
 import '../data/species.dart';
 
 Plant handlingPlant = Plant(species: verinika);
+ValueNotifier <bool> isEnabled = ValueNotifier(false);
 
 class MovingBlocksOverlay extends StatefulWidget {
-  ValueNotifier <bool> isEnabled = ValueNotifier(false);
   final Plant plant;
 
   MovingBlocksOverlay({super.key, required this.plant}){
@@ -24,17 +24,16 @@ class MovingBlocksOverlay extends StatefulWidget {
 class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
   @override
   Widget build(BuildContext context) {
-    var isEnabled = widget.isEnabled.value;
     return ListenableBuilder(
-      listenable: widget.isEnabled,
+      listenable: isEnabled,
       builder: (context,child) {
-        print("moving plant ovelay : " + isEnabled.toString());
+        var enabled = isEnabled.value;
         return AnimatedOpacity(
-          opacity: isEnabled == false ? 0 : 1,
-          duration: Duration(milliseconds: 2000),
+          opacity: enabled == false ? 0 : 1,
+          duration: Duration(milliseconds: 200),
           curve: Curves.easeIn,
           child: IgnorePointer(
-            ignoring: !isEnabled,
+            ignoring: !enabled,
             child: dumbWidget(),
           ),
         );
@@ -44,49 +43,67 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
 
   Widget dumbWidget(){
     return SafeArea(
-      child: DecoratedBox(
-        // Black tint
-        decoration: BoxDecoration(color: Colors.black.withAlpha(50)),
-        child: Stack(
-          children: [
-            // Arrows
-            Icon(Icons.moving_rounded, size: 200,),
-            // Phantom Plant
-            PhantomPlant(),
-            // GestureDetector
-            SizedBox(
-              width: 300,
-              height: 300,
-              child: GestureDetector(
-                onPanUpdate: (details) {
-                  _x = details.globalPosition.dx;
-                  _y = details.globalPosition.dy;
-                },
-              ),
+      child: Stack(
+        children: [Positioned.fill(
+          child: DecoratedBox(
+            // Black tint
+            decoration: BoxDecoration(color: Colors.black.withAlpha(100)),
+            child: Stack(
+              children: [
+                // Phantom 
+                PhantomPlant(),
+                // GestureDetector
+                GestureDetector(
+                  onPanUpdate: (details) {
+                    pos.value = Offset(details.globalPosition.dx, details.globalPosition.dy);
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ),]
       )
     );
   }
 }
 
-double _x = 100;
-double _y = 100;
+// double _x = 100;
+// double _y = 100;
+ValueNotifier <Offset>  pos = new ValueNotifier(Offset(300, 300));
 
-class PhantomPlant extends StatelessWidget {
+class PhantomPlant extends StatefulWidget {
   const PhantomPlant({
     super.key,
   });
 
   @override
+  State<PhantomPlant> createState() => _PhantomPlantState();
+}
+
+class _PhantomPlantState extends State<PhantomPlant> {
+  @override
   Widget build(BuildContext context) {
-    return AnimatedPositioned(
-      duration: Duration(milliseconds: 80),
-      curve: Curves.easeOut,
-      left: _x - 30,
-      top:  _y - 30,
-      child: handlingPlant.getImage(gridTransform.scale),   
+    // Animated Alighment?
+    return Stack(
+      children: [
+        ListenableBuilder(
+          listenable: pos,
+          builder: (context, child) =>  AnimatedPositioned(
+            duration: Duration(milliseconds: 80),
+            curve: Curves.easeOut,
+            left: pos.value.dx - 30,
+            top:  pos.value.dy - 30,
+            child: Stack(
+              children: [
+                // Arrows
+                Icon(Icons.moving_rounded, size: 100,),
+                // Plant
+                handlingPlant.getImage(gridTransform.scale), 
+              ]  
+            )
+          ),
+        ),
+      ],
     );
   }
 }

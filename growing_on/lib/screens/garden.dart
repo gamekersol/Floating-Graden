@@ -195,7 +195,7 @@ class _UIState extends State<_UI> {
             ),
             // ENABLE PLANT SETTING BUTTON
             ElevatedButton(
-              onPressed: () => overlayInstance.isEnabled.value = !overlayInstance.isEnabled.value,
+              onPressed: () => isEnabled.value = !isEnabled.value,
               child: Icon(
                 Icons.abc,
                 color: state.value == .moving ? Colors.amber : Colors.white,
