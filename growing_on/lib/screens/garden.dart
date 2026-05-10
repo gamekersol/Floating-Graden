@@ -121,6 +121,22 @@ class GardenGrid extends StatelessWidget {
     );
     return align * gridTransform.scale + gridTransform.alignment;
   }
+  static Point screenToGrid(Alignment screenAlign) {
+    // Знімаємо трансформацію gridTransform
+    Alignment align = (screenAlign - gridTransform.alignment) * (1 / gridTransform.scale);
+
+    // Приблизний x (без урахування oddYoffset)
+    double approxX = align.x / blockAlignSize.x;
+    int gridX = approxX.round();
+
+    // Визначаємо oddYoffset для знайденого x
+    double oddYoffset = gridX % 2 == 0 ? -blockAlignSize.y / 2 : 0;
+
+    // Точний y з урахуванням зміщення
+    double gridY = (align.y - oddYoffset) / blockAlignSize.y;
+
+    return Point(gridX, gridY.round());
+  }
 
   const GardenGrid({
     super.key,

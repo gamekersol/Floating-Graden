@@ -54,10 +54,24 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
                 // Phantom 
                 PhantomPlant(),
                 // GestureDetector
-                GestureDetector(
-                  onPanUpdate: (details) {
-                    pos.value = Offset(details.globalPosition.dx, details.globalPosition.dy);
-                  },
+                LayoutBuilder(
+                  builder: (context, constraints) =>  GestureDetector(
+                    onPanUpdate: (details) {
+                      pos.value = Offset(details.globalPosition.dx, details.globalPosition.dy);
+                      
+                      // Offset -> Alignment (нормалізація під розмір віджета)
+                      final screenAlign = Alignment(
+                        details.localPosition.dx / (constraints.maxWidth / 2) - 1,
+                        details.localPosition.dy / (constraints.maxHeight / 2) - 1,
+                      );
+                    
+                      // Alignment -> грідові координати -> снеп назад в Alignment
+                      final gridPos = GardenGrid.screenToGrid(screenAlign);
+                      final snappedAlign = GardenGrid.getPosAlignment(gridPos);
+                    
+                      // використовуй snappedAlign
+                    },
+                  ),
                 ),
               ],
             ),
