@@ -15,6 +15,7 @@ class MovingBlocksOverlay extends StatefulWidget {
 
   MovingBlocksOverlay({super.key, required this.plant}){
     handlingPlant = plant;
+    handlingPlant.stage = handlingPlant.species.stages.length-1;
   }
 
   @override
@@ -89,10 +90,10 @@ class _PhantomPlantState extends State<PhantomPlant> {
         ListenableBuilder(
           listenable: pos,
           builder: (context, child) =>  AnimatedPositioned(
-            duration: Duration(milliseconds: 80),
+            duration: Duration(milliseconds: 100),
             curve: Curves.easeOut,
-            left: pos.value.dx - 30,
-            top:  pos.value.dy - 30,
+            left: pos.value.dx - 50,
+            top:  pos.value.dy - 50,
             child: Stack(
               children: [
                 // Arrows
