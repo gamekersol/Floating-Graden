@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -57,8 +59,6 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
                 LayoutBuilder(
                   builder: (context, constraints) =>  GestureDetector(
                     onPanUpdate: (details) {
-                      pos.value = Offset(details.globalPosition.dx, details.globalPosition.dy);
-                      
                       // Offset -> Alignment (нормалізація під розмір віджета)
                       final screenAlign = Alignment(
                         details.localPosition.dx / (constraints.maxWidth / 2) - 1,
@@ -69,7 +69,7 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
                       final gridPos = GardenGrid.screenToGrid(screenAlign);
                       final snappedAlign = GardenGrid.getPosAlignment(gridPos);
                     
-                      // використовуй snappedAlign
+                      pos.value = snappedAlign;
                     },
                   ),
                 ),
@@ -84,7 +84,7 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
 
 // double _x = 100;
 // double _y = 100;
-ValueNotifier <Offset>  pos = new ValueNotifier(Offset(300, 300));
+ValueNotifier <Alignment>  pos = new ValueNotifier(Alignment.center);
 
 class PhantomPlant extends StatefulWidget {
   const PhantomPlant({
@@ -103,15 +103,23 @@ class _PhantomPlantState extends State<PhantomPlant> {
       children: [
         ListenableBuilder(
           listenable: pos,
-          builder: (context, child) =>  AnimatedPositioned(
-            duration: Duration(milliseconds: 100),
+          builder: (context, child) =>  AnimatedAlign(
+            duration: Duration(milliseconds: 120),
             curve: Curves.easeOut,
-            left: pos.value.dx - 50,
-            top:  pos.value.dy - 50,
+            alignment: pos.value,
             child: Stack(
               children: [
                 // Arrows
-                Icon(Icons.moving_rounded, size: 100,),
+                Transform.translate(
+                  offset: Offset(0, 70),
+                  child: Image.asset(
+                    "assets/images/navigation/move.png",
+                    width: 100 * gridTransform.scale,
+                    height: 40 * gridTransform.scale,
+                    color: Colors.white.withAlpha(100),
+                    fit: .fill,
+                  ),
+                ),
                 // Plant
                 handlingPlant.getImage(gridTransform.scale), 
               ]  
