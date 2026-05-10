@@ -32,3 +32,10 @@ List<Block> blocks = [
   // Ніжки
   Block(pos: Point(-2, 3)), Block(pos: Point(-1, 3)), Block(pos: Point(1, 3)), Block(pos: Point(2, 3)),
 ];
+
+PlantOnBlock(Point pos, Species spec){
+  if (!blocks.contains(Block(pos: pos))) return;
+
+  blocks.firstWhere((block)=> block.pos == pos).plant = Plant(species: spec);
+  blockNotifier.value++;
+}

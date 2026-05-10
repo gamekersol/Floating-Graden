@@ -1,9 +1,4 @@
-
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../data/garden.dart';
 import '../screens/garden.dart';
 // ahh its for check
@@ -66,13 +61,14 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
                       );
                     
                       // Alignment -> грідові координати -> снеп назад в Alignment
-                      final gridPos = GardenGrid.screenToGrid(screenAlign);
+                      gridPos = GardenGrid.screenToGrid(screenAlign);
                       final snappedAlign = GardenGrid.getPosAlignment(gridPos);
                     
                       pos.value = snappedAlign;
                     },
                   ),
                 ),
+                UI(),
               ],
             ),
           ),
@@ -82,8 +78,7 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
   }
 }
 
-// double _x = 100;
-// double _y = 100;
+Point gridPos = Point(0, 0);
 ValueNotifier <Alignment>  pos = new ValueNotifier(Alignment.center);
 
 class PhantomPlant extends StatefulWidget {
@@ -127,6 +122,38 @@ class _PhantomPlantState extends State<PhantomPlant> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class UI extends StatefulWidget {
+  const UI({super.key});
+
+  @override
+  State<UI> createState() => _UIState();
+}
+
+class _UIState extends State<UI> {
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment(0, 0.6),
+      child: Row(
+        mainAxisAlignment: .center,
+        spacing: 20,
+        children: [
+          // APROVE
+          IconButton.filled(
+            onPressed: PlantOnBlock(gridPos, handlingPlant.species),            
+            icon: Icon(Icons.check,size: 80, color: Colors.lightGreen,)
+          ),
+          // DENY
+          IconButton.filled(
+            onPressed: () => isEnabled.value = false,            
+            icon: Icon(Icons.close_rounded,size: 80, color: Colors.redAccent,)
+          ),
+        ],
+      ),
     );
   }
 }
