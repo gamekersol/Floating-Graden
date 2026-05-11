@@ -144,7 +144,8 @@ class _UIState extends State<UI> {
         children: [
           // APROVE
           IconButton.filled(
-            onPressed: () => PlantOnBlock(gridPos, handlingPlant.species),            
+            // HOTFIX
+            onPressed: () => PlantOnBlock(gridPos + Point(0, 1), handlingPlant.species),            
             icon: Icon(Icons.check,size: 70, color: Colors.lightGreen,)
           ),
           // DENY
