@@ -94,6 +94,14 @@ class PhantomPlant extends StatefulWidget {
 }
 
 class _PhantomPlantState extends State<PhantomPlant> {
+
+  static const ColorFilter invalidPlaceColorFilter = ColorFilter.matrix([
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0,      0,      0,      1, 0,
+  ]);
+
   @override
   Widget build(BuildContext context) {
     // Animated Alighment?
@@ -119,7 +127,16 @@ class _PhantomPlantState extends State<PhantomPlant> {
                   ),
                 ),
                 // Plant
-                handlingPlant.getImage(gridTransform.scale), 
+                ListenableBuilder(
+                  listenable: isValidPlace,
+                  builder: (context, child) =>  ColorFiltered(
+                    colorFilter: isValidPlace.value ? 
+                      ColorFilter.mode(Colors.transparent, BlendMode.dst) // no effect
+                     : invalidPlaceColorFilter,
+                  
+                    child: handlingPlant.getImage(gridTransform.scale)
+                    ),
+                ), 
               ]  
             )
           ),
@@ -151,7 +168,10 @@ class _UIState extends State<UI> {
             listenable: isValidPlace,
             builder: (context, child) => IconButton.filled(
               // HOTFIX
-              onPressed: () => PlantOnBlock(gridPos + Point(0, 1), handlingPlant.species),            
+              onPressed: () {
+                PlantOnBlock(gridPos + Point(0, 1), handlingPlant.species);
+                isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, 1) && block.plant == null);
+              } ,           
               icon: Icon(Icons.check,size: 70, color: isValidPlace.value ? Colors.lightGreen : Colors.grey)
             ),
           ),
