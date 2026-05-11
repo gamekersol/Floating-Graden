@@ -65,6 +65,8 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
                       final snappedAlign = GardenGrid.getPosAlignment(gridPos);
                     
                       pos.value = snappedAlign;
+                      // HOTFIX OFFSET
+                      isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, 1) && block.plant == null);
                     },
                   ),
                 ),
@@ -80,6 +82,7 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
 
 Point gridPos = Point(0, 0);
 ValueNotifier <Alignment>  pos = new ValueNotifier(Alignment.center);
+ValueNotifier <bool> isValidPlace = new ValueNotifier(false);
 
 class PhantomPlant extends StatefulWidget {
   const PhantomPlant({
@@ -133,6 +136,7 @@ class UI extends StatefulWidget {
   State<UI> createState() => _UIState();
 }
 
+
 class _UIState extends State<UI> {
   @override
   Widget build(BuildContext context) {
@@ -143,10 +147,13 @@ class _UIState extends State<UI> {
         spacing: 20,
         children: [
           // APROVE
-          IconButton.filled(
-            // HOTFIX
-            onPressed: () => PlantOnBlock(gridPos + Point(0, 1), handlingPlant.species),            
-            icon: Icon(Icons.check,size: 70, color: Colors.lightGreen,)
+          ListenableBuilder(
+            listenable: isValidPlace,
+            builder: (context, child) => IconButton.filled(
+              // HOTFIX
+              onPressed: () => PlantOnBlock(gridPos + Point(0, 1), handlingPlant.species),            
+              icon: Icon(Icons.check,size: 70, color: isValidPlace.value ? Colors.lightGreen : Colors.grey)
+            ),
           ),
           // DENY
           IconButton.filled(
