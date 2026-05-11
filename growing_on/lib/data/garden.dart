@@ -34,8 +34,10 @@ List<Block> blocks = [
 ];
 
 PlantOnBlock(Point pos, Species spec){
-  if (!blocks.contains(Block(pos: pos))) return;
+  print("Trying to plant on "+ pos.toString());
+  if (!blocks.any((block) => block.pos == pos)) return null;
 
   blocks.firstWhere((block)=> block.pos == pos).plant = Plant(species: spec);
+  print("Planted " + spec.name);
   blockNotifier.value++;
 }

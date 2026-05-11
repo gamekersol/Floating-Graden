@@ -144,13 +144,13 @@ class _UIState extends State<UI> {
         children: [
           // APROVE
           IconButton.filled(
-            onPressed: PlantOnBlock(gridPos, handlingPlant.species),            
-            icon: Icon(Icons.check,size: 80, color: Colors.lightGreen,)
+            onPressed: () => PlantOnBlock(gridPos, handlingPlant.species),            
+            icon: Icon(Icons.check,size: 70, color: Colors.lightGreen,)
           ),
           // DENY
           IconButton.filled(
             onPressed: () => isEnabled.value = false,            
-            icon: Icon(Icons.close_rounded,size: 80, color: Colors.redAccent,)
+            icon: Icon(Icons.close_rounded,size: 70, color: Colors.redAccent,)
           ),
         ],
       ),
