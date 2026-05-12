@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../models/item.dart';
+import '../data/inventory.dart';
 import '../theme.dart';
 
 ValueNotifier <bool> isEnabled = ValueNotifier(false);
-late Item item;
+Item item = seedOfSunflowerItem;
 
 
 class ItemInfoOverlay extends StatefulWidget {

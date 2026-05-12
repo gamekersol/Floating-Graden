@@ -70,7 +70,9 @@ class SlotWidget extends StatelessWidget {
   }
 
   void onTap(){
+    print("slot tap");
     if (slot.item.value == null) return;
+    print('on item info panel');
 
     infoOverlay.item = slot.item.value!; 
     infoOverlay.isEnabled.value = true;
