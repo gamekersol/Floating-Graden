@@ -25,4 +25,18 @@ ThemeData themeData = ThemeData(
     unselectedItemColor: deepGreen,
     selectedItemColor: navSeclectedColor,
   ),
+
+  textTheme: TextTheme(
+      bodyMedium: TextStyle(
+      fontSize: 25,
+      fontWeight: FontWeight.w900,
+      color: Colors.white,
+      shadows: [
+        Shadow(
+        color: Colors.black.withAlpha(70),
+        offset: Offset.fromDirection(1)*2,
+        )
+      ]
+    )
+  )
 );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:growing_on/panels/template.dart';
 import 'package:growing_on/theme.dart';
 import '../data/inventory.dart' as inv;
+import '../panels/itemInfoOverlay.dart' as infoOverlay;
 
 int maxCells = 7;
 
@@ -9,29 +11,34 @@ class InventoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 90, horizontal: 17),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color:  inventoryBgColor,
-            borderRadius: BorderRadius.circular(34),
-            border: BoxBorder.all(
-              color: inventoryOutlineColor,
-              width: 8,
-            )
-          ),
-
-          child: ListenableBuilder(
-            listenable: inv.instance,
-            builder: (_,_) => GridView(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-              children: List.generate(maxCells, (int i) => SlotWidget(slot: inv.instance.slots[i])),
+    return Stack(
+      children: [
+      SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 90, horizontal: 17),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color:  inventoryBgColor,
+              borderRadius: BorderRadius.circular(34),
+              border: BoxBorder.all(
+                color: inventoryOutlineColor,
+                width: 8,
+              )
+            ),
+      
+            child: ListenableBuilder(
+              listenable: inv.instance,
+              builder: (_,_) => GridView(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+                children: List.generate(maxCells, (int i) => SlotWidget(slot: inv.instance.slots[i])),
+              ),
             ),
           ),
         ),
       ),
+      ItemInfoOverlay(),
+      ]
     );
   }
 }
@@ -52,13 +59,20 @@ class SlotWidget extends StatelessWidget {
             color: Colors.black.withAlpha(120),
             offset: Offset.fromDirection(1.6)*3,
             spreadRadius: 1.2,
-            //blurRadius: 0.3,
           )
         ]
       ),
-      //width: 30,
-      //height: 30,
-      child: slot,
+      child: GestureDetector(
+        onTap: () => onTap(),
+        child: slot,
+      ),
     );
+  }
+
+  void onTap(){
+    if (slot.item.value == null) return;
+
+    infoOverlay.item = slot.item.value!; 
+    infoOverlay.isEnabled.value = true;
   }
 }
