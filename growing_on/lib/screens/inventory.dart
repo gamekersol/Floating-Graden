@@ -37,7 +37,7 @@ class InventoryScreen extends StatelessWidget {
           ),
         ),
       ),
-      ItemInfoOverlay(),
+      infoOverlay.ItemInfoOverlay(),
       ]
     );
   }

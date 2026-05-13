@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../models/item.dart';
 import '../data/inventory.dart';
@@ -32,13 +34,16 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
     );
   }
 
+  static const double BASE_SPACING = 15;
+
   Widget dumbWidget(){
+
     return SafeArea(
       child: GestureDetector(
         onTap: () => isEnabled.value = false,
         child: Container(
-          padding: .fromLTRB(30, 500, 30, 350),
-          margin: .all(20),
+          margin: .fromLTRB(30, 80 , 30, 100),
+          //padding: .all(20),
           decoration: BoxDecoration(
             color: lightGreen,
             borderRadius: .all(.circular(50)),
@@ -46,33 +51,85 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
           ),
           child: Column(
             children: [
-              SizedBox(height: 40,),
+
+              // ITEM NAME
+
+              SizedBox(height: BASE_SPACING,),
               Text(
                 item.name,
                 textAlign: .center,
-                // style: TextStyle(
-                  
-                // ),
               ),
-              SizedBox(height: 40,),
+              SizedBox(height: BASE_SPACING,),
 
               // ITEM VIEW
-              Container(
-                height: 300,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [darkGreen,darkGreen.withAlpha(0)]
-                    //transform: GradientRotation(radians)
-                  )
+
+              Expanded(
+                flex: 4,
+                child: Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [darkGreen,darkGreen.withAlpha(0)],
+                      begin: .topCenter,
+                      end: .bottomCenter,
+                    )
+                  ),
+                  child: Padding(padding: .all(30), child: item.getImage(),),
                 ),
-                child: Padding(padding: .all(30), child: item.getImage(),),
               ),
 
               // PARAMS
-              SizedBox(height: 40,),
+              SizedBox(height: BASE_SPACING),
+              paramWidget('Grow time :', item.imagePath),
+              paramWidget('Grow time :', item.imagePath),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget paramWidget(String paramName, Object value){
+    return Expanded(
+      flex: 1,
+      child: Row(
+        children:[ 
+          // PARAM NAME
+          Expanded(
+            flex: 4,
+            child: Container(
+              height: 40,
+              //margin: .symmetric(vertical: 0),
+              padding: .symmetric(horizontal: 5, vertical: 7),
+              decoration: BoxDecoration(
+                color: Colors.black.withAlpha(30)
+              ),
+              child: Text(
+                paramName,
+                textAlign: .left,
+                style: TextStyle(
+                  color: Color(0xFF5D8D69),
+              ),
+              ),
+            ),
+          ),
+
+          // PARAM VALUE
+          Expanded(
+            flex: 3,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.black.withAlpha(60),
+                borderRadius: .circular(20),
+              ),
+              child: Text(
+                value.toString(),
+                textAlign: .center,
+              ),
+            ),
+          ),
+          SizedBox(height: BASE_SPACING,)
+        ]
       ),
     );
   }
