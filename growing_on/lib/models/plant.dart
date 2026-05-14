@@ -24,4 +24,10 @@ class Species{
   final List<Duration> stages;
 
   const Species({required this.name, required this.stages});
+
+  String getGrowTime(){
+    Duration dur = Duration.zero;
+    for(var stage in stages) dur += stage;
+    return '${dur.inMinutes}m ${dur.inSeconds % 60}s';
+  }
 }

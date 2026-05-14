@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../main.dart' as main;
@@ -32,7 +34,9 @@ class SeedItem extends Item{
     infoOverlay.isEnabled.value = false;
     main.GoToPage(1);
 
-    placingOverlay.handlingPlant = Plant(species: species);
-    placingOverlay.isEnabled.value = true;
+    Timer(Duration(milliseconds: 300), (){
+      placingOverlay.handlingPlant = Plant(species: species);
+      placingOverlay.isEnabled.value = true;
+    });
   }
 }

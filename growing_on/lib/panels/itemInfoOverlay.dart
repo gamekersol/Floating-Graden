@@ -79,10 +79,20 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
               ),
 
               // PARAMS
-              SizedBox(height: BASE_SPACING),
-              paramWidget('Grow time :', item.imagePath),
-              SizedBox(height: BASE_SPACING/2),
-              paramWidget('Grow time :', item.imagePath),
+              SizedBox(height: BASE_SPACING),  
+
+              ...switch (item) {
+                SeedItem s => [
+                  paramWidget('Grow time :', s.species.getGrowTime().toString()),
+                  SizedBox(height: BASE_SPACING / 2),
+                  paramWidget('Stages :', s.species.stages.length.toString()),
+                ],
+                _ => [
+                  paramWidget('Desctiption :', item.description),
+                ],
+              },
+
+
 
               // BUTTONS
               SizedBox(height: BASE_SPACING/2),
