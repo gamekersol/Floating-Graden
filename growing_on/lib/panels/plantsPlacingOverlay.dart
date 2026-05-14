@@ -28,7 +28,7 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
         var enabled = isEnabled.value;
         return AnimatedOpacity(
           opacity: enabled == false ? 0 : 1,
-          duration: Duration(milliseconds: 200),
+          duration: Duration(milliseconds: 300),
           curve: Curves.easeIn,
           child: IgnorePointer(
             ignoring: !enabled,

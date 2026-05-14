@@ -24,7 +24,7 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
       builder: (context, child) => 
       AnimatedOpacity(
         opacity: isEnabled.value == false ? 0 : 1,
-        duration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 150),
         curve: Curves.easeIn,
         child: IgnorePointer(
           ignoring: !isEnabled.value,
