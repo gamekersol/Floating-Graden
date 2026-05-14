@@ -49,21 +49,21 @@ class SlotWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        borderRadius:  BorderRadius.circular(34),
-        color: inventorySlotColor,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(120),
-            offset: Offset.fromDirection(1.6)*3,
-            spreadRadius: 1.2,
-          )
-        ]
-      ),
-      child: GestureDetector(
-        onTap: () => onTap(),
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Container(
+        margin: EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          borderRadius:  BorderRadius.circular(34),
+          color: inventorySlotColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(120),
+              offset: Offset.fromDirection(1.6)*3,
+              spreadRadius: 1.2,
+            )
+          ]
+        ),
         child: slot,
       ),
     );
