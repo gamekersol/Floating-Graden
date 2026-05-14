@@ -9,7 +9,7 @@ var sunflower = Species(
     ]
   );
 
-var verinika = Species(
+var utrica_dioica = Species(
   name: "Urtica-dioica",
   stages: [
     Duration(seconds: 3),

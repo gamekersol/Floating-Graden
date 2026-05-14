@@ -11,7 +11,7 @@ var controller = InfiniteScrollController();
 
 void wheelPanel(BuildContext context){
 
-  List<Item> items = [inv.seedOfSunflowerItem, inv.seedOfSunflowerItem, inv.pickMeDiamond];
+  List<Item> items = [inv.seedOfUtrica, inv.seedOfUtrica, inv.pickMeDiamond];
 
   int randIndex = Random().nextInt(items.length);
   double itemWidth = 70;

@@ -33,7 +33,7 @@ class GridTransform extends ChangeNotifier{
 }
 GridTransform gridTransform = GridTransform();
 
-MovingBlocksOverlay overlayInstance = MovingBlocksOverlay(plant: Plant(species: species.verinika));
+MovingBlocksOverlay overlayInstance = MovingBlocksOverlay(plant: Plant(species: species.utrica_dioica));
 class GardenScreen extends StatelessWidget {
   GardenScreen({super.key});
 

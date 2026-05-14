@@ -4,7 +4,7 @@ import '../screens/garden.dart';
 // ahh its for check
 import '../data/species.dart';
 
-Plant handlingPlant = Plant(species: verinika);
+Plant handlingPlant = Plant(species: utrica_dioica);
 ValueNotifier <bool> isEnabled = ValueNotifier(false);
 
 class MovingBlocksOverlay extends StatefulWidget {

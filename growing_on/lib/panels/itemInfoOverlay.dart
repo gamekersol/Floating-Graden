@@ -6,7 +6,7 @@ import '../data/inventory.dart';
 import '../theme.dart';
 
 ValueNotifier <bool> isEnabled = ValueNotifier(false);
-Item item = seedOfSunflowerItem;
+Item item = seedOfUtrica;
 
 
 class ItemInfoOverlay extends StatefulWidget {
@@ -63,8 +63,8 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
 
               // ITEM VIEW
 
-              Expanded(
-                flex: 4,
+              Flexible(
+                flex: 5,
                 child: Container(
                   width: double.maxFinite,
                   decoration: BoxDecoration(
@@ -81,7 +81,21 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
               // PARAMS
               SizedBox(height: BASE_SPACING),
               paramWidget('Grow time :', item.imagePath),
+              SizedBox(height: BASE_SPACING/2),
               paramWidget('Grow time :', item.imagePath),
+
+              // BUTTONS
+              SizedBox(height: BASE_SPACING/2),
+              Expanded(
+                flex: 2,
+                child: Row(
+                  children: [
+                    actionButton('Use', item.use),
+                    actionButton('Special', ()=>print(item.description)),                  
+                  ],
+                ),
+              )
+
             ],
           ),
         ),
@@ -100,7 +114,7 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
             child: Container(
               height: 40,
               //margin: .symmetric(vertical: 0),
-              padding: .symmetric(horizontal: 5, vertical: 7),
+              padding: .symmetric(horizontal: 5, vertical: 5),
               decoration: BoxDecoration(
                 color: Colors.black.withAlpha(30)
               ),
@@ -128,9 +142,28 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
               ),
             ),
           ),
-          SizedBox(height: BASE_SPACING,)
         ]
       ),
+    );
+  }
+
+  Widget actionButton(String name, VoidCallback action,{Color color = Colors.white}){
+    return Expanded(
+      flex: 1,
+      child: Padding(
+        padding: .symmetric(horizontal: 15, vertical: 8),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: .fromHeight(70),
+            backgroundColor: color,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          onPressed: action,
+          child: Text(name, textAlign: .center,),
+        ),
+      )
     );
   }
 }

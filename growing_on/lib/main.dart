@@ -20,9 +20,12 @@ void main() {
   );
 }
 
-PageController pageController = PageController(
+
+PageController _pageController = PageController(
   initialPage:  1,
 );
+void GoToPage(int index) => _pageController.animateToPage(index, duration: const Duration(milliseconds: 450), curve: Curves.ease);
+
 ValueNotifier<int> currentScreenIndex = ValueNotifier(1);
 List<Widget> screens = [
   InventoryScreen(),
@@ -48,7 +51,7 @@ class MyHomePage extends StatelessWidget {
           Container(color: scaffoldBgColor,),
           PageView(
             scrollDirection: Axis.horizontal,
-            controller: pageController,
+            controller: _pageController,
             onPageChanged: (index) => currentScreenIndex.value = index,
             children: screens,
           ),
@@ -90,7 +93,7 @@ class NavItemWidget extends StatelessWidget{
             borderRadius: BorderRadius.all(Radius.circular(34))
           ),
           child: GestureDetector(
-            onTap: () => pageController.animateToPage(index, duration: const Duration(milliseconds: 450), curve: Curves.ease),
+            onTap: () => GoToPage(1),
             child: Padding(
               padding: EdgeInsetsGeometry.all(insect.toDouble()),
               child: SvgPicture.asset(

@@ -1,13 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import '../data/species.dart' as species;
 
 import '../models/inventorySlot.dart';
 export '../models/inventorySlot.dart';
 
-Item seedOfSunflowerItem = Item(
-  name: "Sunflower seed", 
-  imagePath: 'assets/images/trinckets/seed.svg'
+Item seedOfUtrica = SeedItem(
+  name: "Seed of something spiky", 
+  imagePath: 'assets/images/trinckets/seed.svg',
+  description: 'thouse are spiky and somethimes beneficial ,not only in ordinary way',
+  species: species.utrica_dioica,
 );
 Item pickMeDiamond = Item(
   name: "Diamond", 
@@ -18,19 +19,19 @@ InventoryInstance instance = InventoryInstance(
   slots: 
     [
       InventorySlot(
-        value: seedOfSunflowerItem,
+        value: seedOfUtrica,
         count: 1,
       ),
       InventorySlot(
-        value: seedOfSunflowerItem,
+        value: seedOfUtrica,
         count: 2,
       ),
       InventorySlot(
-        value: seedOfSunflowerItem,
+        value: seedOfUtrica,
         count: 11,
       ),
       InventorySlot(
-        value: seedOfSunflowerItem,
+        value: seedOfUtrica,
         count: 99,
       ),
       InventorySlot(

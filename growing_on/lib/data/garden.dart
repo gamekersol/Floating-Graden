@@ -19,7 +19,7 @@ List<Block> blocks = [
   Block(pos: Point(-4, -1)), Block(pos: Point(-3, -1)), Block(pos: Point(-1, -1)), 
   Block(pos: Point(0, -1)), Block(pos: Point(1, -1)), Block(pos: Point(3, -1)), Block(pos: Point(4, -1)),
   // Тулуб (найширша частина)
-  Block(pos: Point(-5, 0), plant: Plant(species: species.verinika)), Block(pos: Point(-4, 0)), Block(pos: Point(-3, 0)), 
+  Block(pos: Point(-5, 0), plant: Plant(species: species.utrica_dioica)), Block(pos: Point(-4, 0)), Block(pos: Point(-3, 0)), 
   Block(pos: Point(-2, 0)), Block(pos: Point(-1, 0)), Block(pos: Point(0, 0)), 
   Block(pos: Point(1, 0)), Block(pos: Point(2, 0)), Block(pos: Point(3, 0)), 
   Block(pos: Point(4, 0)), Block(pos: Point(5, 0)),
