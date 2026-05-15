@@ -56,6 +56,10 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
               Text(
                 item.name,
                 textAlign: .center,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: .w700,
+                ),
               ),
               SizedBox(height: BASE_SPACING,),
 
@@ -96,12 +100,11 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
                 flex: 2,
                 child: Row(
                   children: [
-                    actionButton('Use', item.use),
-                    actionButton('Special', ()=>print(item.description)),                  
+                    actionButton('Use', item.use, color: inventoryBgColor),
+                    actionButton('Details', ()=>print(item.description), color: Color(0xFFB495BA), textStyle: TextStyle(fontWeight: .w400)),                  
                   ],
                 ),
               )
-
             ],
           ),
         ),
@@ -118,8 +121,8 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
           Expanded(
             flex: 4,
             child: Container(
-              height: 40,
-              //margin: .symmetric(vertical: 0),
+              height: 45,
+              //margin: .symmetric(vertical: 15),
               padding: .symmetric(horizontal: 5, vertical: 5),
               decoration: BoxDecoration(
                 color: Colors.black.withAlpha(30)
@@ -129,6 +132,7 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
                 textAlign: .left,
                 style: TextStyle(
                   color: Color(0xFF5D8D69),
+                  fontWeight: .w600
               ),
               ),
             ),
@@ -137,10 +141,11 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
           // PARAM VALUE
           Expanded(
             flex: 3,
-            child: DecoratedBox(
+            child: Container(
+              height: 60,
               decoration: BoxDecoration(
                 color: Colors.black.withAlpha(60),
-                borderRadius: .circular(20),
+                borderRadius: .circular(10),
               ),
               child: Text(
                 value.toString(),
@@ -153,21 +158,36 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
     );
   }
 
-  Widget actionButton(String name, VoidCallback action,{Color color = Colors.white}){
+  Widget actionButton(String name, VoidCallback action,{Color color = Colors.white, TextStyle? textStyle}){
     return Expanded(
       flex: 1,
-      child: Padding(
-        padding: .symmetric(horizontal: 15, vertical: 8),
+      child: Container(
+        margin: .symmetric(horizontal: 7),
+        decoration: BoxDecoration(
+          borderRadius: .circular(30),
+          boxShadow: [BoxShadow(
+            blurRadius: 0,
+            offset: .fromDirection(1, 5),
+            color: Colors.black.withAlpha(50)
+          )]
+        ),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             minimumSize: .fromHeight(70),
             backgroundColor: color,
+            textStyle: basicTextStyle,
+            foregroundColor: Colors.white,
+            
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
+              side: BorderSide(color: Color.fromARGB(255, 90, 112, 28), width: 6, strokeAlign: BorderSide.strokeAlignInside),
             ),
           ),
           onPressed: action,
-          child: Text(name, textAlign: .center,),
+          child: Text(name, 
+          textAlign: .center, 
+          style: textStyle,
+          ),
         ),
       )
     );

@@ -11,6 +11,17 @@ Color inventorySlotColor = Color(0xFFEFD2AF);
 Color shopDescriptionColor = Color(0xFFFFE3C0);
 Color rarityColor = Color(0xFFC67AF5);
 Color byuyItemColor = Color(0xFF5FC254);
+TextStyle basicTextStyle = TextStyle(
+  fontSize: 25,
+  fontWeight: FontWeight.w900,
+  color: Colors.white,
+  shadows: [
+    Shadow(
+    color: Colors.black.withAlpha(70),
+    offset: Offset.fromDirection(1)*2,
+    )
+  ]
+);
 
 // This blends your background with White by 25%
 Color inventoryOutlineColor = Color.lerp(scaffoldBgColor, Colors.black, 0.25)!;
@@ -27,16 +38,12 @@ ThemeData themeData = ThemeData(
   ),
 
   textTheme: TextTheme(
-      bodyMedium: TextStyle(
-      fontSize: 25,
-      fontWeight: FontWeight.w900,
-      color: Colors.white,
-      shadows: [
-        Shadow(
-        color: Colors.black.withAlpha(70),
-        offset: Offset.fromDirection(1)*2,
-        )
-      ]
+      bodyMedium: basicTextStyle
+  ),
+
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      textStyle: WidgetStateProperty.all(basicTextStyle),
     )
   )
 );

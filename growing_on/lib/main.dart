@@ -20,9 +20,12 @@ void main() {
   );
 }
 
-//TODO border for param list overlay,
 //TODO show remain count on planting,
+//TODO fix garden alignment,
+//TODO special panel,
 //TODO seed substructing + agtercarousel inventory setstate,
+//TODO fix navbar
+
 
 PageController _pageController = PageController(
   initialPage:  1,
