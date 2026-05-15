@@ -10,7 +10,7 @@ class InventorySlot extends StatelessWidget{
   final ValueNotifier <Item?> item = ValueNotifier(null);
   int count;
 
-  InventorySlot ({super.key ,Item? value, required this.count}){
+  InventorySlot ({super.key ,Item? value, this.count = 1}){
     item.value = value;
   }
 

@@ -76,9 +76,8 @@ class _PhantomBlockWidget extends StatelessWidget {
   final Point blockPos;
   final int neibors;
   final Function(Point) onBuy;
-  late Alignment _align = GardenGrid.getPosAlignment(blockPos);
 
-   _PhantomBlockWidget({
+   const _PhantomBlockWidget({
     required this.blockPos,
     required this.neibors,
     required this.onBuy,
@@ -86,11 +85,11 @@ class _PhantomBlockWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _align = GardenGrid.getPosAlignment(blockPos);
+    Alignment align = GardenGrid.getPosAlignment(blockPos);
     var s = gridTransform.scale;
     double size = 55 * s;
     return Align(
-      alignment: _align,
+      alignment: align,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 60), // shift icon up above block center
         child: GestureDetector(
