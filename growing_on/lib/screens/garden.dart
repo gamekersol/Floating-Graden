@@ -166,9 +166,7 @@ class GardenGrid extends StatelessWidget {
 }
 
 class _UI extends StatefulWidget {
-  const _UI({
-    super.key,
-  });
+  const _UI();
 
   @override
   State<_UI> createState() => _UIState();
@@ -234,8 +232,7 @@ Vector2Double blockAlignSize = Vector2Double(0.2, 0.2);
 
 class _BlockWidget extends StatefulWidget {
   final data.Block block;
-  late Alignment _align;
-  _BlockWidget({required this.block});
+  const _BlockWidget({required this.block});
 
   @override
   State<_BlockWidget> createState() => __BlockWidgetState();
@@ -244,11 +241,11 @@ class _BlockWidget extends StatefulWidget {
 class __BlockWidgetState extends State<_BlockWidget> {
   @override
   Widget build(BuildContext context) {
-    widget._align = GardenGrid.getPosAlignment(widget.block.pos);
+    Alignment align = GardenGrid.getPosAlignment(widget.block.pos);
     var s = gridTransform.scale;
     // BLOCK PICTURE
     return Align(
-      alignment: widget._align ,
+      alignment: align ,
       child: 
         SizedBox(
           width: BLOCK_SIZE * s,
@@ -263,9 +260,8 @@ class __BlockWidgetState extends State<_BlockWidget> {
 
 class _PlantWidget extends StatefulWidget {
   final data.Block block;
-  late Alignment _align;
 
-  _PlantWidget({required this.block});
+  const _PlantWidget({required this.block});
 
   @override
   State<_PlantWidget> createState() => _PlantWidgetState();
@@ -274,11 +270,11 @@ class _PlantWidget extends StatefulWidget {
 class _PlantWidgetState extends State<_PlantWidget> {
   @override
   Widget build(BuildContext context) {
-    widget._align = GardenGrid.getPosAlignment(widget.block.pos, Point(0.05, -0.7));
+    Alignment align = GardenGrid.getPosAlignment(widget.block.pos, Point(0.05, -0.7));
     var s = gridTransform.scale;
     // PLANT ITSELF
     return Align(
-      alignment: widget._align,
+      alignment: align,
       child: widget.block.plant != null
       ? widget.block.plant!.getImage(s)
       : SizedBox.shrink(),

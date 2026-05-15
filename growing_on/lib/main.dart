@@ -20,6 +20,9 @@ void main() {
   );
 }
 
+//TODO border for param list overlay,
+//TODO show remain count on planting,
+//TODO seed substructing + agtercarousel inventory setstate,
 
 PageController _pageController = PageController(
   initialPage:  1,

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import '../models/item.dart';
 import '../data/inventory.dart';
@@ -91,9 +89,7 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
                   paramWidget('Desctiption :', item.description),
                 ],
               },
-
-
-
+              
               // BUTTONS
               SizedBox(height: BASE_SPACING/2),
               Expanded(

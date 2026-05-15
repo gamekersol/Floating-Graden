@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:growing_on/panels/template.dart';
 import 'package:growing_on/theme.dart';
 import '../data/inventory.dart' as inv;
 import '../panels/itemInfoOverlay.dart' as infoOverlay;
