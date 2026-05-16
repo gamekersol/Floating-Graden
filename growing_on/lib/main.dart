@@ -4,6 +4,7 @@ import 'screens.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'data/currency.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 Map <String, WidgetBuilder> _routes = {
   "/Tetris" : (context)=> Tetris(),
@@ -90,21 +91,21 @@ class NavItemWidget extends StatelessWidget{
     return ValueListenableBuilder<int>(
       valueListenable: currentScreenIndex,
       builder: (context, value, child) {
-        return AnimatedContainer( 
-          duration: Duration(milliseconds: 300),
-          height: 252/2.75,
-          width: 252/2.75,
-          decoration: BoxDecoration(
-            color: index == value ? navSeclectedColor : deepGreen,
-            borderRadius: BorderRadius.all(Radius.circular(34))
-          ),
-          child: GestureDetector(
-            onTap: () => GoToPage(1),
-            child: Padding(
-              padding: EdgeInsetsGeometry.all(insect.toDouble()),
-              child: SvgPicture.asset(
-                _pathPrep + iconName,
-                fit: BoxFit.contain,
+        return Expanded(
+          child: AnimatedContainer( 
+            duration: Duration(milliseconds: 300),
+            decoration: BoxDecoration(
+              color: index == value ? navSeclectedColor : deepGreen,
+              borderRadius: BorderRadius.all(Radius.circular(34))
+            ),
+            child: GestureDetector(
+              onTap: () => GoToPage(1),
+              child: Padding(
+                padding: EdgeInsetsGeometry.all(insect.toDouble()),
+                child: SvgPicture.asset(
+                  _pathPrep + iconName,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
           ),
@@ -130,10 +131,10 @@ class CurrencyWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        //height: 200,
+        padding: .all(4),
         decoration: BoxDecoration(
           color: lightGreen,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withAlpha(70),
@@ -150,29 +151,33 @@ class CurrencyWidget extends StatelessWidget{
             spacing: 1,
             children: [
               // CUR ICON
-              SizedBox(
-                width: 30,
-                height: 30,
+              Expanded(
+                flex: 7,
                 child: SvgPicture.asset(
                   _pathPrep + currency.iconName,
                   fit: BoxFit.contain,
                 ),
               ),
               // CUR VALUE
-              ListenableBuilder(
-                listenable: currencys,
-                builder: (_,_) => Text(
-                  currency.value.toString(),
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                      color: Colors.black.withAlpha(70),
-                      offset: Offset.fromDirection(1)*2,
-                      )
-                    ]
+              Expanded(
+                flex: 10,
+                child: ListenableBuilder(
+                  listenable: currencys,
+                  builder: (_,_) => AutoSizeText(
+                    currency.value.toString(),
+                    textAlign: .center,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                        color: Colors.black.withAlpha(70),
+                        offset: Offset.fromDirection(1)*2,
+                        )
+                      ]
+                    ),
                   ),
                 ),
               ),
@@ -232,9 +237,9 @@ class InterfaceWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical:  7),
                         child: Row(
-                          spacing: 4,
+                          spacing: 8,
                           // CUR WIDGETS
                           children: currencyWidgets
                         ),
@@ -250,7 +255,8 @@ class InterfaceWidget extends StatelessWidget {
         // BOTTOM BAR
         Align(
           alignment: Alignment.bottomCenter,
-          child: DecoratedBox(
+          child: Container(
+            height: 100,
             decoration: BoxDecoration(color: deepGreen),
             child: Row(
               //mainAxisAlignment: MainAxisAlignment.spaceAround,

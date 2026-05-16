@@ -186,7 +186,7 @@ class _UIState extends State<_UI> {
             ElevatedButton(
               onPressed: () { state.value = .buying; overlays.addBlock(context); },
               style: ElevatedButton.styleFrom(
-                minimumSize: const Size(88, 88), // default is Size(64, 36) — doubled
+                maximumSize: const Size(88, 88), // default is Size(64, 36) — doubled
                 padding: const EdgeInsets.all(20),
                 backgroundColor: Colors.brown[300]
               ),
