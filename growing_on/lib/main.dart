@@ -52,10 +52,10 @@ class MyHomePage extends StatelessWidget {
     // MUSIC?
     musicTime();
 
-    return Scaffold(
-      body: Stack(
+    return Material(
+      child: Stack(
         children: [
-          Container(color: scaffoldBgColor,),
+          Positioned.fill(child: ColoredBox(color: scaffoldBgColor,)),
           PageView(
             scrollDirection: Axis.horizontal,
             controller: _pageController,

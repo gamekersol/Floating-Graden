@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'package:growing_on/models/block.dart';
 
 import '../data/garden.dart' as data;
-import '../screens/garden.dart';
+import '../screens/garden/screen.dart';
 import 'package:flutter/material.dart';
 
 HashMap <Point,int> buildPositions = HashMap();
@@ -85,19 +85,16 @@ class _PhantomBlockWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Alignment align = GardenGrid.getPosAlignment(blockPos);
+    Alignment align = GridView.getPosAlignment(blockPos, Point(0, -0.3));
     var s = gridTransform.scale;
     double size = 55 * s;
     return Align(
       alignment: align,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 60), // shift icon up above block center
-        child: GestureDetector(
-          onTap: () => onBuy(blockPos),
-          child: neibors > 0
-              ? Icon(Icons.add, size: size, color: Colors.white)
-              : Icon(Icons.block_sharp, size: size, color: Colors.redAccent),
-        ),
+      child: GestureDetector(
+        onTap: () => onBuy(blockPos),
+        child: neibors > 0
+            ? Icon(Icons.add, size: size, color: Colors.white)
+            : Icon(Icons.block_sharp, size: size, color: Colors.redAccent),
       ),
     );
   }

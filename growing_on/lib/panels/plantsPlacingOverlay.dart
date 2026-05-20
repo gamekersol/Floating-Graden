@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/garden.dart';
-import '../screens/garden.dart';
+import '../screens/garden/screen.dart';
 // ahh its for check
 import '../data/species.dart';
 
@@ -40,42 +40,40 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
   }
 
   Widget dumbWidget(){
-    return SafeArea(
-      child: Stack(
-        children: [Positioned.fill(
-          child: DecoratedBox(
-            // Black tint
-            decoration: BoxDecoration(color: Colors.black.withAlpha(100)),
-            child: Stack(
-              children: [
-                // Phantom 
-                PhantomPlant(),
-                // GestureDetector
-                LayoutBuilder(
-                  builder: (context, constraints) =>  GestureDetector(
-                    onPanUpdate: (details) {
-                      // Offset -> Alignment (нормалізація під розмір віджета)
-                      final screenAlign = Alignment(
-                        details.localPosition.dx / (constraints.maxWidth / 2) - 1,
-                        details.localPosition.dy / (constraints.maxHeight / 2) - 1,
-                      );
-                    
-                      // Alignment -> грідові координати -> снеп назад в Alignment
-                      gridPos = GardenGrid.screenToGrid(screenAlign);
-                      final snappedAlign = GardenGrid.getPosAlignment(gridPos);
-                    
-                      pos.value = snappedAlign;
-                      // HOTFIX OFFSET
-                      isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, 1) && block.plant == null);
-                    },
-                  ),
+    return Stack(
+      children: [Positioned.fill(
+        child: DecoratedBox(
+          // Black tint
+          decoration: BoxDecoration(color: Colors.black.withAlpha(100)),
+          child: Stack(
+            children: [
+              // Phantom 
+              PhantomPlant(),
+              // GestureDetector
+              LayoutBuilder(
+                builder: (context, constraints) =>  GestureDetector(
+                  onPanUpdate: (details) {
+                    // Offset -> Alignment (нормалізація під розмір віджета)
+                    final screenAlign = Alignment(
+                      details.localPosition.dx / (constraints.maxWidth / 2) - 1,
+                      details.localPosition.dy / (constraints.maxHeight / 2) - 1,
+                    );
+                  
+                    // Alignment -> грідові координати -> снеп назад в Alignment
+                    gridPos = GridView.screenToGrid(screenAlign);
+                    final snappedAlign = GridView.getPosAlignment(gridPos);
+                  
+                    pos.value = snappedAlign;
+                    // HOTFIX OFFSET
+                    isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, 1) && block.plant == null);
+                  },
                 ),
-                UI(),
-              ],
-            ),
+              ),
+              UI(),
+            ],
           ),
-        ),]
-      )
+        ),
+      ),]
     );
   }
 }
