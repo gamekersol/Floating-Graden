@@ -6,6 +6,7 @@ import '../../panels/blockEditOverlay.dart' as overlays;
 import '../../panels/plantsPlacingOverlay.dart';
 import '../../data/garden.dart' as data;
 import '../../data/species.dart' as species;
+import '../../constraints.dart';
 
 import 'widgets/bgDetector.dart';
 import 'widgets/block.dart';

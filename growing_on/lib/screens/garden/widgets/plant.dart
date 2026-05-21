@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:growing_on/models/block.dart';
 import 'package:growing_on/models/grid.dart';
+import '../../../constraints.dart';
 
 class PlantWidget extends StatefulWidget {
   final Block block;

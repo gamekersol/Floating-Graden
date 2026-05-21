@@ -35,7 +35,7 @@ class GridTransform extends ChangeNotifier{
   }
 
   static (double top, double left) getPositionedTopLeft(Point<int> pos, [Point? offset]){
-    double oddYoffset = pos.x % 2 == 0 ? -0.5 / 2 : 0;
+    double oddYoffset = pos.x % 2 == 0 ? -1 / 2 : 0;
 
     var globalCenter = gridTransform.alignment * 1000;
     var localPos = (Point<num>(pos.x , pos.y) + (offset??Point(0, 0)));
