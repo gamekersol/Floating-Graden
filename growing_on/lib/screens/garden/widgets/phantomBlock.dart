@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:growing_on/models/block.dart';
 import 'package:growing_on/models/grid.dart';
 
-const Size _SIZE = Size.square(40);
+const Size _SIZE = Size.square(25);
 
 class PhantomBlockWidget extends StatelessWidget {
   final Point<int> pos;
@@ -20,12 +20,12 @@ class PhantomBlockWidget extends StatelessWidget {
   Widget build(BuildContext context) {
       return GridPositioned(
       point: pos,
-      offset: Point(0, 0.3),
+      offset: Point(0.45, 0.1),
       child: GestureDetector(
         onTap: () => onBuy(pos),
         child: neibors > 0
-            ? Icon(Icons.add, size: _SIZE.height, color: Colors.white)
-            : Icon(Icons.block_sharp, size: _SIZE.height, color: Colors.redAccent),
+            ? Icon(Icons.add, size: _SIZE.height * gridTransform.scale, color: Colors.white)
+            : Icon(Icons.block_sharp, size: _SIZE.height * gridTransform.scale, color: Colors.redAccent),
       ),
     );
   }
