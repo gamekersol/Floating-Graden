@@ -8,7 +8,6 @@ Point<double> blockStartAlignSize = Point(0.2, 0.2);
 class GridTransform extends ChangeNotifier{
   Alignment alignment = .center;
   double scale = 1;
-  static const double MIN_SCALE = 0.05, MAX_SCALE = 4;
 
   GridTransform ();
 
@@ -40,8 +39,8 @@ class GridTransform extends ChangeNotifier{
     var globalCenter = gridTransform.alignment * 1000;
     var localPos = (Point<num>(pos.x , pos.y) + (offset??Point(0, 0)));
 
-    double left = globalCenter.x + localPos.x * BLOCK_COLLIDER_SIZE.width;
-    double top = globalCenter.y + (localPos.y + oddYoffset) * BLOCK_COLLIDER_SIZE.height;
+    double left = globalCenter.x + localPos.x * BLOCK_COLLIDER_SIZE.width * gridTransform.scale;
+    double top = globalCenter.y + (localPos.y + oddYoffset) * BLOCK_COLLIDER_SIZE.height * gridTransform.scale;
     // double left = globalCenter.x + localPos.x * BLOCK_SIZE.width;
     // double top = globalCenter.y + (localPos.y + oddYoffset) * BLOCK_SIZE.height;
     
