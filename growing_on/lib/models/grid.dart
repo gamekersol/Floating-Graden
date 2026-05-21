@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import '../constraints.dart';
 
 GridTransform gridTransform = GridTransform();
-const Size BLOCK_SIZE = Size(175, 110);
 Point<double> blockStartAlignSize = Point(0.2, 0.2);
 
 class GridTransform extends ChangeNotifier{
@@ -40,8 +40,10 @@ class GridTransform extends ChangeNotifier{
     var globalCenter = gridTransform.alignment * 1000;
     var localPos = (Point<num>(pos.x , pos.y) + (offset??Point(0, 0)));
 
-    double left = globalCenter.x + localPos.x * BLOCK_SIZE.width;
-    double top = globalCenter.y + (localPos.y + oddYoffset) * BLOCK_SIZE.height;
+    double left = globalCenter.x + localPos.x * BLOCK_COLLIDER_SIZE.width;
+    double top = globalCenter.y + (localPos.y + oddYoffset) * BLOCK_COLLIDER_SIZE.height;
+    // double left = globalCenter.x + localPos.x * BLOCK_SIZE.width;
+    // double top = globalCenter.y + (localPos.y + oddYoffset) * BLOCK_SIZE.height;
     
     return (left,top);
   }
