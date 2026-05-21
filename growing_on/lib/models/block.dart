@@ -13,7 +13,7 @@ class Vector2Double {
 }
 
 class Block {
-  final Point pos;
+  final Point<int> pos;
   Plant? plant;
 
   Block({required this.pos, this.plant});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/garden.dart';
-import '../screens/garden/screen.dart';
+import '../models/grid.dart';
 // ahh its for check
 import '../data/species.dart';
 
@@ -60,8 +60,8 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
                     );
                   
                     // Alignment -> грідові координати -> снеп назад в Alignment
-                    gridPos = GridView.screenToGrid(screenAlign);
-                    final snappedAlign = GridView.getPosAlignment(gridPos);
+                    gridPos = GridTransform.screenToGrid(screenAlign);
+                    final snappedAlign = GridTransform.getPosAlignment(gridPos);
                   
                     pos.value = snappedAlign;
                     // HOTFIX OFFSET
@@ -78,7 +78,7 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
   }
 }
 
-Point gridPos = Point(0, 0);
+Point<int> gridPos = Point(0, 0);
 ValueNotifier <Alignment>  pos = new ValueNotifier(Alignment.center);
 ValueNotifier <bool> isValidPlace = new ValueNotifier(false);
 
@@ -115,7 +115,7 @@ class _PhantomPlantState extends State<PhantomPlant> {
               children: [
                 // Arrows
                 Transform.translate(
-                  offset: Offset(0, 70),
+                  offset: Offset(0, 0),
                   child: Image.asset(
                     "assets/images/navigation/move.png",
                     width: 100 * gridTransform.scale,

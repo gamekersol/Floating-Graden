@@ -14,15 +14,13 @@ class BlockWidget extends StatefulWidget {
 class _BlockWidgetState extends State<BlockWidget> {
   @override
   Widget build(BuildContext context) {
-    Alignment align = GridTransform.getPosAlignment(widget.block.pos);
-    // BLOCK PICTURE
-    return Align(
-      alignment: align ,
+    return GridPositioned(
+      point: widget.block.pos,
       child: 
         SizedBox(
           width: BLOCK_SIZE.width * gridTransform.scale,
           height: BLOCK_SIZE.height * gridTransform.scale,
-          child: SvgPicture.asset("assets/images/plants/block.svg", fit: .contain,),
+          child: SvgPicture.asset("assets/images/plants/block.svg", fit: .fill,),
         ),
     );
   }

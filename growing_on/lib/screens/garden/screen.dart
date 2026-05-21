@@ -82,7 +82,7 @@ class GridView extends StatelessWidget {
             return Stack(
               children: [
                 ...List.generate(data.blocks.length, (i) => BlockWidget(block: data.blocks[i],)),
-                ...List.generate(data.blocks.length, (i) => _PlantWidget(block: data.blocks[i])),
+                ...List.generate(data.blocks.length, (i) => PlantWidget(block: data.blocks[i])),
               ]
             );
           }
@@ -146,32 +146,6 @@ class _UIState extends State<_UI> {
           ]
         ),
       )
-    );
-  }
-}
-
-// FIXME REWRITE ALL THE FUCKING THING
-
-class _PlantWidget extends StatefulWidget {
-  final data.Block block;
-
-  const _PlantWidget({required this.block});
-
-  @override
-  State<_PlantWidget> createState() => _PlantWidgetState();
-}
-
-class _PlantWidgetState extends State<_PlantWidget> {
-  @override
-  Widget build(BuildContext context) {
-    Alignment align = GridTransform.getPosAlignment(widget.block.pos, Point(0.05, -0.7));
-    var s = gridTransform.scale;
-    // PLANT ITSELF
-    return Align(
-      alignment: align,
-      child: widget.block.plant != null
-      ? widget.block.plant!.getImage(s)
-      : SizedBox.shrink(),
     );
   }
 }
