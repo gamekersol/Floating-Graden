@@ -16,7 +16,7 @@ class GridTransform extends ChangeNotifier{
     notifyListeners();
   }
   void ScaleAdditive(double add){
-    scale += add;
+    scale += add * scale;
 
     scale = scale < MIN_SCALE ? MIN_SCALE : scale;
     scale = scale > MAX_SCALE ? MAX_SCALE : scale;
