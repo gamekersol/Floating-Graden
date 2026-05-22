@@ -28,6 +28,7 @@ class GardenScreen extends StatelessWidget {
     var x = MediaQuery.of(context).size.width;
     var y = MediaQuery.of(context).size.height;
     blockStartAlignSize = Point(BLOCK_SIZE.width / x, BLOCK_SIZE.height / y);
+    gridTransform.alignment = Alignment(x, y) / 2 / 1000;
 
     return ListenableBuilder(
       listenable: state,

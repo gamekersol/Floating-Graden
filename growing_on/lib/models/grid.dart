@@ -9,8 +9,6 @@ class GridTransform extends ChangeNotifier{
   Alignment alignment = .center;
   double scale = 1;
 
-  GridTransform ();
-
   void Move(double x, double y){
     alignment = Alignment(alignment.x + x, alignment.y + y);
     notifyListeners();
