@@ -53,19 +53,13 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
               LayoutBuilder(
                 builder: (context, constraints) =>  GestureDetector(
                   onPanUpdate: (details) {
-                    // Offset -> Alignment (нормалізація під розмір віджета)
-                    final screenAlign = Alignment(
-                      details.localPosition.dx / (constraints.maxWidth / 2) - 1,
-                      details.localPosition.dy / (constraints.maxHeight / 2) - 1,
-                    );
                   
                     // Alignment -> грідові координати -> снеп назад в Alignment
-                    gridPos = GridTransform.screenToGrid(screenAlign);
-                    final snappedAlign = GridTransform.getPosAlignment(gridPos);
+                    topLeftPos.value = (details.localPosition.dx, details.localPosition.dy);
+
+                    gridPos = GridTransform.screenToGrid(details.localPosition);
                   
-                    pos.value = snappedAlign;
-                    // HOTFIX OFFSET
-                    isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, 1) && block.plant == null);
+                    isValidPlace.value = blocks.any((block) => block.pos == gridPos && block.plant == null);
                   },
                 ),
               ),
@@ -79,7 +73,7 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
 }
 
 Point<int> gridPos = Point(0, 0);
-ValueNotifier <Alignment>  pos = new ValueNotifier(Alignment.center);
+ValueNotifier <(double, double)> topLeftPos = ValueNotifier((500,500));
 ValueNotifier <bool> isValidPlace = new ValueNotifier(false);
 
 class PhantomPlant extends StatefulWidget {
@@ -103,43 +97,39 @@ class _PhantomPlantState extends State<PhantomPlant> {
   @override
   Widget build(BuildContext context) {
     // Animated Alighment?
-    return Stack(
-      children: [
-        ListenableBuilder(
-          listenable: pos,
-          builder: (context, child) =>  AnimatedAlign(
-            duration: Duration(milliseconds: 120),
-            curve: Curves.easeOut,
-            alignment: pos.value,
-            child: Stack(
-              children: [
-                // Arrows
-                Transform.translate(
-                  offset: Offset(0, 0),
-                  child: Image.asset(
-                    "assets/images/navigation/move.png",
-                    width: 100 * gridTransform.scale,
-                    height: 40 * gridTransform.scale,
-                    color: Colors.white.withAlpha(100),
-                    fit: .fill,
-                  ),
-                ),
-                // Plant
-                ListenableBuilder(
-                  listenable: isValidPlace,
-                  builder: (context, child) =>  ColorFiltered(
-                    colorFilter: isValidPlace.value ? 
-                      ColorFilter.mode(Colors.transparent, BlendMode.dst) // no effect
-                     : invalidPlaceColorFilter,
-                  
-                    child: handlingPlant.getImage(gridTransform.scale)
-                    ),
-                ), 
-              ]  
-            )
+    return ListenableBuilder(
+      listenable: topLeftPos,
+      builder: (context, child) =>
+      Stack(
+        children: [
+          // Arrows
+          GridPositioned(
+            point: gridPos,
+            offset: Point(0.1, 0.2),
+            child: Image.asset(
+              "assets/images/navigation/move.png",
+              width: 70 * gridTransform.scale,
+              height: 20 * gridTransform.scale,
+              color: Colors.white.withAlpha(100),
+              fit: .fill,
+            ),
           ),
-        ),
-      ],
+          // Plant
+          GridPositioned(
+            point: gridPos,
+            offset: Point(-0.1, -2.2),
+            child: ListenableBuilder(
+              listenable: isValidPlace,
+              builder: (context, child) =>  ColorFiltered(
+                colorFilter: isValidPlace.value ? 
+                  ColorFilter.mode(Colors.transparent, BlendMode.dst) // no effect
+                 : invalidPlaceColorFilter,
+                child: handlingPlant.getImage(gridTransform.scale)
+                ),
+            ),
+          ), 
+        ]  
+      )
     );
   }
 }
@@ -167,8 +157,8 @@ class _UIState extends State<UI> {
             builder: (context, child) => IconButton.filled(
               // HOTFIX
               onPressed: () {
-                PlantOnBlock(gridPos + Point(0, 1), handlingPlant.species);
-                isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, 1) && block.plant == null);
+                PlantOnBlock(gridPos + Point(0, -1), handlingPlant.species);
+                isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, -1) && block.plant == null);
               } ,           
               icon: Icon(Icons.check,size: 70, color: isValidPlace.value ? Colors.lightGreen : Colors.grey)
             ),

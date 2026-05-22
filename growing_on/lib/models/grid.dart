@@ -47,21 +47,21 @@ class GridTransform extends ChangeNotifier{
     return (left,top);
   }
   
-  static Point<int> screenToGrid(Alignment screenAlign) {
-    // Знімаємо трансформацію gridTransform
-    Alignment align = (screenAlign - gridTransform.alignment) * (1 / gridTransform.scale);
+  static Point<int> screenToGrid(Offset screenPos) {
+    var globalCenter = gridTransform.alignment * 1000;
+    double scaleW = BLOCK_COLLIDER_SIZE.width * gridTransform.scale;
+    double scaleH = BLOCK_COLLIDER_SIZE.height * gridTransform.scale;
 
-    // Приблизний x (без урахування oddYoffset)
-    double approxX = align.x / blockStartAlignSize.x;
-    int gridX = approxX.round();
+    // Спочатку знаходимо x — він не залежить від oddYoffset
+    int gridX = ((screenPos.dx - globalCenter.x) / scaleW).round();
 
-    // Визначаємо oddYoffset для знайденого x
-    double oddYoffset = gridX % 2 == 0 ? -blockStartAlignSize.y / 2 : 0;
+    // Тепер знаємо парність x → можемо обчислити oddYoffset
+    double oddYoffset = gridX % 2 == 0 ? -1 / 2 : 0;
 
-    // Точний y з урахуванням зміщення
-    double gridY = (align.y - oddYoffset) / blockStartAlignSize.y;
+    // Знаходимо y з урахуванням зміщення
+    int gridY = ((screenPos.dy - globalCenter.y) / scaleH - oddYoffset).round();
 
-    return Point(gridX, gridY.round());
+    return Point<int>(gridX, gridY);
   }
 }
 
