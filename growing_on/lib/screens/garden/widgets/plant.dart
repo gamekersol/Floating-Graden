@@ -17,7 +17,7 @@ class _PlantWidgetState extends State<PlantWidget> {
     // BLOCK PICTURE
     return GridPositioned(
       point: widget.block.pos,
-      offset: Point(0, 0.4),
+      offset: Point(0, -0.9),
       child: 
         SizedBox(
           width: BLOCK_SIZE.width * gridTransform.scale,

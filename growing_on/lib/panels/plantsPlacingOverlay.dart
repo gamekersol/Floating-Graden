@@ -157,7 +157,7 @@ class _UIState extends State<UI> {
             builder: (context, child) => IconButton.filled(
               // HOTFIX
               onPressed: () {
-                PlantOnBlock(gridPos + Point(0, -1), handlingPlant.species);
+                PlantOnBlock(gridPos + Point(0, 0), handlingPlant.species);
                 isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, -1) && block.plant == null);
               } ,           
               icon: Icon(Icons.check,size: 70, color: isValidPlace.value ? Colors.lightGreen : Colors.grey)
