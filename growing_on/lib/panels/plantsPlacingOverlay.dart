@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../data/garden.dart';
 import '../models/grid.dart';
+import '../data/inventory.dart';
 // ahh its for check
 import '../data/species.dart';
 
 Plant handlingPlant = Plant(species: utrica_dioica);
+ValueNotifier <int> remainCount = ValueNotifier(0);
 ValueNotifier <bool> isEnabled = ValueNotifier(false);
 
 class MovingBlocksOverlay extends StatefulWidget {
@@ -13,6 +16,7 @@ class MovingBlocksOverlay extends StatefulWidget {
   MovingBlocksOverlay({super.key, required this.plant}){
     handlingPlant = plant;
     handlingPlant.stage = handlingPlant.species.stages.length-1;
+    remainCount.value = instance.getSeedCount(plant.species);
   }
 
   @override
@@ -87,11 +91,17 @@ class PhantomPlant extends StatefulWidget {
 
 class _PhantomPlantState extends State<PhantomPlant> {
 
+  static const ColorFilter validPlaceColorFilter = ColorFilter.matrix([
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0,      0,      0,      0.5, 0,
+  ]);
   static const ColorFilter invalidPlaceColorFilter = ColorFilter.matrix([
-    0.2126, 0.7152, 0.0722, 0, 0,
-    0.2126, 0.7152, 0.0722, 0, 0,
-    0.2126, 0.7152, 0.0722, 0, 0,
-    0,      0,      0,      1, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    0,      0,      0,      0.2, 0,
   ]);
 
   @override
@@ -121,8 +131,8 @@ class _PhantomPlantState extends State<PhantomPlant> {
             child: ListenableBuilder(
               listenable: isValidPlace,
               builder: (context, child) =>  ColorFiltered(
-                colorFilter: isValidPlace.value ? 
-                  ColorFilter.mode(Colors.transparent, BlendMode.dst) // no effect
+                colorFilter: isValidPlace.value && remainCount.value > 0 ? 
+                  validPlaceColorFilter // no effect
                  : invalidPlaceColorFilter,
                 child: handlingPlant.getImage(gridTransform.scale)
                 ),
@@ -157,10 +167,13 @@ class _UIState extends State<UI> {
             builder: (context, child) => IconButton.filled(
               // HOTFIX
               onPressed: () {
+                if (remainCount.value < 1) return;
                 PlantOnBlock(gridPos + Point(0, 0), handlingPlant.species);
                 isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, -1) && block.plant == null);
+                remainCount.value--;
+                //instance.remove(, 1);
               } ,           
-              icon: Icon(Icons.check,size: 70, color: isValidPlace.value ? Colors.lightGreen : Colors.grey)
+              icon: Icon(Icons.check,size: 70, color: isValidPlace.value && remainCount.value > 0 ? Colors.lightGreen : Colors.grey)
             ),
           ),
           // DENY
@@ -168,6 +181,22 @@ class _UIState extends State<UI> {
             onPressed: () => isEnabled.value = false,            
             icon: Icon(Icons.close_rounded,size: 70, color: Colors.redAccent,)
           ),
+          ListenableBuilder(
+            listenable: remainCount,
+            builder:(context, child) =>  SizedBox.square(
+              dimension: 70,
+              child: Stack(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/trinckets/seed.svg', 
+                    fit: .contain,
+                    colorFilter: ColorFilter.saturation(remainCount.value > 0 ? 1 : 0.4),
+                  ),
+                  Text(remainCount.value.toString()),
+                ]
+              ),
+            ),
+          )
         ],
       ),
     );

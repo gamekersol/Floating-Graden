@@ -35,7 +35,7 @@ class SeedItem extends Item{
     main.GoToPage(1);
 
     Timer(Duration(milliseconds: 300), (){
-      placingOverlay.handlingPlant = Plant(species: species);
+      placingOverlay.handlingPlant = Plant(species: species)..stage = species.stages.length;
       placingOverlay.isEnabled.value = true;
     });
   }

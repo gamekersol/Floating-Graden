@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:growing_on/data/garden.dart';
 import '../data/species.dart' as species;
 
 import '../models/inventorySlot.dart';
@@ -50,17 +51,33 @@ class InventoryInstance extends ChangeNotifier{
   List<InventorySlot> slots;
   InventoryInstance({required this.slots});
 
-  void Add(Item item){
+  void add(Item item, {int count = 1}){
     InventorySlot? ref = slots.where((e) => e.item.value?.name == item.name).firstOrNull;
 
     if (ref != null) {
-      ref.count ++;
+      ref.count += count;
     }
     else {
-      slots.add(InventorySlot(count: 1, value: item,));
+      slots.add(InventorySlot(count: count, value: item,));
     }
 
     notifyListeners();
+  }
+
+  bool remove(Item item, int count){
+    InventorySlot? ref = slots.where((e) => e.item.value?.name == item.name).firstOrNull;
+
+    if (ref == null || ref.count < count) return false;
+    ref.count -= count;
+    notifyListeners();
+    return true;
+
+    // TODO make if count ==0 remove;
+  }
+
+  int getSeedCount(Species spec){
+    InventorySlot? ref = slots.where((e) => e.item.value is SeedItem && (e.item.value as SeedItem).species == spec).firstOrNull;
+    return ref?.count ?? 0;
   }
 }
 

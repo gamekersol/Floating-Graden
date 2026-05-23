@@ -62,7 +62,7 @@ void wheelPanel(BuildContext context){
     );
   });
 
-  inv.instance.Add(items[randIndex]);
+  inv.instance.add(items[randIndex]);
   Timer(Duration(milliseconds: rollTime.inMilliseconds + 1200 ), ()=> Navigator.pop(context));
 }
 
