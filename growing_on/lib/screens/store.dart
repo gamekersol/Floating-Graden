@@ -173,19 +173,27 @@ class ItemWidget extends StatelessWidget {
                             ),
                             padding: EdgeInsets.zero, // Щоб Center всередині працював коректно
                           ),
-                          child: Text(
-                            '${item.cost}\$',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.white,
-                              shadows: [
-                                Shadow(
-                                  color: Colors.black.withAlpha(70),
-                                  offset: Offset.fromDirection(1) * 2,
-                                )
-                              ],
-                            ),
+                          child: Row(
+                            spacing: 6,
+                            mainAxisAlignment: .center,
+                            children: 
+                            [
+                              Text(
+                                '${item.cost}',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black.withAlpha(70),
+                                      offset: Offset.fromDirection(1) * 2,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              currencys.values[item.type]!.getImage(),
+                            ]
                           ),
                         ),
                       ),
