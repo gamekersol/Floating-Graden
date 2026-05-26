@@ -68,7 +68,7 @@ void wheelPanel(BuildContext context, List<Item> items){
 
   WidgetsBinding.instance.addPostFrameCallback((_) {
     controller.animateTo(
-      (rollItems.length * 4 + randIndex) * itemWidth + random.nextInt(itemWidth.round()),
+      (60 - 60 % rollItems.length + randIndex) * itemWidth + random.nextInt(itemWidth.round()),
       duration: rollTime,
       curve: Curves.easeOutCubic,
     );

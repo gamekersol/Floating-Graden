@@ -63,7 +63,7 @@ class ItemWidget extends StatelessWidget {
             child: Padding(
               padding: .all(15),
               child: SvgPicture.asset(
-                item.item.imagePath,
+                item.imagePath,
                 //fit: BoxFit.contain,
                 ),
             ),
@@ -83,7 +83,7 @@ class ItemWidget extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      item.item.name,
+                      item.name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 25,
@@ -109,7 +109,7 @@ class ItemWidget extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        item.item.name,
+                        item.name,
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w900,
@@ -192,7 +192,7 @@ class ItemWidget extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              currencys.values[item.type]!.getImage(),
+                              Padding(padding: .all(3), child: currencys.values[item.type]!.getImage(),) ,
                             ]
                           ),
                         ),

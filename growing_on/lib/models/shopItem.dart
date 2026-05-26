@@ -6,15 +6,16 @@ import '../panels/fortuneWheelOverlay.dart';
 import 'item.dart';
 export 'item.dart';
 
-class ShopItem extends StatelessWidget {
-  final Item item;
-  //final int coount;
+class ShopItem extends Item {
+
   final int cost;
   final TypeOfCurrency type;
 
-  const ShopItem({super.key,
-   required this.item ,
-   required this.cost, this.type = TypeOfCurrency.coins,
+  const ShopItem({
+   required super.name,
+   required super.imagePath,
+   required this.cost, 
+   this.type = TypeOfCurrency.coins,
   });
 
   @override
@@ -27,8 +28,9 @@ class ShopItem extends StatelessWidget {
 
 class PackItem extends ShopItem{
   final List<Item> dropItems;
-  const PackItem({super.key, 
-  required super.item,
+  const PackItem({
+  required super.name,
+  required super.imagePath,
   required super.cost,
   required this.dropItems,
   super.type = TypeOfCurrency.seeds,
