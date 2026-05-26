@@ -65,16 +65,17 @@ class GridTransform extends ChangeNotifier{
 
 class GridPositioned extends StatelessWidget {
   final Point<int> point;
-  final Point offset;
+  final Point blockOffset;
+  final Offset offset;
   final Widget child;
-  const GridPositioned({super.key, required this.point, required this.child, this.offset = const Point(0, 0)});
+  const GridPositioned({super.key, required this.point, required this.child, this.blockOffset = const Point(0, 0), this.offset = BLOCK_OFFSET});
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: GridTransform.getPositionedTopLeft(point, offset).$1,
-      top: GridTransform.getPositionedTopLeft(point, offset).$2,
-      child: child,
+      left: GridTransform.getPositionedTopLeft(point, blockOffset).$1,
+      top: GridTransform.getPositionedTopLeft(point, blockOffset).$2,
+      child: Transform.translate(offset: offset * gridTransform.scale, child: child),
     );
   }
 }

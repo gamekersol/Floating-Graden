@@ -116,7 +116,7 @@ class _PhantomPlantState extends State<PhantomPlant> {
           // Arrows
           GridPositioned(
             point: gridPos,
-            offset: Point(0.1, 0.2),
+            blockOffset: Point(0.1, 0.2),
             child: Image.asset(
               "assets/images/navigation/move.png",
               width: 70 * gridTransform.scale,
@@ -128,7 +128,7 @@ class _PhantomPlantState extends State<PhantomPlant> {
           // Plant
           GridPositioned(
             point: gridPos,
-            offset: Point(-0.1, -2.2),
+            blockOffset: Point(-0.1, -2.2),
             child: ListenableBuilder(
               listenable: isValidPlace,
               builder: (context, child) =>  ColorFiltered(

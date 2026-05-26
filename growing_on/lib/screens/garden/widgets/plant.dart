@@ -17,15 +17,11 @@ class _PlantWidgetState extends State<PlantWidget> {
     // BLOCK PICTURE
     return GridPositioned(
       point: widget.block.pos,
-      offset: Point(0, -0.9),
-      child: 
-        SizedBox(
-          width: BLOCK_SIZE.width * gridTransform.scale,
-          height: BLOCK_SIZE.height * gridTransform.scale,
-          child: widget.block.plant != null
-            ? widget.block.plant!.getImage(gridTransform.scale)
-            : SizedBox.shrink(),
-        ),
+      blockOffset: Point(0, -1.3),
+      offset: Offset(-PLANT_SIZE_BASIC/2, -PLANT_SIZE_BASIC/2),
+      child: widget.block.plant != null
+          ? widget.block.plant!.getImage(gridTransform.scale)
+          : SizedBox.shrink(),
     );
   }
 }

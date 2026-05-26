@@ -20,7 +20,7 @@ class PhantomBlockWidget extends StatelessWidget {
   Widget build(BuildContext context) {
       return GridPositioned(
       point: pos,
-      offset: Point(0.45, 0.1),
+      blockOffset: Point(0.45, 0.1),
       child: GestureDetector(
         onTap: () => onBuy(pos),
         child: neibors > 0
