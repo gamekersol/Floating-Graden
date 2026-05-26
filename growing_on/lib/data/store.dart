@@ -4,7 +4,7 @@ export '../models/shopItem.dart';
 
 Item bagOfSpring = Item(
   name: "Bag of Spring", 
-  imagePath: 'assets/images/trinckets/seed.svg'
+  imagePath: 'assets/images/seedpacks/Default-pack.svg'
 );
 List<ShopItem> shopItems = [
   PackItem(

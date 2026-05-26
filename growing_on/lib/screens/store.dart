@@ -60,10 +60,13 @@ class ItemWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
               color: lightGreen,
             ),
-            child: SvgPicture.asset(
-              item.item.imagePath,
-              //fit: BoxFit.contain,
-              ),
+            child: Padding(
+              padding: .all(15),
+              child: SvgPicture.asset(
+                item.item.imagePath,
+                //fit: BoxFit.contain,
+                ),
+            ),
           ),
           
           // NAME, DESC, RARITY
