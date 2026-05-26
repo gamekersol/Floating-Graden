@@ -106,8 +106,9 @@ class _UIState extends State<_UI> {
   Widget build(BuildContext context) {
     return Padding(
       padding: .symmetric(horizontal: 10, vertical: 100),
-      child: Align(
-        alignment: .bottomEnd,
+      child: Container(
+        alignment: .centerRight,
+        padding: .symmetric(vertical: 15),
         child: Column(
           mainAxisAlignment: .end,
           spacing: 10,
@@ -136,15 +137,6 @@ class _UIState extends State<_UI> {
                 size: 50,
               ),
             ),
-            // ENABLE PLANT SETTING BUTTON
-            ElevatedButton(
-              onPressed: () => isEnabled.value = !isEnabled.value,
-              child: Icon(
-                Icons.abc,
-                color: state.value == .moving ? Colors.amber : Colors.white,
-                size: 50,
-              ),
-            )
           ]
         ),
       )
