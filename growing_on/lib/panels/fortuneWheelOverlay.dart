@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:growing_on/theme.dart';
@@ -68,13 +69,21 @@ void wheelPanel(BuildContext context, List<Item> items){
   const Duration rollTime = Duration(milliseconds: 5000);
 
   //roll
+  // WidgetsBinding.instance.addPostFrameCallback((_) {
+  //   controller.animateToItem(
+  //     rollItems.length * 6 + randIndex,
+  //     duration: rollTime,
+  //     curve: Curves.decelerate,
+  //   );
+  // });
   WidgetsBinding.instance.addPostFrameCallback((_) {
-    controller.animateToItem(
-      rollItems.length * 6 + randIndex,
+    controller.animateTo(
+      (rollItems.length * 6 + randIndex) * itemWidth + random.nextInt(itemWidth.round()),
       duration: rollTime,
       curve: Curves.decelerate,
     );
   });
+
 
   inv.instance.add(rollItems[randIndex]);
   Timer(Duration(milliseconds: rollTime.inMilliseconds + 1200 ), ()=> Navigator.pop(context));
