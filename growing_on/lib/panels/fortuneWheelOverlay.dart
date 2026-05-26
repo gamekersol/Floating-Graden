@@ -11,13 +11,13 @@ import '../models/item.dart';
 import '../constraints.dart';
 
 var controller = InfiniteScrollController();
-const int ITERATIONS = 3;
+const int ITERATIONS = 10;
 
 void wheelPanel(BuildContext context, List<Item> items){
 
   Random random = Random();
   // MULTIPLYING ITEMS FOR RARITY THINGS
-  List<Item> rollItems = List.empty();
+  List<Item> rollItems = [];
   for (int i = 0; i < ITERATIONS; i ++){
     for (var item in items){
     if (random.nextInt(RARITY_CHANSE[Rarity.common]!) < RARITY_CHANSE[item.rarity]!) rollItems.add(item);
@@ -25,7 +25,7 @@ void wheelPanel(BuildContext context, List<Item> items){
   }
 
   int randIndex = random.nextInt(rollItems.length);
-  double itemWidth = 70;
+  double itemWidth = 100;
 
   showDialog(
     fullscreenDialog: false,
@@ -35,19 +35,22 @@ void wheelPanel(BuildContext context, List<Item> items){
     SafeArea(
       child: Stack(
         children: [
-          InfiniteCarousel.builder(itemCount: rollItems.length
-            , itemExtent: itemWidth
-            , itemBuilder: (context, itemIndex, realIndex) => CarouselItemWidget(containedItem: rollItems[itemIndex]),
-            axisDirection: Axis.horizontal,
-            center: true,
-            loop: true,
-            physics: NeverScrollableScrollPhysics(),
-            controller: controller,
+          Padding(
+            padding: .symmetric(vertical: 350),
+            child: InfiniteCarousel.builder(itemCount: rollItems.length
+              , itemExtent: itemWidth
+              , itemBuilder: (context, itemIndex, realIndex) => CarouselItemWidget(containedItem: rollItems[itemIndex]),
+              axisDirection: Axis.horizontal,
+              center: true,
+              loop: true,
+              physics: NeverScrollableScrollPhysics(),
+              controller: controller,
+            ),
           ),
           // ARROW ON MIDDLE ITEM
           Center(
             child: SizedBox(
-              height: 150,
+              height: 170,
               child: RotatedBox(
                 quarterTurns: 1,
                 child: Divider(
@@ -67,7 +70,7 @@ void wheelPanel(BuildContext context, List<Item> items){
   //roll
   WidgetsBinding.instance.addPostFrameCallback((_) {
     controller.animateToItem(
-      rollItems.length * 30 + randIndex,
+      rollItems.length * 6 + randIndex,
       duration: rollTime,
       curve: Curves.decelerate,
     );
@@ -85,8 +88,8 @@ class CarouselItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: RARITY_COLOR[containedItem.rarity]! ,
-      child: SvgPicture.asset(containedItem.imagePath, fit: BoxFit.contain,),
+      color: RARITY_COLOR[containedItem.rarity]!.withAlpha(120) ,
+      child: containedItem.getImage(),
     );
   }
 }

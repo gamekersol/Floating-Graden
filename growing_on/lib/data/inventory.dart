@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:growing_on/data/garden.dart';
-import '../data/seedItems.dart';
 
 import '../models/inventorySlot.dart';
 export '../models/inventorySlot.dart';
@@ -8,31 +7,12 @@ export '../models/inventorySlot.dart';
 InventoryInstance instance = InventoryInstance(
   slots: 
     [
-      InventorySlot(
-        value: seedOfUtrica,
-        count: 1,
-      ),
-      InventorySlot(
-        value: seedOfUtrica,
-        count: 2,
-      ),
-      InventorySlot(
-        value: seedOfUtrica,
-        count: 11,
-      ),
-      InventorySlot(
-        value: seedOfUtrica,
-        count: 99,
-      ),
-      InventorySlot(
-        count: 0,
-      ),
-      InventorySlot(
-        count: 0,
-      ),
-      InventorySlot(
-        count: 0,
-      ),
+      InventorySlot(),
+      InventorySlot(),
+      InventorySlot(),
+      InventorySlot(),
+      InventorySlot(),
+      InventorySlot(),
     ]
 );
 
@@ -45,12 +25,16 @@ class InventoryInstance extends ChangeNotifier{
 
     if (ref != null) {
       ref.count += count;
+      notifyListeners();
     }
     else {
-      slots.add(InventorySlot(count: count, value: item,));
+      //slots.add(InventorySlot(count: count, value: item,));
+      ref = slots.where((e) => e.item.value == null).firstOrNull;
+
+      ref?.item.value = item;
     }
 
-    notifyListeners();
+    
   }
 
   bool removeSeed(Species spec, int count){
@@ -58,7 +42,11 @@ class InventoryInstance extends ChangeNotifier{
 
       if (ref == null || ref.count < count) return false;
       ref.count -= count;
-      if (ref.count == 0) ref.item.value = null;
+      if (ref.count == 0) {
+        ref.item.value = null;
+        // HOT FIX TO PREVENT ADDING NEW ITEM BUG
+        ref.count = 1;
+      }
       notifyListeners();
       return true;
   }
@@ -67,7 +55,11 @@ class InventoryInstance extends ChangeNotifier{
 
     if (ref == null || ref.count < count) return false;
     ref.count -= count;
-    if (ref.count == 0) ref.item.value = null;
+    if (ref.count == 0) {
+      ref.item.value = null;
+      // HOT FIX TO PREVENT ADDING NEW ITEM BUG
+      ref.count = 1;
+    }
     notifyListeners();
     return true;
 

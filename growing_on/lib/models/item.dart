@@ -53,4 +53,21 @@ class SeedItem extends Item{
       placingOverlay.isEnabled.value = true;
     });
   }
-}
+
+  @override
+  Widget getImage() {
+    return Stack(
+      children: [
+        Positioned.fill(child: SvgPicture.asset(imagePath, fit: .contain)),
+        Align(
+          alignment: Alignment.topRight,
+          child: SvgPicture.asset(
+            _ASSEST_PATH + species.name + "Icon.svg",
+            fit: BoxFit.contain,
+          ),
+        ),
+      ],
+    );
+  }
+}  
+const String _ASSEST_PATH = "assets/images/plants/";

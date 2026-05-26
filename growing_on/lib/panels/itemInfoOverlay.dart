@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import '../models/item.dart';
 import '../data/seedItems.dart';
@@ -88,10 +89,10 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
                 SeedItem s => [
                   paramWidget('Grow time :', s.species.getGrowTime().toString()),
                   SizedBox(height: BASE_SPACING / 2),
-                  paramWidget('Stages :', s.species.stages.length.toString()),
+                  paramWidget('Stages :', (s.species.stages.length+1).toString()),
                 ],
                 _ => [
-                  paramWidget('Desctiption :', item.description),
+                  titledFieldWidget('Description :', item.description),
                 ],
               },
               
@@ -110,6 +111,39 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget titledFieldWidget(String title, String body){
+    return Flexible(
+      flex: 6,
+      fit: .tight,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // TITLE
+          Expanded(
+            child:  ColoredBox(
+              color: Colors.black.withAlpha(50),
+              child: AutoSizeText(title, textAlign: .center,),
+            )
+          ),
+          Flexible(
+            fit: .tight,
+            flex: 4,
+            child: ColoredBox(
+              color: Colors.black.withAlpha(20),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Scrollable(
+                  axisDirection: .down,
+                  viewportBuilder: (context, position) => Text(body),
+                ),
+              ),
+            ),
+          ),
+        ],
+      )
     );
   }
 

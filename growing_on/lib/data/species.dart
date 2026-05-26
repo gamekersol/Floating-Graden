@@ -18,3 +18,12 @@ var utrica_dioica = Species(
     Duration(seconds: 3),
   ]
 );
+var veronika_prostrata = Species(
+  name: "Veronika-prostrata",
+  stages: [
+    Duration(seconds: 30),
+    Duration(seconds: 90),
+    Duration(seconds: 20),
+  ]
+);
+

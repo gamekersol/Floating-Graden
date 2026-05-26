@@ -7,12 +7,12 @@ const double MIN_SCALE = 0.03, MAX_SCALE = 10;
 
 const Map<Rarity, int> RARITY_CHANSE = {
   Rarity.theonlyone : 1,
-  Rarity.forgoten : 3,
-  Rarity.mythical : 10,
-  Rarity.vanished : 30,
-  Rarity.divided : 100,
-  Rarity.veryrare : 300,
-  Rarity.rare : 1000,
-  Rarity.uncommon : 3000,
-  Rarity.common : 10000
+  Rarity.forgoten : 2,
+  Rarity.mythical : 4,
+  Rarity.vanished : 8,
+  Rarity.divided : 16,
+  Rarity.veryrare : 32,
+  Rarity.rare : 64,
+  Rarity.uncommon : 128,
+  Rarity.common : 256
 };

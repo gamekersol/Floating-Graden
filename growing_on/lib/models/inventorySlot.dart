@@ -6,7 +6,6 @@ import 'item.dart';
 export 'item.dart';
 
 class InventorySlot extends StatelessWidget{
-  //final Item item;
   final ValueNotifier <Item?> item = ValueNotifier(null);
   int count;
 
@@ -25,10 +24,7 @@ class InventorySlot extends StatelessWidget{
             if (item.value != null) Padding(
               padding: EdgeInsetsGeometry.all(0),
               child: Center(
-                child: SvgPicture.asset(
-                  item.value!.imagePath,
-                  //fit: BoxFit.fill,
-                ),
+                child: item.value!.getImage(),
               )
             ),
 

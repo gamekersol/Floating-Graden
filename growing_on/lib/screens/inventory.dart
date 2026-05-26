@@ -3,7 +3,7 @@ import 'package:growing_on/theme.dart';
 import '../data/inventory.dart' as inv;
 import '../panels/itemInfoOverlay.dart' as infoOverlay;
 
-int maxCells = 7;
+//int maxCells = 6;
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({super.key});
@@ -30,7 +30,7 @@ class InventoryScreen extends StatelessWidget {
               builder: (_,_) => GridView(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-                children: List.generate(maxCells, (int i) => SlotWidget(slot: inv.instance.slots[i])),
+                children: List.generate(inv.instance.slots.length, (int i) => SlotWidget(slot: inv.instance.slots[i])),
               ),
             ),
           ),
@@ -54,6 +54,10 @@ class SlotWidget extends StatelessWidget {
         margin: EdgeInsets.all(6),
         decoration: BoxDecoration(
           borderRadius:  BorderRadius.circular(34),
+          border: .all(
+            color: slot.item.value != null ? RARITY_COLOR[slot.item.value!.rarity]! : Colors.transparent,
+            width: 5,
+          ),
           color: inventorySlotColor,
           boxShadow: [
             BoxShadow(

@@ -16,7 +16,7 @@ class MovingBlocksOverlay extends StatefulWidget {
   MovingBlocksOverlay({super.key, required this.plant}){
     handlingPlant = plant;
     handlingPlant.stage = handlingPlant.species.stages.length-1;
-    remainCount.value = instance.getSeedCount(plant.species);
+    print('seed count'+ instance.getSeedCount(plant.species).toString());
   }
 
   @override
@@ -29,6 +29,7 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
     return ListenableBuilder(
       listenable: isEnabled,
       builder: (context,child) {
+        remainCount.value = instance.getSeedCount(handlingPlant.species);
         var enabled = isEnabled.value;
         return AnimatedOpacity(
           opacity: enabled == false ? 0 : 1,
@@ -168,7 +169,8 @@ class _UIState extends State<UI> {
               onPressed: () {
                 if (remainCount.value < 1) return;
                 PlantOnBlock(gridPos + Point(0, 0), handlingPlant.species);
-                isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, -1) && block.plant == null);
+                //isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, -1) && block.plant == null);
+                isValidPlace.value = false;
                 remainCount.value--;
                 instance.removeSeed(handlingPlant.species , 1);
               } ,           

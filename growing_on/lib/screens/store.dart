@@ -31,8 +31,7 @@ class ItemWidget extends StatelessWidget {
   void Buy(){
     print("I BOUGHT SOME THING");
     currencys.change(item.type, -item.cost);
-    if (item is PackItem) item.onBuy(context);
-    else item.onBuy();
+    item.onBuy();
   }
 
 

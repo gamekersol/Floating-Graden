@@ -12,7 +12,8 @@ List<ShopItem> shopItems = [
     dropItems: [
       seeds.seedOfCogongrass,
       seeds.seedOfUtrica,
-      seeds.pickMeDiamond
+      seeds.seedOfVeronika,
+      seeds.pickMeDiamond,
     ],
     cost: 1,
   ),
