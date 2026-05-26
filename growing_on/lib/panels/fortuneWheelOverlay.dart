@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:growing_on/theme.dart';
+
 import '../data/inventory.dart' as inv;
 import 'package:infinite_carousel/infinite_carousel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -82,7 +84,8 @@ class CarouselItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      color: RARITY_COLOR[containedItem.rarity]! ,
       child: SvgPicture.asset(containedItem.imagePath, fit: BoxFit.contain,),
     );
   }
