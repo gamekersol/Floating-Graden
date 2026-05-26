@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../constraints.dart';
 
 class Plant{
   int stage = 0;
@@ -10,8 +11,8 @@ class Plant{
   Widget getImage(double globalScale){
     var path = _ASSEST_PATH + species.name + stage.toString() + '.svg';
     return SizedBox(
-      width: 100 * globalScale,
-      height: 100 * globalScale,
+      width: PLANT_SIZE_BASIC * globalScale,
+      height: PLANT_SIZE_BASIC * globalScale,
       child: SvgPicture.asset(path, fit: .contain,),
     );
   }

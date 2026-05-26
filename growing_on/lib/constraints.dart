@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/item.dart';
 
 const Size BLOCK_SIZE = Size(80, 50);
+const double PLANT_SIZE_BASIC = 150;
 const Size BLOCK_COLLIDER_SIZE = Size(62, 30);
 const double MIN_SCALE = 0.03, MAX_SCALE = 10;
 

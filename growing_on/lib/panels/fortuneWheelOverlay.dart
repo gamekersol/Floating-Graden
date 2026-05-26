@@ -62,7 +62,7 @@ void wheelPanel(BuildContext context, List<Item> items){
         ]
       ),
     )
-  );
+  ).then((_) => caroselTimer.cancel());
 
   const Duration rollTime = Duration(milliseconds: 7000);
 
@@ -76,8 +76,9 @@ void wheelPanel(BuildContext context, List<Item> items){
 
 
   inv.instance.add(rollItems[randIndex]);
-  Timer(Duration(milliseconds: rollTime.inMilliseconds + 1200 ), ()=> Navigator.pop(context));
+  caroselTimer = Timer(Duration(milliseconds: rollTime.inMilliseconds + 1200 ), ()=> Navigator.pop(context));
 }
+late Timer caroselTimer;
 
 class CarouselItemWidget extends StatelessWidget {
   const CarouselItemWidget({super.key, required this.containedItem});
