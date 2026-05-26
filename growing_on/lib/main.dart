@@ -10,6 +10,7 @@ Map <String, WidgetBuilder> _routes = {
   "/Tetris" : (context)=> Tetris(),
   '/' : (context) => MyHomePage(),
 };
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   runApp(
@@ -17,6 +18,7 @@ void main() {
     title: 'Flutter Demo',
     theme: themeData,
     routes: _routes,
+    navigatorKey: navigatorKey,
     )
   );
 }

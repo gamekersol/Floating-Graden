@@ -6,14 +6,23 @@ import 'package:infinite_carousel/infinite_carousel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import '../models/item.dart';
+import '../constraints.dart';
 
 var controller = InfiniteScrollController();
+const int ITERATIONS = 3;
 
-void wheelPanel(BuildContext context){
+void wheelPanel(BuildContext context, List<Item> items){
 
-  List<Item> items = [inv.seedOfUtrica, inv.seedOfUtrica, inv.pickMeDiamond];
+  Random random = Random();
+  // MULTIPLYING ITEMS FOR RARITY THINGS
+  List<Item> rollItems = List.empty();
+  for (int i = 0; i < ITERATIONS; i ++){
+    for (var item in items){
+    if (random.nextInt(RARITY_CHANSE[Rarity.common]!) < RARITY_CHANSE[item.rarity]!) rollItems.add(item);
+    }
+  }
 
-  int randIndex = Random().nextInt(items.length);
+  int randIndex = random.nextInt(rollItems.length);
   double itemWidth = 70;
 
   showDialog(
@@ -24,9 +33,9 @@ void wheelPanel(BuildContext context){
     SafeArea(
       child: Stack(
         children: [
-          InfiniteCarousel.builder(itemCount: items.length
+          InfiniteCarousel.builder(itemCount: rollItems.length
             , itemExtent: itemWidth
-            , itemBuilder: (context, itemIndex, realIndex) => CarouselItemWidget(containedItem: items[itemIndex]),
+            , itemBuilder: (context, itemIndex, realIndex) => CarouselItemWidget(containedItem: rollItems[itemIndex]),
             axisDirection: Axis.horizontal,
             center: true,
             loop: true,
@@ -56,13 +65,13 @@ void wheelPanel(BuildContext context){
   //roll
   WidgetsBinding.instance.addPostFrameCallback((_) {
     controller.animateToItem(
-      100 + randIndex,
+      rollItems.length * 30 + randIndex,
       duration: rollTime,
       curve: Curves.decelerate,
     );
   });
 
-  inv.instance.add(items[randIndex]);
+  inv.instance.add(rollItems[randIndex]);
   Timer(Duration(milliseconds: rollTime.inMilliseconds + 1200 ), ()=> Navigator.pop(context));
 }
 

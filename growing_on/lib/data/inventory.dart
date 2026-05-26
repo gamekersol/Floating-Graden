@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:growing_on/data/garden.dart';
-import '../data/species.dart' as species;
+import '../data/seedItems.dart';
 
 import '../models/inventorySlot.dart';
 export '../models/inventorySlot.dart';
-
-Item seedOfUtrica = SeedItem(
-  name: "Seed of something spiky", 
-  imagePath: 'assets/images/trinckets/seed.svg',
-  description: 'thouse are spiky and somethimes beneficial ,not only in ordinary way',
-  species: species.utrica_dioica,
-);
-Item pickMeDiamond = Item(
-  name: "Diamond", 
-  imagePath: 'assets/images/trinckets/diamond.svg'
-);
 
 InventoryInstance instance = InventoryInstance(
   slots: 

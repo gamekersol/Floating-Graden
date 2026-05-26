@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart' as main;
 import '../data/currency.dart';
 import '../panels/fortuneWheelOverlay.dart';
 
@@ -25,12 +26,20 @@ class ShopItem extends StatelessWidget {
 }
 
 class PackItem extends ShopItem{
+  final List<Item> dropItems;
+
+
   const PackItem({super.key, 
   required super.item,
   required super.cost,
+  required this.dropItems,
   super.type = TypeOfCurrency.seeds,
-  super.onBuy = wheelPanel,
   });
+
+  @override
+  Function get onBuy => super.onBuy == _None ? _openWheelPanel : super.onBuy;
+
+  void _openWheelPanel() => wheelPanel(main.navigatorKey.currentContext!, dropItems);
 }
 
 void _None() => print('None action');

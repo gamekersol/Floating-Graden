@@ -1,10 +1,11 @@
 import '../models/plant.dart';
 
-var sunflower = Species(
-  name: "Sunflower", 
+var cogongrass = Species(
+  name: "Cogongrass", 
   stages: [
-    Duration(seconds: 3),
-    Duration(seconds: 3),
+    Duration(seconds: 8),
+    Duration(seconds: 10),
+    Duration(seconds: 4),
     ]
   );
 

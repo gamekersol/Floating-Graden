@@ -7,13 +7,26 @@ import '../panels/itemInfoOverlay.dart' as infoOverlay;
 import '../panels/plantsPlacingOverlay.dart' as placingOverlay;
 import '../models/plant.dart';
 
+enum Rarity{
+  common,
+  uncommon,
+  rare,
+  veryrare,
+  divided,
+  vanished,
+  mythical,
+  forgoten,
+  theonlyone
+}
+
 class Item 
 {
   final String name;
   final String description;
   final String imagePath;
+  final Rarity rarity;
 
-  const Item({required this.name, required this.imagePath, this.description = ''});
+  const Item({required this.name, this.rarity = .common, required this.imagePath, this.description = ''});
 
   Widget getImage() => SvgPicture.asset(imagePath, fit: .contain,);
   void use() => print('noneuse');
@@ -24,6 +37,7 @@ class SeedItem extends Item{
 
   const SeedItem({
     required super.name,
+    super.rarity = .common,
     required super.imagePath,
     required this.species,
     super.description,

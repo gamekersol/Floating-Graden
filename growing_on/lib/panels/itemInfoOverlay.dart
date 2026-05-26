@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/item.dart';
+import '../data/seedItems.dart';
 import '../data/inventory.dart';
 import '../theme.dart';
 
