@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:growing_on/theme.dart';
 
 import '../data/inventory.dart' as inv;
 import 'package:infinite_carousel/infinite_carousel.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import '../models/item.dart';
 import '../constraints.dart';
@@ -66,21 +64,13 @@ void wheelPanel(BuildContext context, List<Item> items){
     )
   );
 
-  const Duration rollTime = Duration(milliseconds: 5000);
+  const Duration rollTime = Duration(milliseconds: 7000);
 
-  //roll
-  // WidgetsBinding.instance.addPostFrameCallback((_) {
-  //   controller.animateToItem(
-  //     rollItems.length * 6 + randIndex,
-  //     duration: rollTime,
-  //     curve: Curves.decelerate,
-  //   );
-  // });
   WidgetsBinding.instance.addPostFrameCallback((_) {
     controller.animateTo(
-      (rollItems.length * 6 + randIndex) * itemWidth + random.nextInt(itemWidth.round()),
+      (rollItems.length * 4 + randIndex) * itemWidth + random.nextInt(itemWidth.round()),
       duration: rollTime,
-      curve: Curves.decelerate,
+      curve: Curves.easeOutCubic,
     );
   });
 
@@ -97,6 +87,7 @@ class CarouselItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: .all(6),
       color: RARITY_COLOR[containedItem.rarity]!.withAlpha(120) ,
       child: containedItem.getImage(),
     );
