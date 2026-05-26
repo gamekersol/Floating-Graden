@@ -171,7 +171,7 @@ class _UIState extends State<UI> {
                 PlantOnBlock(gridPos + Point(0, 0), handlingPlant.species);
                 isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, -1) && block.plant == null);
                 remainCount.value--;
-                //instance.remove(, 1);
+                instance.removeSeed(handlingPlant.species , 1);
               } ,           
               icon: Icon(Icons.check,size: 70, color: isValidPlace.value && remainCount.value > 0 ? Colors.lightGreen : Colors.grey)
             ),

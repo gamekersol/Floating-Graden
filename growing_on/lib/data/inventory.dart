@@ -64,11 +64,21 @@ class InventoryInstance extends ChangeNotifier{
     notifyListeners();
   }
 
+  bool removeSeed(Species spec, int count){
+      InventorySlot? ref = slots.where((e) => e.item.value is SeedItem && (e.item.value as SeedItem).species == spec).firstOrNull;
+
+      if (ref == null || ref.count < count) return false;
+      ref.count -= count;
+      if (ref.count == 0) ref.item.value = null;
+      notifyListeners();
+      return true;
+  }
   bool remove(Item item, int count){
     InventorySlot? ref = slots.where((e) => e.item.value?.name == item.name).firstOrNull;
 
     if (ref == null || ref.count < count) return false;
     ref.count -= count;
+    if (ref.count == 0) ref.item.value = null;
     notifyListeners();
     return true;
 
