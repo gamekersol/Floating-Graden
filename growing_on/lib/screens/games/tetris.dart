@@ -70,7 +70,6 @@ class _ScreenState extends State<Screen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Timer.periodic(Duration(milliseconds: (400 * timeScale).round()), _Tick);
   }

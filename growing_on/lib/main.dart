@@ -23,10 +23,7 @@ void main() {
   );
 }
 
-//TODO show remain count on planting,
-//TODO fix garden alignment,
 //TODO special panel,
-//TODO seed substructing + agtercarousel inventory setstate,
 //TODO fix navbar
 
 

@@ -63,7 +63,6 @@ class InventoryInstance extends ChangeNotifier{
     notifyListeners();
     return true;
 
-    // TODO make if count ==0 remove;
   }
 
   int getSeedCount(Species spec){

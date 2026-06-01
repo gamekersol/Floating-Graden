@@ -16,6 +16,7 @@ class Plant{
       child: SvgPicture.asset(path, fit: .contain,),
     );
   }
+  bool isRedyForCollect () => stage == species.collectStage;
 }
 
 const String _ASSEST_PATH = "assets/images/plants/";
@@ -23,8 +24,9 @@ const String _ASSEST_PATH = "assets/images/plants/";
 class Species{
   final String name;
   final List<Duration> stages;
+  final int collectStage;
 
-  const Species({required this.name, required this.stages});
+  const Species({required this.name, required this.stages, int? collectStage}) : collectStage = stages.length;
 
   String getGrowTime(){
     Duration dur = Duration.zero;
