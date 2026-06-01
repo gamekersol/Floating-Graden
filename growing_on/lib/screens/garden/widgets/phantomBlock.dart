@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:growing_on/data/currency.dart';
 import 'package:growing_on/models/block.dart';
 import 'package:growing_on/models/grid.dart';
 
@@ -25,7 +26,15 @@ class PhantomBlockWidget extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onBuy(pos, price),
         child: neibors > 0
-            ? Text('$price \$', style: TextStyle(fontSize: 20 * gridTransform.scale),)
+            ? Text('$price \$', 
+            style: TextStyle(
+              fontSize: 20 * gridTransform.scale, 
+              color: Color.lerp(
+                Colors.lightGreen[200], 
+                Colors.redAccent[400], 
+                price / currencys.values[TypeOfCurrency.coins]!.value)
+              ),
+            )
             : Icon(Icons.block_sharp, size: _SIZE.height * gridTransform.scale, color: Colors.redAccent),
       ),
     );
