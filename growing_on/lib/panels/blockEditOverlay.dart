@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:growing_on/models/block.dart';
 import '../data/garden.dart' as data;
+import '../data/currency.dart';
 import '../screens/garden/widgets/phantomBlock.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +53,9 @@ class AddBlockPanel extends StatefulWidget {
 }
 
 class _AddBlockPanelState extends State<AddBlockPanel> {
-  void buyBlock(Point<int> blockPos){
+  void buyBlock(Point<int> blockPos, int price){
+    if (!currencys.change(.coins, -price)) return;
+    
     setState(() {
       data.blocks.add(Block(pos: blockPos));
       _buildBlockSet(Block(pos: blockPos));

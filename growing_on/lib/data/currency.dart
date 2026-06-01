@@ -27,12 +27,13 @@ class Currencys extends ChangeNotifier{
   };
 
 
-  void change (TypeOfCurrency name, int diff){
-    if (values[name]!.value + diff < 0) return;
+  bool change (TypeOfCurrency name, int diff){
+    if (values[name]!.value + diff < 0) return false;
 
     values[name]!.value += diff;
     notifyListeners();
     print('notify listeners');
+    return true;
   }
 }
 
