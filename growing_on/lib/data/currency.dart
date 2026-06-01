@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const String _ASSET_PATH = 'assets/images/trinckets/';
 
 class Currency {
-  int value = 999;
+  int value = 404;
   String iconName;
 
   Currency(this.iconName);
@@ -26,15 +27,27 @@ class Currencys extends ChangeNotifier{
     .diamonds : _diamonds ,
   };
 
+  bool change (TypeOfCurrency name, int diff) {
+    var value = values[name]!.value;
 
-  bool change (TypeOfCurrency name, int diff){
-    if (values[name]!.value + diff < 0) return false;
-
-    values[name]!.value += diff;
+    if (value + diff < 0) return false;
+    value += diff;
     notifyListeners();
-    print('notify listeners');
+    save(name, value);
+    
     return true;
   }
+
+  Future <void> save(TypeOfCurrency name, int value) async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt(name.toString(), value);
+  }
+}
+
+void setValues(int seeds, int coins, int diamonds){
+  _seeds.value = seeds;
+  _coins.value = coins;
+  _diamonds.value = diamonds;
 }
 
 Currencys currencys = Currencys();
