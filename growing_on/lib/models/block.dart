@@ -25,7 +25,7 @@ class Block {
 
   factory Block.fromJson(Map<String, dynamic> json) => Block(
     pos: pointFromJson(json['pos']) ,
-    plant: json['plant']?.fromJson(),
+    plant: json['plant'] != null ? Plant.fromJson(json['plant']) : null,
   );
 
   Map<String,dynamic> toJson() =>

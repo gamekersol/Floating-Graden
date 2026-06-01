@@ -28,19 +28,18 @@ class Currencys extends ChangeNotifier{
   };
 
   bool change (TypeOfCurrency name, int diff) {
-    var value = values[name]!.value;
+    if (values[name]!.value + diff < 0) return false;
 
-    if (value + diff < 0) return false;
-    value += diff;
+    values[name]!.value += diff; 
     notifyListeners();
-    save(name, value);
+    save(name, values[name]!.value);
     
     return true;
   }
 
   Future <void> save(TypeOfCurrency name, int value) async{
     final prefs = await SharedPreferences.getInstance();
-    prefs.setInt(name.toString(), value);
+    prefs.setInt(name.name, value);
   }
 }
 
