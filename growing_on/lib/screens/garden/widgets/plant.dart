@@ -19,7 +19,8 @@ class PlantWidget extends StatefulWidget {
   }
 }
 
-const int _COLLECT_MARK_SIZE = 40;
+const int _COLLECT_MARK_SIZE = 30;
+const int _COLLECT_MARK_PADDING = 15;
 
 class _PlantWidgetState extends State<PlantWidget> {
   @override
@@ -37,13 +38,16 @@ class _PlantWidgetState extends State<PlantWidget> {
 
           //collect mark
           if (widget.block.plant!.isRedyForCollect()) Transform.translate(
-            offset: Offset((PLANT_SIZE_BASIC/2 - _COLLECT_MARK_SIZE/2), -25) * gridTransform.scale,
+            offset: Offset((PLANT_SIZE_BASIC/2 - _COLLECT_MARK_SIZE/2 - _COLLECT_MARK_PADDING), -25) * gridTransform.scale,
             child: GestureDetector(
               onTap: widget.onCollect,
-              child: Icon(
-                Icons.control_point_duplicate_outlined, 
-                size: _COLLECT_MARK_SIZE* gridTransform.scale,
-                color: Colors.orange.withAlpha(120),),
+              child: Padding(
+                padding: .all(_COLLECT_MARK_PADDING * gridTransform.scale),
+                child: Icon(
+                  Icons.control_point_duplicate_outlined, 
+                  size: _COLLECT_MARK_SIZE* gridTransform.scale,
+                  color: Colors.orange.withAlpha(120),),
+              ),
             ),
           )
         ]
