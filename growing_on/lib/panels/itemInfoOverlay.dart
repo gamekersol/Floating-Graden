@@ -90,6 +90,8 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
                   paramWidget('Grow time :', s.species.getGrowTime().toString()),
                   SizedBox(height: BASE_SPACING / 2),
                   paramWidget('Stages :', (s.species.stages.length+1).toString()),
+                  SizedBox(height: BASE_SPACING / 2),
+                  paramWidget('Basic price :', (s.species.price).toString()),
                 ],
                 _ => [
                   titledFieldWidget('Description :', item.description),
