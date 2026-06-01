@@ -1,4 +1,10 @@
-import '../models/plant.dart';
+import '../models/species.dart';
+
+Map <String, Species>  dict = {
+  'Cogongrass' : cogongrass,
+  'Urtica-dioica' : utrica_dioica,
+  'Veronika-prostrata' : veronika_prostrata,
+};
 
 var cogongrass = Species(
   name: "Cogongrass", 

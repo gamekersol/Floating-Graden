@@ -1,6 +1,7 @@
 import 'plant.dart';
 import 'dart:math';
 import '../data/growService.dart';
+import '../tools/pointSerializator.dart';
 export 'dart:math';
 export 'plant.dart';
 
@@ -21,4 +22,15 @@ class Block {
     this.plant = plant;
     startGrowth(this);
   }
+
+  factory Block.fromJson(Map<String, dynamic> json) => Block(
+    pos: pointFromJson(json['pos']) ,
+    plant: json['plant']?.fromJson(),
+  );
+
+  Map<String,dynamic> toJson() =>
+  {
+    'pos' : pointToJson(pos),
+    'plant' : plant?.toJson(),
+  };
 }

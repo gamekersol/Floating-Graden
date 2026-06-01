@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'theme.dart';
 import 'screens.dart';
+import 'data/dataService.dart' as data;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'data/currency.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -12,7 +13,11 @@ Map <String, WidgetBuilder> _routes = {
 };
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await data.Load();
+
   runApp(
     MaterialApp(
     title: 'Flutter Demo',

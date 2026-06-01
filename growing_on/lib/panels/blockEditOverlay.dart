@@ -57,7 +57,7 @@ class _AddBlockPanelState extends State<AddBlockPanel> {
     if (!currencys.change(.coins, -price)) return;
     
     setState(() {
-      data.blocks.add(Block(pos: blockPos));
+      data.addBlock(blockPos);
       _buildBlockSet(Block(pos: blockPos));
       data.blockNotifier.value++;
     });

@@ -15,7 +15,7 @@ var bagOfSpring = PackItem(
 );
 var bagOfDiamonds = PackItem(
   name: "Shiny pack", 
-  imagePath: 'assets/images/seedpacks/Default-pack.svg',
+  imagePath: 'assets/images/seedpacks/Diamond-pack.svg',
   dropItems: [
     seeds.seedOfVeronika,
     seeds.pickMeDiamond,
