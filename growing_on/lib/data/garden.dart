@@ -33,10 +33,10 @@ List<Block> blocks = [
   Block(pos: Point(-2, 3)), Block(pos: Point(-1, 3)), Block(pos: Point(1, 3)), Block(pos: Point(2, 3)),
 ];
 
-PlantOnBlock(Point pos, Species spec){
+plantOnBlock(Point pos, Species spec){
   print("Trying to plant on $pos");
 
-  var block = GetBlockByPos(pos);
+  var block = getBlockByPos(pos);
   if (block == null || block.plant != null) return null;
 
   block.SetPlant(Plant(species: spec));
@@ -44,5 +44,10 @@ PlantOnBlock(Point pos, Species spec){
   blockNotifier.value++;
 }
 
-Block? GetBlockByPos(Point pos) => 
+digOutPlant(Block instance){
+  getBlockByPos(instance.pos)!.plant = null;
+  blockNotifier.value++;
+}
+
+Block? getBlockByPos(Point pos) => 
 blocks.firstWhereOrNull((block) => block.pos == pos);

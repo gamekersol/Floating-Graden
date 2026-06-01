@@ -17,6 +17,7 @@ class Plant{
     );
   }
   bool isRedyForCollect () => stage == species.collectStage;
+  int getPrice () => species.price;
 }
 
 const String _ASSEST_PATH = "assets/images/plants/";
@@ -25,8 +26,14 @@ class Species{
   final String name;
   final List<Duration> stages;
   final int collectStage;
+  final int price;
 
-  const Species({required this.name, required this.stages, int? collectStage}) : collectStage = stages.length;
+  const Species({
+    required this.name,
+    required this.stages,
+    required this.price,
+    int? collectStage,
+    }) : collectStage = stages.length;
 
   String getGrowTime(){
     Duration dur = Duration.zero;

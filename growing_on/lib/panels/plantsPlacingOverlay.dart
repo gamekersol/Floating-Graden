@@ -168,7 +168,7 @@ class _UIState extends State<UI> {
               // HOTFIX
               onPressed: () {
                 if (remainCount.value < 1) return;
-                PlantOnBlock(gridPos + Point(0, 0), handlingPlant.species);
+                plantOnBlock(gridPos + Point(0, 0), handlingPlant.species);
                 //isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, -1) && block.plant == null);
                 isValidPlace.value = false;
                 remainCount.value--;
