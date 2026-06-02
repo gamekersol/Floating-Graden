@@ -4,8 +4,8 @@ import 'screens.dart';
 import 'data/dataService.dart' as data;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'data/currency.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'musicService.dart' as music;
 
 Map <String, WidgetBuilder> _routes = {
   "/Tetris" : (context)=> Tetris(),
@@ -17,6 +17,8 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await data.Load();
+  music.Start();
+  seedsIncrementor();
 
   runApp(
     MaterialApp(
@@ -26,6 +28,13 @@ void main() async {
     navigatorKey: navigatorKey,
     )
   );
+}
+
+Future<void> seedsIncrementor () async {
+  while (true){
+    await Future.delayed(Duration(seconds : 2));
+    currencys.change(.seeds, 1);
+  }
 }
 
 //TODO special panel,
@@ -45,16 +54,11 @@ List<Widget> screens = [
   StoreScreen(),
 ];
 
-AudioPlayer audioPlayer = AudioPlayer();
-
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
-  
 
   @override
   Widget build(BuildContext context) {
-    // MUSIC?
-    musicTime();
 
     return Material(
       child: Stack(
@@ -70,10 +74,6 @@ class MyHomePage extends StatelessWidget {
         ]
       ),
     );
-  }
-  void musicTime (){
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
-    if(audioPlayer.state != PlayerState.playing)audioPlayer.play(AssetSource('audio/Stand-Tall.mp3'));
   }
 }
 
