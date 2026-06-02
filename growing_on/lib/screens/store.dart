@@ -29,8 +29,8 @@ class ItemWidget extends StatelessWidget {
   const ItemWidget({super.key, required this.item, required this.context});
 
   void Buy(){
+    if (!currencys.change(item.type, -item.cost)) return;
     print("I BOUGHT SOME THING");
-    currencys.change(item.type, -item.cost);
     item.onBuy();
   }
 
