@@ -1,6 +1,9 @@
 import 'package:growing_on/data/species.dart' as species;
 import 'package:growing_on/models/item.dart';
 
+//TODO so many imports, type of curency make as separate class
+import 'currency.dart' as ineedonlytype;
+
 var seedOfUtrica = SeedItem(
   name: "Seed of something spiky", 
   rarity: .uncommon,
@@ -19,12 +22,14 @@ var seedOfVeronika = SeedItem(
   name: "Seed of veronika", 
   rarity: .veryrare,
   imagePath: 'assets/images/trinckets/seed.svg',
-  description: 'the only fluffy thing in this place',
+  description: 'It is so fucking beatiful',
   species: species.veronika_prostrata,
 );
-var pickMeDiamond = Item(
+var pickMeDiamond = CurrencyContainer(
   name: "Diamond", 
   rarity: .rare,
   imagePath: 'assets/images/trinckets/diamond.svg',
-  description: 'Just a diamond, you know?'
+  type: .diamonds,
+  count: 2,
+  description: 'Just a diamond that splits in a half, you know ? \nGot 2 with cost of 3, smart investment!'
 );

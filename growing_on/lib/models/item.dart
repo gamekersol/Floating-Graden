@@ -5,7 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import '../main.dart' as main;
 import '../panels/itemInfoOverlay.dart' as infoOverlay;
 import '../panels/plantsPlacingOverlay.dart' as placingOverlay;
+import '../data/currency.dart';
 import '../models/plant.dart';
+import '../data/inventory.dart' as inv;
 
 enum Rarity{
   common,
@@ -32,6 +34,27 @@ class Item
   void use() => print('noneuse');
 }
 
+class CurrencyContainer extends Item{
+  final TypeOfCurrency type;
+  final int count;
+
+  const CurrencyContainer({
+    required super.name,
+    super.rarity = .common,
+    required super.imagePath,
+    required this.type,
+    required this.count,
+    super.description,
+  });
+
+  @override
+  void use() {
+    currencys.change(type, count);
+    inv.instance.remove(this, 1);
+    infoOverlay.isEnabled.value = false;
+  }
+}
+
 class SeedItem extends Item{
   final Species species;
 
@@ -54,6 +77,8 @@ class SeedItem extends Item{
     });
   }
 
+  static const String _ASSEST_PATH = "assets/images/plants/";
+
   @override
   Widget getImage() {
     return Stack(
@@ -69,5 +94,4 @@ class SeedItem extends Item{
       ],
     );
   }
-}  
-const String _ASSEST_PATH = "assets/images/plants/";
+}
