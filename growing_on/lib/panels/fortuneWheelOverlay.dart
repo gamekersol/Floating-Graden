@@ -10,14 +10,15 @@ import '../models/item.dart';
 import '../constraints.dart';
 
 var controller = InfiniteScrollController();
-const int ITERATIONS = 10;
+const int ITERATIONS = 6;
 
 void wheelPanel(BuildContext context, List<Item> items){
 
   Random random = Random();
   // MULTIPLYING ITEMS FOR RARITY THINGS
   List<Item> rollItems = [];
-  for (int i = 0; i < ITERATIONS; i ++){
+  var fairIterations = ITERATIONS * (1 + 10 ~/ items.length);
+  for (int i = 0; i < fairIterations; i ++){
     for (var item in items){
     if (random.nextInt(RARITY_CHANSE[Rarity.common]!) < RARITY_CHANSE[item.rarity]!) rollItems.add(item);
     }
