@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../constraints.dart';
 
 const String _ASSET_PATH = 'assets/images/trinckets/';
 
@@ -28,7 +29,7 @@ class Currencys extends ChangeNotifier{
   };
 
   bool change (TypeOfCurrency name, int diff) {
-    if (values[name]!.value + diff < 0) return false;
+    if (values[name]!.value + diff < 0 && !INFINITE_MONEY) return false;
 
     values[name]!.value += diff; 
     notifyListeners();
