@@ -30,7 +30,7 @@ class InventoryScreen extends StatelessWidget {
               builder: (_,_) => GridView(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 25),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-                children: List.generate(inv.instance.slots.length, (int i) => SlotWidget(slot: inv.instance.slots[i])),
+                children: List.generate(inv.instance.slots.length, (int i) => CellWidget(content: inv.instance.slots[i])),
               ),
             ),
           ),
@@ -41,10 +41,10 @@ class InventoryScreen extends StatelessWidget {
     );
   }
 }
-class SlotWidget extends StatelessWidget {
-  final inv.InventorySlot slot;
+class CellWidget extends StatelessWidget {
+  final inv.CellContent content;
 
-  const SlotWidget({super.key, required this.slot});
+  const CellWidget({super.key, required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class SlotWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius:  BorderRadius.circular(34),
           border: .all(
-            color: slot.item.value != null ? RARITY_COLOR[slot.item.value!.rarity]! : Colors.transparent,
+            color: content.item.value != null ? RARITY_COLOR[content.item.value!.rarity]! : Colors.transparent,
             width: 5,
           ),
           color: inventorySlotColor,
@@ -67,17 +67,56 @@ class SlotWidget extends StatelessWidget {
             )
           ]
         ),
-        child: slot,
+
+        // DUMB PART
+        child: Stack(
+          children: [
+            // CELL CONTENT
+            content,
+            // ITEM COUNT
+            if (content.item.value != null && content.count > 1) ItemCountWidget()
+          ],
+        ),
       ),
     );
   }
 
+  Widget ItemCountWidget() =>
+    Align(
+      alignment: Alignment(1, 1),
+      child: Container(
+        height: 200/5.4,
+        width: 200/5.4,
+        decoration: BoxDecoration(
+          color: lightGreen,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          //padding: EdgeInsetsGeometry.all(1),
+          child: Text(
+            content.count.toString(),
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                color: Colors.black.withAlpha(135),
+                offset: Offset.fromDirection(1)*2,
+                )
+              ]
+            ),
+          ),
+        ),
+      ),
+    );
+
   void onTap(){
     print("slot tap");
-    if (slot.item.value == null) return;
+    if (content.item.value == null) return;
     print('on item info panel');
 
-    infoOverlay.item = slot.item.value!; 
+    infoOverlay.item = content.item.value!; 
     infoOverlay.isEnabled.value = true;
   }
 }

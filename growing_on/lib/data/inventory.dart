@@ -7,21 +7,21 @@ export '../models/inventorySlot.dart';
 InventoryInstance instance = InventoryInstance(
   slots: 
     [
-      InventorySlot(),
-      InventorySlot(),
-      InventorySlot(),
-      InventorySlot(),
-      InventorySlot(),
-      InventorySlot(),
+      CellContent(),
+      CellContent(),
+      CellContent(),
+      CellContent(),
+      CellContent(),
+      CellContent(),
     ]
 );
 
 class InventoryInstance extends ChangeNotifier{
-  List<InventorySlot> slots;
+  List<CellContent> slots;
   InventoryInstance({required this.slots});
 
   void add(Item item, {int count = 1}){
-    InventorySlot? ref = slots.where((e) => e.item.value?.name == item.name).firstOrNull;
+    CellContent? ref = slots.where((e) => e.item.value?.name == item.name).firstOrNull;
 
     if (ref != null) {
       ref.count += count;
@@ -33,12 +33,10 @@ class InventoryInstance extends ChangeNotifier{
 
       ref?.item.value = item;
     }
-
-    
   }
 
   bool removeSeed(Species spec, int count){
-      InventorySlot? ref = slots.where((e) => e.item.value is SeedItem && (e.item.value as SeedItem).species == spec).firstOrNull;
+      CellContent? ref = slots.where((e) => e.item.value is SeedItem && (e.item.value as SeedItem).species == spec).firstOrNull;
 
       if (ref == null || ref.count < count) return false;
       ref.count -= count;
@@ -51,7 +49,7 @@ class InventoryInstance extends ChangeNotifier{
       return true;
   }
   bool remove(Item item, int count){
-    InventorySlot? ref = slots.where((e) => e.item.value?.name == item.name).firstOrNull;
+    CellContent? ref = slots.where((e) => e.item.value?.name == item.name).firstOrNull;
 
     if (ref == null || ref.count < count) return false;
     ref.count -= count;
@@ -62,11 +60,10 @@ class InventoryInstance extends ChangeNotifier{
     }
     notifyListeners();
     return true;
-
   }
 
   int getSeedCount(Species spec){
-    InventorySlot? ref = slots.where((e) => e.item.value is SeedItem && (e.item.value as SeedItem).species == spec).firstOrNull;
+    CellContent? ref = slots.where((e) => e.item.value is SeedItem && (e.item.value as SeedItem).species == spec).firstOrNull;
     return ref?.count ?? 0;
   }
 }
