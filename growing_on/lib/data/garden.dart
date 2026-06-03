@@ -58,6 +58,8 @@ void addBlock(Point<int> pos) {
   save();
 }
 
+Point<int>? getFirstEmptyCellPos() => blocks.firstWhereOrNull((block) => block.plant == null)?.pos;
+
 Block? getBlockByPos(Point pos) => blocks.firstWhereOrNull((block) => block.pos == pos);
 
 void save() => JsonStorage.save('garden', blocks.map((b) => b.toJson()).toList());

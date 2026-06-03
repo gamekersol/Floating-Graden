@@ -16,7 +16,12 @@ class MovingBlocksOverlay extends StatefulWidget {
   MovingBlocksOverlay({super.key, required this.plant}){
     handlingPlant = plant;
     handlingPlant.stage = handlingPlant.species.stages.length-1;
-    print('seed count'+ instance.getSeedCount(plant.species).toString());
+
+    // TODO NEAREST TO CENTER BLOCK POOL
+    // PREPARED POSITION ON ENTRING PANEL
+    var freeBlock = getFirstEmptyCellPos();
+    gridPos = freeBlock ?? Point(0, 0);
+    isValidPlace.value = freeBlock != null;
   }
 
   @override
@@ -77,9 +82,9 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
   }
 }
 
-Point<int> gridPos = Point(0, 0);
+Point<int> gridPos = Point(0, 0), prevPos = Point(0, 0);
 ValueNotifier <(double, double)> topLeftPos = ValueNotifier((500,500));
-ValueNotifier <bool> isValidPlace = new ValueNotifier(false);
+ValueNotifier <bool> isValidPlace = new ValueNotifier(true);
 
 class PhantomPlant extends StatefulWidget {
   const PhantomPlant({
@@ -161,23 +166,17 @@ class _UIState extends State<UI> {
         mainAxisAlignment: .center,
         spacing: 20,
         children: [
-          // APROVE
+
+          // APROVE BUTTON
           ListenableBuilder(
             listenable: isValidPlace,
             builder: (context, child) => IconButton.filled(
-              // HOTFIX
-              onPressed: () {
-                if (remainCount.value < 1) return;
-                plantOnBlock(gridPos + Point(0, 0), handlingPlant.species);
-                //isValidPlace.value = blocks.any((block) => block.pos == gridPos + Point(0, -1) && block.plant == null);
-                isValidPlace.value = false;
-                remainCount.value--;
-                instance.removeSeed(handlingPlant.species , 1);
-              } ,           
+              onPressed: onPick,           
               icon: Icon(Icons.check,size: 70, color: isValidPlace.value && remainCount.value > 0 ? Colors.lightGreen : Colors.grey)
             ),
           ),
-          // DENY
+
+          // DENY BUTTON
           IconButton.filled(
             onPressed: () => isEnabled.value = false,            
             icon: Icon(Icons.close_rounded,size: 70, color: Colors.redAccent,)
@@ -201,5 +200,44 @@ class _UIState extends State<UI> {
         ],
       ),
     );
+  }
+
+  void onPick(){
+    if (remainCount.value < 1) return;
+    plantOnBlock(gridPos + Point(0, 0), handlingPlant.species);    
+    instance.removeSeed(handlingPlant.species , 1);
+    remainCount.value--;
+    gridPos = getOptimalNextPosition() ?? gridPos;
+    prevPos = gridPos;
+    // HOTFIX for rebuilding layout
+    topLeftPos.value = (topLeftPos.value.$1, topLeftPos.value.$2+1);
+  }
+
+  Point<int>? getOptimalNextPosition(){
+
+    // CHECK EXPECTED PATH
+    final offset = gridPos - prevPos;
+    final dir = Point(offset.x.sign, offset.y.sign);
+    //final Map <Point<int>, Point<int>> correctionMap = Point(-1, 0) : Point(-1),
+
+    final predictedBlock = getBlockByPos(gridPos + dir);
+    if (predictedBlock != null && predictedBlock.plant == null) return gridPos + dir;
+
+    // CHECK NEAREST
+    final neibors = [
+      Point(-1, 0),
+      Point(1, 0),
+      Point(0, -1),
+      Point(0, 1),
+      Point(-1, 1),
+      Point(1, 1),
+    ];
+    for (var neibour in neibors) {
+      final block = getBlockByPos(gridPos + neibour);
+      if (block?.plant == null) return gridPos + neibour;
+    }
+
+    // PICK FIRST EMPTY
+    return getFirstEmptyCellPos();
   }
 }
