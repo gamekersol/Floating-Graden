@@ -82,7 +82,7 @@ class _MovingBlocksOverlayState extends State<MovingBlocksOverlay> {
   }
 }
 
-Point<int> gridPos = Point(0, 0), prevPos = Point(0, 0);
+Point<int> gridPos = Point(0, 0), prevPos = Point(0, 0), prevPrevPos = Point(0, 0);
 ValueNotifier <(double, double)> topLeftPos = ValueNotifier((500,500));
 ValueNotifier <bool> isValidPlace = new ValueNotifier(true);
 
@@ -204,24 +204,41 @@ class _UIState extends State<UI> {
 
   void onPick(){
     if (remainCount.value < 1) return;
-    plantOnBlock(gridPos + Point(0, 0), handlingPlant.species);    
+    plantOnBlock(gridPos, handlingPlant.species);   
+    prevPrevPos = prevPos;
+    prevPos = gridPos; 
     instance.removeSeed(handlingPlant.species , 1);
     remainCount.value--;
     gridPos = getOptimalNextPosition() ?? gridPos;
-    prevPos = gridPos;
     // HOTFIX for rebuilding layout
     topLeftPos.value = (topLeftPos.value.$1, topLeftPos.value.$2+1);
   }
 
+  final Map <Point<int>, Point<int>> changeMap = {
+    Point(1, 1) : Point(1,0),
+    Point(-1, 1) : Point(-1,0),
+
+    Point(1, 0) : Point(1, -1),
+    Point(-1, 0) : Point(-1, -1),
+  };
+  final Map <Point<int>, Point<int>> changeOddMap = {
+    Point(1, -1) : Point(1,0),
+    Point(-1, -1) : Point(-1,0),
+
+    Point(1, 0) : Point(1, 1),
+    Point(-1, 0) : Point(-1, 1),
+  };
+
   Point<int>? getOptimalNextPosition(){
 
     // CHECK EXPECTED PATH
-    final offset = gridPos - prevPos;
+    var offset = prevPos - prevPrevPos;
+    if (offset.distanceTo(Point(0, 0)) >= 2) return null;
     final dir = Point(offset.x.sign, offset.y.sign);
-    //final Map <Point<int>, Point<int>> correctionMap = Point(-1, 0) : Point(-1),
+    final Point<int> trueDir = gridPos.x % 2 == 0 ? changeMap[dir] ?? dir : changeOddMap[dir] ?? dir;
 
-    final predictedBlock = getBlockByPos(gridPos + dir);
-    if (predictedBlock != null && predictedBlock.plant == null) return gridPos + dir;
+    final predictedBlock = getBlockByPos(gridPos + trueDir);
+    if (predictedBlock != null && predictedBlock.plant == null) return gridPos + trueDir;
 
     // CHECK NEAREST
     final neibors = [
@@ -234,7 +251,7 @@ class _UIState extends State<UI> {
     ];
     for (var neibour in neibors) {
       final block = getBlockByPos(gridPos + neibour);
-      if (block?.plant == null) return gridPos + neibour;
+      if (block != null && block?.plant == null) return gridPos + neibour;
     }
 
     // PICK FIRST EMPTY
