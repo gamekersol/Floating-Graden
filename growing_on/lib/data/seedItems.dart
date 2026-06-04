@@ -1,8 +1,11 @@
 import 'package:growing_on/data/species.dart' as species;
 import 'package:growing_on/models/item.dart';
 
-//TODO so many imports, type of curency make as separate class
-import 'currency.dart' as ineedonlytype;
+final Map<String,Item> dict = {
+  seedOfUtrica.name : seedOfUtrica,
+  seedOfCogongrass.name : seedOfCogongrass,
+  seedOfVeronika.name : seedOfVeronika,
+};
 
 var seedOfUtrica = SeedItem(
   name: "Seed of something spiky", 

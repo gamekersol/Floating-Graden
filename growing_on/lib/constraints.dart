@@ -9,6 +9,7 @@ const Offset BLOCK_OFFSET = Offset(-80/2, -50/2);
 const double PLANT_SIZE_BASIC = 100;
 const Size BLOCK_COLLIDER_SIZE = Size(62, 30);
 const double MIN_SCALE = 0.03, MAX_SCALE = 10;
+const int START_INVENTORY_SIZE = 6;
 
 const Map<Rarity, int> RARITY_CHANSE = {
   Rarity.theonlyone : 1,

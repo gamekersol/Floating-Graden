@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:growing_on/data/garden.dart';
+import 'package:growing_on/models/species.dart';
+import '../constraints.dart';
 
-import '../models/inventorySlot.dart';
-export '../models/inventorySlot.dart';
+import '../tools/jsonStorage.dart';
+import '../models/cellContent.dart';
+export '../models/cellContent.dart';
 
-InventoryInstance instance = InventoryInstance(
-  slots: 
-    [
-      CellContent(),
-      CellContent(),
-      CellContent(),
-      CellContent(),
-      CellContent(),
-      CellContent(),
-    ]
-);
+InventoryInstance instance = InventoryInstance();
+
+void initData(List<Map<String, dynamic>> data) {
+  if (data.length == 0)
+  {
+    instance.slots = List.generate(START_INVENTORY_SIZE, (_) => CellContent());
+    return;
+  }
+  instance.slots = data.map((s) => CellContent.fromJson(s)).toList();
+  
+}
 
 class InventoryInstance extends ChangeNotifier{
-  List<CellContent> slots;
-  InventoryInstance({required this.slots});
+  late List<CellContent> slots;
 
   void add(Item item, {int count = 1}){
     CellContent? ref = slots.where((e) => e.item.value?.name == item.name).firstOrNull;
@@ -33,6 +34,7 @@ class InventoryInstance extends ChangeNotifier{
 
       ref?.item.value = item;
     }
+    save();
   }
 
   bool removeSeed(Species spec, int count){
@@ -46,6 +48,7 @@ class InventoryInstance extends ChangeNotifier{
         ref.count = 1;
       }
       notifyListeners();
+      save();
       return true;
   }
   bool remove(Item item, int count){
@@ -59,6 +62,7 @@ class InventoryInstance extends ChangeNotifier{
       ref.count = 1;
     }
     notifyListeners();
+    save();
     return true;
   }
 
@@ -66,5 +70,7 @@ class InventoryInstance extends ChangeNotifier{
     CellContent? ref = slots.where((e) => e.item.value is SeedItem && (e.item.value as SeedItem).species == spec).firstOrNull;
     return ref?.count ?? 0;
   }
+
+  void save() => JsonStorage.save('inventory', instance.slots.map((s) => s.toJson()).toList());
 }
 

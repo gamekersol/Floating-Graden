@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:growing_on/theme.dart';
+import '../data/seedItems.dart' as items;
 
 import 'item.dart';
 export 'item.dart';
@@ -28,4 +29,15 @@ class CellContent extends StatelessWidget{
         ) : SizedBox.shrink(),
     );
   }
+
+  factory CellContent.fromJson(Map<String, dynamic> json) => CellContent(
+    value: items.dict[json['item']] ,
+    count: json['count'] ?? 0,
+  );
+
+  Map<String,dynamic> toJson() =>
+  {
+    'item' : item.value?.name,
+    'count' : count,
+  };
 }

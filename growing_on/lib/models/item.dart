@@ -32,6 +32,7 @@ class Item
 
   Widget getImage() => SvgPicture.asset(imagePath, fit: .contain,);
   void use() => print('noneuse');
+
 }
 
 class CurrencyContainer extends Item{

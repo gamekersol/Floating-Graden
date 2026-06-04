@@ -9,7 +9,10 @@ export '../models/block.dart';
 ValueNotifier <int> blockNotifier = ValueNotifier(0);
 
 late List<Block> blocks;
-void initData(List<Map<String, dynamic>> data) => blocks = data.map((b) => Block.fromJson(b)).toList();
+void initData(List<Map<String, dynamic>> data) {
+  blocks = data.map((b) => Block.fromJson(b)).toList();
+  if (blocks.length == 0)addBlock(Point(0, 0));
+}
 //   // Вусики
 //   Block(pos: Point(-3, -4), plant: Plant(species: species.cogongrass)), Block(pos: Point(3, -4)),
 //   // Голова верх
