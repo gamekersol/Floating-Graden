@@ -105,10 +105,11 @@ class NavItemWidget extends StatelessWidget{
             child: GestureDetector(
               onTap: () => GoToPage(index),
               child: Padding(
-                padding: EdgeInsetsGeometry.all(insect.toDouble()),
+                padding: EdgeInsetsGeometry.all(insect.toDouble() + (7 * (index == value ? 0 : 1))),
                 child: SvgPicture.asset(
                   _pathPrep + iconName,
                   fit: BoxFit.contain,
+                  color: index == value ? Colors.orangeAccent[200] : Colors.white,
                 ),
               ),
             ),
