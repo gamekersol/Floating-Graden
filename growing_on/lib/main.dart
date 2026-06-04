@@ -103,7 +103,7 @@ class NavItemWidget extends StatelessWidget{
               borderRadius: BorderRadius.all(Radius.circular(34))
             ),
             child: GestureDetector(
-              onTap: () => GoToPage(1),
+              onTap: () => GoToPage(index),
               child: Padding(
                 padding: EdgeInsetsGeometry.all(insect.toDouble()),
                 child: SvgPicture.asset(
