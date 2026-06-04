@@ -19,6 +19,7 @@ var bagOfDiamonds = PackItem(
   dropItems: [
     seeds.seedOfVeronika,
     seeds.pickMeDiamond,
+    seeds.dozenSeeds,
   ],
   type: .diamonds,
   cost: 3,

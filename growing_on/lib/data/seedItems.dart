@@ -36,3 +36,11 @@ var pickMeDiamond = CurrencyContainer(
   count: 2,
   description: 'Just a diamond that splits in a half, you know ? \nGot 2 with cost of 3, smart investment!'
 );
+var dozenSeeds = CurrencyContainer(
+  name: "Three dozen seeds", 
+  rarity: .uncommon,
+  imagePath: 'assets/images/items/DozenOfSeeds.svg',
+  type: .seeds,
+  count: 36,
+  description: 'No wonder what you will do with it'
+);
