@@ -8,7 +8,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'musicService.dart' as music;
 
 Map <String, WidgetBuilder> _routes = {
-  "/Tetris" : (context)=> Tetris(),
+  // "/Tetris" : (context)=> Tetris(),
+  // "/Clicker" : (context)=> CLickerGame(),
   '/' : (context) => MyHomePage(),
 };
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
