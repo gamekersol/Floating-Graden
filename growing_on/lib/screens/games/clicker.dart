@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import '../../data/currency.dart';
 
 int _requiredClicks = 5;
@@ -24,7 +25,9 @@ class ClickerGame extends StatelessWidget {
           Center(child: clickCircle()),
 
           // UPGRADE OPTIONS
-
+          upgradeOptionWidget('Clicks', _requiredClicks),
+         // SizedBox(height: 10),
+          upgradeOptionWidget('Cost', _cost),
         ],
       ),
     );
@@ -47,6 +50,75 @@ class ClickerGame extends StatelessWidget {
       ),
     ),
   );
+
+  Widget upgradeOptionWidget(String paramName, Object value){
+    return Expanded(
+      flex: 1,
+      child: Row(
+        children:[ 
+          // PARAM NAME
+          Expanded(
+            flex: 3,
+            child: Container(
+              height: 45,
+              //margin: .symmetric(vertical: 15),
+              padding: .symmetric(horizontal: 5, vertical: 5),
+              decoration: BoxDecoration(
+                color: Colors.black.withAlpha(30)
+              ),
+              child: Text(
+                paramName,
+                textAlign: .left,
+                style: TextStyle(
+                  color: Color(0xFF5D8D69),
+                  fontWeight: .w600
+              ),
+              ),
+            ),
+          ),
+
+          // PARAM VALUE
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.black.withAlpha(60),
+                borderRadius: .circular(10),
+              ),
+              child: Text(
+                value.toString(),
+                textAlign: .center,
+              ),
+            ),
+          ),
+
+          // UPGRADE MUTTON
+          Expanded(
+            flex: 2,
+            child: IconButton(
+              onPressed: () {},
+              icon: Container(
+                //padding: .all(50),
+                decoration: BoxDecoration(
+                  color: Colors.black.withAlpha(50),
+                  borderRadius: .circular(25),
+                ),
+                child: Row(
+                  mainAxisAlignment: .center,
+                  spacing: 10,
+                  children: [
+                    AutoSizeText(((value as int) * 6).toString()),
+                    SizedBox.square(dimension:  50, child: currencys.values[TypeOfCurrency.diamonds]!.getImage()),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ]
+      ),
+    );
+  }
 }
 
 void countDown(){
