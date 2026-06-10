@@ -5,6 +5,8 @@ final Map<String,Item> dict = {
   seedOfUtrica.name : seedOfUtrica,
   seedOfCogongrass.name : seedOfCogongrass,
   seedOfVeronika.name : seedOfVeronika,
+  pickMeDiamond.name : pickMeDiamond,
+  dozenSeeds.name : dozenSeeds,
 };
 
 var seedOfUtrica = SeedItem(
