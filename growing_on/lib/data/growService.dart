@@ -10,5 +10,6 @@ Future<void> startGrowth(Block instance) async {
     await Future.delayed(plant.species.stages[plant.stage]);
     plant.stage++;
     data.blockNotifier.value++;
+    data.save();
   }
 }
