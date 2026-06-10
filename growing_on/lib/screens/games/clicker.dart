@@ -125,9 +125,9 @@ class _ClickerGameState extends State<ClickerGame> {
           Expanded(
             flex: 2,
             child: IconButton(
-              onPressed: () =>{
+              onPressed: () {
                 //SetState
-                _buy(paramName, value, cost, change: change)
+                _buy(paramName, value, cost, change: change);
               },
               icon: Container(
                 //padding: .all(50),
