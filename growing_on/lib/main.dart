@@ -19,7 +19,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await data.Load();
   music.Start();
-  seedsIncrementor();
+  //seedsIncrementor();
 
   runApp(
     MaterialApp(

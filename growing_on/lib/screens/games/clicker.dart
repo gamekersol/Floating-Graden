@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/currency.dart';
 
-int _requiredClicks = 5;
-int _cost = 1;
+
 late ValueNotifier<int> _counter;
+var prefs = SharedPreferencesAsync();
 
-class ClickerGame extends StatelessWidget {
+final ValueNotifier<int> _requiredClicks = ValueNotifier(5);
+final ValueNotifier<int> _cost = ValueNotifier(1);
 
-  ClickerGame({super.key}) {
-    _counter = ValueNotifier(_requiredClicks);
+Future <void> _getSaves() async{
+  _requiredClicks.value = await prefs.getInt("Clicks") ?? 5;
+  _cost.value = await prefs.getInt("Cost") ?? 1;
+
+  _counter.value = _requiredClicks.value;
+}
+
+class ClickerGame extends StatefulWidget {
+
+  @override
+  State<ClickerGame> createState() => _ClickerGameState();
+}
+
+class _ClickerGameState extends State<ClickerGame> {
+
+  @override
+  void initState() {
+    super.initState();
+    _counter = ValueNotifier(_requiredClicks.value);
+    _getSaves(); // для initState це нормально, але треба перевірити порядок нижче
   }
 
   @override
@@ -25,9 +45,15 @@ class ClickerGame extends StatelessWidget {
           Center(child: clickCircle()),
 
           // UPGRADE OPTIONS
-          upgradeOptionWidget('Clicks', _requiredClicks, 5 * (6 - _requiredClicks)),
+          ListenableBuilder(
+            listenable: _requiredClicks,
+            builder: (context, child) => upgradeOptionWidget('Clicks', _requiredClicks.value, 5 * (6 - _requiredClicks.value), change: -1)
+          ),
          // SizedBox(height: 10),
-          upgradeOptionWidget('Cost', _cost, _cost * 20),
+          ListenableBuilder(
+            listenable: _cost,
+            builder: (context, child) => upgradeOptionWidget('Cost', _cost.value, _cost.value * 20)
+          ),
         ],
       ),
     );
@@ -53,7 +79,7 @@ class ClickerGame extends StatelessWidget {
     ),
   );
 
-  Widget upgradeOptionWidget(String paramName, Object value, int cost){
+  Widget upgradeOptionWidget(String paramName, int value, int cost, {int change = 1}){
     return Expanded(
       flex: 1,
       child: Row(
@@ -99,7 +125,10 @@ class ClickerGame extends StatelessWidget {
           Expanded(
             flex: 2,
             child: IconButton(
-              onPressed: () => currencys.change(.diamonds, -cost),
+              onPressed: () =>{
+                //SetState
+                _buy(paramName, value, cost, change: change)
+              },
               icon: Container(
                 //padding: .all(50),
                 decoration: BoxDecoration(
@@ -120,14 +149,29 @@ class ClickerGame extends StatelessWidget {
         ]
       ),
     );
+}
+
+  Future<void> _buy (String paramName, int value, int cost, {int change = 1}) async{
+    if (!currencys.change(.diamonds, -cost)) return;
+
+    switch (paramName) {
+      case 'Clicks':
+        _requiredClicks.value += change;
+        await prefs.setInt(paramName, _requiredClicks.value);
+      case 'Cost':
+        _cost.value += change;
+        await prefs.setInt(paramName, _cost.value);
+    }
+  }
+
+  void countDown(){
+    if (_counter.value - _cost.value <=0){
+      // get seed pal
+      currencys.change(.seeds, _cost.value);
+      _counter.value = _requiredClicks.value;
+    }
+    else _counter.value -= _cost.value;
   }
 }
 
-void countDown(){
-  if (_counter.value - _cost <=0){
-    // get seed pal
-    currencys.change(.seeds, _cost);
-    _counter.value = _requiredClicks;
-  }
-  else _counter.value -= _cost;
-}
+
