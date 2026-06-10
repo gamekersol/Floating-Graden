@@ -3,33 +3,55 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/currency.dart';
 
+//var prefs = SharedPreferencesAsync();
+late SharedPreferences prefs;
 
-late ValueNotifier<int> _counter;
-var prefs = SharedPreferencesAsync();
-
-final ValueNotifier<int> _requiredClicks = ValueNotifier(5);
-final ValueNotifier<int> _cost = ValueNotifier(1);
-
-Future <void> _getSaves() async{
-  _requiredClicks.value = await prefs.getInt("Clicks") ?? 5;
-  _cost.value = await prefs.getInt("Cost") ?? 1;
-
-  _counter.value = _requiredClicks.value;
+Future<void> _buy (String paramName, ValueNotifier<int> notifier, int cost, {int upgradeValue = 1}) async{
+  if (!currencys.change(.diamonds, -cost)) return;
+  
+  notifier.value += upgradeValue;
+  await prefs.setInt(paramName, notifier.value);
 }
 
 class ClickerGame extends StatefulWidget {
 
   @override
   State<ClickerGame> createState() => _ClickerGameState();
+
 }
 
 class _ClickerGameState extends State<ClickerGame> {
+
+  late ValueNotifier<int> _counter;
+
+  // PARAMETERS
+  final ValueNotifier<int> _requiredClicks = ValueNotifier(5);
+  final ValueNotifier<int> _cost = ValueNotifier(1);
+
+  Future <void> _getSaves() async{
+    _requiredClicks.value = await prefs.getInt("Clicks") ?? 5;
+    _cost.value = await prefs.getInt("Cost") ?? 1;
+
+    _counter.value = _requiredClicks.value;
+  }
+
+  void _countDown(){
+    if (_counter.value - _cost.value <= 0){
+      // get seed pal
+      currencys.change(.seeds, _cost.value);
+      _counter.value = _requiredClicks.value;
+    }
+    else _counter.value -= _cost.value;
+  }
 
   @override
   void initState() {
     super.initState();
     _counter = ValueNotifier(_requiredClicks.value);
-    _getSaves(); // для initState це нормально, але треба перевірити порядок нижче
+    SharedPreferences.getInstance().then((p) {
+      prefs = p;
+      _getSaves();
+    });
   }
 
   @override
@@ -38,22 +60,15 @@ class _ClickerGameState extends State<ClickerGame> {
       padding: .symmetric(horizontal: 0, vertical: 100),
       child: Column(
         crossAxisAlignment: .center,
-        mainAxisAlignment: .center,
+        mainAxisAlignment: .start,
         spacing: 30,
         children: [
           // MAIN CLICK CIRCLE
           Center(child: clickCircle()),
 
           // UPGRADE OPTIONS
-          ListenableBuilder(
-            listenable: _requiredClicks,
-            builder: (context, child) => upgradeOptionWidget('Clicks', _requiredClicks.value, 5 * (6 - _requiredClicks.value), change: -1)
-          ),
-         // SizedBox(height: 10),
-          ListenableBuilder(
-            listenable: _cost,
-            builder: (context, child) => upgradeOptionWidget('Cost', _cost.value, _cost.value * 20)
-          ),
+          upgradeOptionWidget('Clicks', _requiredClicks, () => 5 * (6 - _requiredClicks.value), upgradeValue: -1),
+          upgradeOptionWidget('Cost', _cost, () => _cost.value * 20),
         ],
       ),
     );
@@ -61,7 +76,7 @@ class _ClickerGameState extends State<ClickerGame> {
 
   Widget clickCircle() =>
   GestureDetector(
-    onTap: () => countDown(),
+    onTap: () => _countDown(),
     child: ListenableBuilder(
       listenable: _counter,
       builder: (context, child) => AnimatedContainer(
@@ -79,10 +94,10 @@ class _ClickerGameState extends State<ClickerGame> {
     ),
   );
 
-  Widget upgradeOptionWidget(String paramName, int value, int cost, {int change = 1}){
-    return Expanded(
-      flex: 1,
-      child: Row(
+  Widget upgradeOptionWidget(String paramName, ValueNotifier<int> notifier,int Function() cost, {int upgradeValue = 1}){
+    return ListenableBuilder(
+      listenable: notifier,
+      builder: (context, child) => Row(
         children:[ 
           // PARAM NAME
           Expanded(
@@ -104,7 +119,7 @@ class _ClickerGameState extends State<ClickerGame> {
               ),
             ),
           ),
-
+      
           // PARAM VALUE
           Expanded(
             flex: 1,
@@ -115,22 +130,18 @@ class _ClickerGameState extends State<ClickerGame> {
                 borderRadius: .circular(10),
               ),
               child: Text(
-                value.toString(),
+                notifier.value.toString(),
                 textAlign: .center,
               ),
             ),
           ),
-
-          // UPGRADE MUTTON
+      
+          // UPGRADE BUTTON
           Expanded(
             flex: 2,
             child: IconButton(
-              onPressed: () {
-                //SetState
-                _buy(paramName, value, cost, change: change);
-              },
+              onPressed: () => _buy(paramName, notifier, cost(), upgradeValue: upgradeValue),
               icon: Container(
-                //padding: .all(50),
                 decoration: BoxDecoration(
                   color: Colors.black.withAlpha(50),
                   borderRadius: .circular(25),
@@ -139,7 +150,7 @@ class _ClickerGameState extends State<ClickerGame> {
                   mainAxisAlignment: .center,
                   spacing: 10,
                   children: [
-                    AutoSizeText(cost.toString()),
+                    AutoSizeText(cost().toString()),
                     SizedBox.square(dimension:  50, child: currencys.values[TypeOfCurrency.diamonds]!.getImage()),
                   ],
                 ),
@@ -150,28 +161,6 @@ class _ClickerGameState extends State<ClickerGame> {
       ),
     );
 }
-
-  Future<void> _buy (String paramName, int value, int cost, {int change = 1}) async{
-    if (!currencys.change(.diamonds, -cost)) return;
-
-    switch (paramName) {
-      case 'Clicks':
-        _requiredClicks.value += change;
-        await prefs.setInt(paramName, _requiredClicks.value);
-      case 'Cost':
-        _cost.value += change;
-        await prefs.setInt(paramName, _cost.value);
-    }
-  }
-
-  void countDown(){
-    if (_counter.value - _cost.value <=0){
-      // get seed pal
-      currencys.change(.seeds, _cost.value);
-      _counter.value = _requiredClicks.value;
-    }
-    else _counter.value -= _cost.value;
-  }
 }
 
 
