@@ -139,7 +139,7 @@ class _ItemInfoOverlayState extends State<ItemInfoOverlay> {
                 padding: const EdgeInsets.all(8.0),
                 child: Scrollable(
                   axisDirection: .down,
-                  viewportBuilder: (context, position) => Text(body),
+                  viewportBuilder: (context, position) => AutoSizeText(body),
                 ),
               ),
             ),
