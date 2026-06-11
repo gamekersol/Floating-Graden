@@ -68,14 +68,16 @@ void wheelPanel(BuildContext context, List<Item> items){
   const Duration rollTime = Duration(milliseconds: 7000);
 
   WidgetsBinding.instance.addPostFrameCallback((_) {
+    final double centerOffset = controller.position.viewportDimension / 2;
+
     controller.animateTo(
-      (60 - 60 % rollItems.length + randIndex) * itemWidth + random.nextInt(itemWidth.round()),
+      (60 - 60 % rollItems.length + randIndex) * itemWidth + random.nextInt(itemWidth.round()) - itemWidth/2,
       duration: rollTime,
       curve: Curves.easeOutCubic,
     );
   });
 
-
+  print('add item by CAROUSEL : ${rollItems[randIndex].name}');
   inv.instance.add(rollItems[randIndex]);
   caroselTimer = Timer(Duration(milliseconds: rollTime.inMilliseconds + 1200 ), ()=> Navigator.pop(context));
 }
