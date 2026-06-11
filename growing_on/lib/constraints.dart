@@ -4,6 +4,8 @@ import 'models/item.dart';
 // CHEATS
 const bool INFINITE_MONEY = false;
 
+// PARAMS
+const double PULL_SENSIVITY = 0.7, SCALE_SENSIVITY = 3;
 const Size BLOCK_SIZE = Size(80, 50);
 const Offset BLOCK_OFFSET = Offset(-80/2, -50/2);
 const double PLANT_SIZE_BASIC = 100;
