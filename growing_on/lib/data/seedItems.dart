@@ -31,12 +31,12 @@ var seedOfVeronika = SeedItem(
   species: species.veronika_prostrata,
 );
 var pickMeDiamond = CurrencyContainer(
-  name: "Diamond", 
+  name: "Binary diamond", 
   rarity: .rare,
-  imagePath: 'assets/images/trinckets/diamond.svg',
+  imagePath: 'assets/images/items/BinaryDiamond.svg',
   type: .diamonds,
   count: 2,
-  description: 'Just a diamond that splits in a half, you know ? \nGot 2 with cost of 3, smart investment!'
+  description: 'Just 2 a diamonds, you know ?'
 );
 var dozenSeeds = CurrencyContainer(
   name: "Three dozen seeds", 

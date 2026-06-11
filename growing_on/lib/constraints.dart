@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/item.dart';
 
 // CHEATS
-const bool INFINITE_MONEY = true;
+const bool INFINITE_MONEY = false;
 
 const Size BLOCK_SIZE = Size(80, 50);
 const Offset BLOCK_OFFSET = Offset(-80/2, -50/2);
