@@ -11,13 +11,13 @@
 ## 📸 Showcase
 
 <div align="center">
-  <img src="growing_on/assets/screenshotsgarden.png" alt="Main Garden View" width="200"/>
-  <img src="growing_on/assets/screenshotsplanting.png" alt="Planting Mechanics" width="200"/>
-  <img src="growing_on/assets/screenshotsinventory.png" alt="Inventory Management" width="200"/>
-  <img src="growing_on/assets/screenshotsshop.png" alt="In-game Shop" width="200"/>
-  <img src="growing_on/assets/screenshotsgambling.png" alt="Seed Gacha System" width="200"/>
-  <img src="growing_on/assets/screenshotsclicker.png" alt="Clicker Minigame" width="200"/>
-  <img src="growing_on/assets/screenshotsclose-zoom.png" alt="Close-up View" width="200"/>
+  <img src="growing_on/assets/screenshots/garden.png" alt="Main Garden View" width="200"/>
+  <img src="growing_on/assets/screenshots/planting.png" alt="Planting Mechanics" width="200"/>
+  <img src="growing_on/assets/screenshots/inventory.png" alt="Inventory Management" width="200"/>
+  <img src="growing_on/assets/screenshots/shop.png" alt="In-game Shop" width="200"/>
+  <img src="growing_on/assets/screenshots/gambling.png" alt="Seed Gacha System" width="200"/>
+  <img src="growing_on/assets/screenshots/clicker.png" alt="Clicker Minigame" width="200"/>
+  <img src="growing_on/assets/screenshots/close-zoom.png" alt="Close-up View" width="200"/>
 </div>
 
 ---
