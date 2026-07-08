@@ -8,14 +8,16 @@
 
 ---
 
-## 📸 Screenshots
+## 📸 Showcase
 
 <div align="center">
-  <!-- Replace the src links with actual paths to your screenshots once uploaded to the repo -->
-  <img src="assets/screenshots/s1.png" alt="Gameplay / Hex Grid" width="220"/>
-  <img src="assets/screenshots/s2.png" alt="Inventory & Seeds" width="220"/>
-  <img src="assets/screenshots/s3.png" alt="Clicker Minigame" width="220"/>
-  <img src="assets/screenshots/s4.png" alt="Store & Gacha" width="220"/>
+  <img src="assets/screenshots/garden.png" alt="Main Garden View" width="200"/>
+  <img src="assets/screenshots/planting.png" alt="Planting Mechanics" width="200"/>
+  <img src="assets/screenshots/inventory.png" alt="Inventory Management" width="200"/>
+  <img src="assets/screenshots/shop.png" alt="In-game Shop" width="200"/>
+  <img src="assets/screenshots/gambling.png" alt="Seed Gacha System" width="200"/>
+  <img src="assets/screenshots/clicker.png" alt="Clicker Minigame" width="200"/>
+  <img src="assets/screenshots/close-zoom.png" alt="Close-up View" width="200"/>
 </div>
 
 ---
