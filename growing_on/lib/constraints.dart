@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/item.dart';
 
 // CHEATS
-const bool INFINITE_MONEY = true;
+const bool INFINITE_MONEY = false;
 
 // PARAMS
 const double PULL_SENSIVITY = 0.7, SCALE_SENSIVITY = 3;
